@@ -41,7 +41,7 @@ test(`Pay via payment request`, async () => {
     });
 
     const channel = await asyncRetry({interval, times}, async () => {
-      return await setupChannel({generate, lnd, to: target});
+      await setupChannel({generate, lnd, to: target});
     });
 
     // Make sure that an error is returned when there is no route
@@ -75,7 +75,6 @@ test(`Pay via payment request`, async () => {
 
     // When a route exists, payment is successful
     try {
-      const commitTxFee = channel.commit_transaction_fee;
       const height = (await getWalletInfo({lnd})).current_block_height;
       const invoice = await createInvoice({tokens, lnd: remote.lnd});
 
@@ -94,11 +93,11 @@ test(`Pay via payment request`, async () => {
       equal(paid.mtokens, '101000', 'Paid mtokens');
       equal(paid.secret, invoice.secret, 'Paid for invoice secret');
 
-      paid.hops.forEach(n => {
+      for (const n of paid.hops) {
         equal(n.timeout === height + 40 || n.timeout === height + 43, true);
 
         delete n.timeout;
-      });
+      }
 
       const expectedHops = [
         {
@@ -125,12 +124,12 @@ test(`Pay via payment request`, async () => {
 
       const {payments} = await getInvoice({id: paid.id, lnd: remote.lnd});
 
-      if (!!payments.length) {
+      if (payments.length > 0) {
         const [payment] = payments;
 
         const messages = payment.messages.filter(n => n.type !== '106823');
 
-        if (!!messages.length) {
+        if (messages.length > 0) {
           const [message] = messages;
 
           equal(message.type, tlvType, 'Got TLV message type');

@@ -73,13 +73,13 @@ test(`Subscribe to payments`, async () => {
       if (forwards.length !== 2) {
         throw new Error('ExpectedForwardsEvents');
       }
-
-      return;
     });
 
     // Exit early when this is a legacy LND
-    if (!!isLegacy.length) {
-      [sub, sub2].forEach(n => n.removeAllListeners());
+    if (isLegacy.length > 0) {
+      for (const n of [sub, sub2]) {
+        n.removeAllListeners()
+      }
 
       await kill({});
 
@@ -88,7 +88,9 @@ test(`Subscribe to payments`, async () => {
 
     const [got] = payments;
 
-    [sub, sub2].forEach(n => n.removeAllListeners());
+    for (const n of [sub, sub2]) {
+      n.removeAllListeners()
+    }
 
     deepEqual(got, payment, 'Payment subscription notifies of payment');
 

@@ -63,7 +63,7 @@ export default ({destination, lnd, routes, tokens}, cbk) => {
       tokens,
     },
     (err, res) => {
-      if (!!err) {
+      if (err) {
         return cbk(err);
       }
 

@@ -55,14 +55,10 @@ test(`Get network centrality`, async () => {
       strictEqual(remoteScore.betweenness_normalized, 0, 'No centrality');
       strictEqual(targetScore.betweenness, 1e6, 'Centrality around target');
       strictEqual(targetScore.betweenness_normalized, 1e6, 'Centrality');
-
-      return;
     });
   } catch (err) {
     strictEqual(err, null, 'Expected no error');
   }
 
   await kill({});
-
-  return;
 });

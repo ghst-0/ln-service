@@ -14,7 +14,7 @@ test(`Get minimum chain fee rate`, async () => {
     await kill({});
 
     // LND 0.18.2 and below do not return a minimum relay fee rate
-    if (!!feeRate.tokens_per_vbyte) {
+    if (feeRate.tokens_per_vbyte) {
       equal(feeRate.tokens_per_vbyte, 1.012, 'Fee rate is returned');
     }
   } catch (err) {

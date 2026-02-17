@@ -24,7 +24,7 @@ const count = 100;
 const defaultInternalKey = '0350929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0';
 const {fromHex} = Transaction;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
-const interval = retryCount => 10 * Math.pow(2, retryCount);
+const interval = retryCount => 10 * 2 ** retryCount;
 const OP_CHECKSIG = 172;
 const smallTokens = 2e5;
 const times = 20;
@@ -62,7 +62,7 @@ test(`Sign a taproot transaction`, async () => {
   const {address} = await createChainAddress({lnd});
   const [utxo] = (await getUtxos({lnd})).utxos;
 
-  const funded = await asyncRetry({interval, times}, async () => {
+  await asyncRetry({interval, times}, async () => {
     try {
       return await fundPsbt({
         lnd,
@@ -157,13 +157,13 @@ test(`Sign a taproot transaction`, async () => {
     });
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => {
-      return tx.setWitness(i, [
+    for (let i = 0; i < tx.ins.length; i++){
+      tx.setWitness(i, [
         signature,
         hexAsBuffer(witnessScript),
         hexAsBuffer(block),
-      ]);
-    });
+      ])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 
@@ -256,7 +256,9 @@ test(`Sign a taproot transaction`, async () => {
     const [signature] = signatures.map(hexAsBuffer);
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => tx.setWitness(i, [signature]));
+    for (let i = 0; i < tx.ins.length; i++) {
+      tx.setWitness(i, [signature])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 
@@ -339,7 +341,9 @@ test(`Sign a taproot transaction`, async () => {
     const [signature] = signatures.map(hexAsBuffer);
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => tx.setWitness(i, [signature]));
+    for (let i = 0; i < tx.ins.length; i++) {
+      tx.setWitness(i, [signature])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 

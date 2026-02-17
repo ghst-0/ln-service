@@ -18,7 +18,7 @@ export default ({cert, connect, host, pass, port, user}, cbk) => {
   const params = [connect, addFlag];
 
   return rpc({cert, cmd, host, params, pass, port, user}, err => {
-    if (!!err) {
+    if (err) {
       return cbk([503, 'UnexpectedErrorAddingNode', {err}]);
     }
 

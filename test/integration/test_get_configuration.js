@@ -13,7 +13,7 @@ test(`Get configuration info`, async () => {
   try {
     const {log, options} = await getConfiguration({lnd});
 
-    ok(!!log.length, 'Got the log lines');
+    ok(log.length > 0, 'Got the log lines');
 
     const color = options.find(n => n.type === 'color').value.toLowerCase();
 

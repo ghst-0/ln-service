@@ -26,7 +26,7 @@ test(`Subscribe to chain transactions`, async () => {
   const [{generate, lnd}, target] = nodes;
 
   await asyncRetry({times}, async () => {
-    if (!!(await getChainBalance({lnd})).chain_balance) {
+    if ((await getChainBalance({lnd})).chain_balance) {
       return;
     }
 
@@ -41,7 +41,7 @@ test(`Subscribe to chain transactions`, async () => {
   sub.on('error', () => {});
   sub.on('chain_transaction', tx => transactions.push(tx));
 
-  const sent = await sendToChainAddress({
+  await sendToChainAddress({
     lnd,
     tokens,
     address: (await createChainAddress({lnd: target.lnd})).address,
@@ -53,7 +53,7 @@ test(`Subscribe to chain transactions`, async () => {
   const tx = await asyncRetry({interval, times}, async () => {
     const [tx] = transactions
       .filter(n => n.is_confirmed)
-      .filter(n => n.output_addresses.length == 2);
+      .filter(n => n.output_addresses.length === 2);
 
     if (!tx) {
       throw new Error('ExpectedConfirmedTransaction');
@@ -78,7 +78,7 @@ test(`Subscribe to chain transactions`, async () => {
     equal(tx.tokens, 1003825, 'Tx tokens is fee + tokens sent');
   }
 
-  if (!!tx.output_addresses.find(n => n.length < 14 || n.length > 74)) {
+  if (tx.output_addresses.some(n => n.length < 14 || n.length > 74)) {
     fail('Output address lengths must be between 14 and 74');
   }
 

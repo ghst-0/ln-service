@@ -40,7 +40,7 @@ test('Get forwarding reputations', async () => {
       to: target,
     });
 
-    const targetToRemoteChan = await setupChannel({
+    await setupChannel({
       generate: target.generate,
       give_tokens: Math.round(channelCapacityTokens / 2),
       lnd: target.lnd,
@@ -51,18 +51,18 @@ test('Get forwarding reputations', async () => {
       const {channels, nodes} = await getNetworkGraph({lnd});
 
       const limitedFeatures = nodes.find(node => {
-        return !node.features.find(n => n.bit === tlvOnionBit);
+        return !node.features.some(n => n.bit === tlvOnionBit);
       });
 
       const policies = flatten(channels.map(n => n.policies));
 
       const cltvDeltas = policies.map(n => n.cltv_delta);
 
-      if (!!cltvDeltas.filter(n => !n).length) {
+      if (cltvDeltas.some(n => !n)) {
         throw new Error('ExpectedAllChannelPolicies');
       }
 
-      if (!!limitedFeatures) {
+      if (limitedFeatures) {
         throw new Error('NetworkGraphSyncIncomplete');
       }
     });
@@ -81,7 +81,7 @@ test('Get forwarding reputations', async () => {
         timeout: 1,
       });
 
-      const {channels} = await getChannels({lnd: remote.lnd});
+      await getChannels({lnd: remote.lnd});
 
       await waitForRoute({lnd, tokens, destination: remote.id});
 

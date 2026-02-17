@@ -44,7 +44,7 @@ test(`Pay push payment`, async () => {
     await asyncRetry({interval, times}, async () => {
       await addPeer({lnd, public_key: target.id, socket: target.socket});
 
-      const payment = await payViaPaymentDetails({
+      await payViaPaymentDetails({
         id,
         lnd,
         tokens,
@@ -62,8 +62,6 @@ test(`Pay push payment`, async () => {
       if (!updated.is_confirmed) {
         throw new Error('ExpectedInvoiceConfirmed');
       }
-
-      return;
     });
 
     sub.removeAllListeners();

@@ -23,17 +23,17 @@ test(`Get channels`, async () => {
   });
 
   const [channel] = (await getChannels({lnd})).channels;
-  const {features} = await getWalletInfo({lnd});
+  await getWalletInfo({lnd});
   const [targetChan] = (await getChannels({lnd: target.lnd})).channels;
 
   strictEqual(targetChan.is_partner_initiated, true, 'Self-init channel');
 
-  if (!!channel.local_given) {
+  if (channel.local_given) {
     strictEqual(channel.local_given, giveTokens, 'Push tokens are reflected');
     strictEqual(channel.remote_given, Number(), 'Push tokens are reflected');
   }
 
-  if (!!channel.remote_given) {
+  if (channel.remote_given) {
     strictEqual(channel.local_given, Number(), 'Push tokens are reflected');
     strictEqual(channel.remote_given, giveTokens, 'Push tokens are reflected');
   }
@@ -69,7 +69,7 @@ test(`Get channels`, async () => {
   strictEqual(channel.remote_reserve, 10000, 'Remote reserve amount');
   strictEqual(channel.sent, 0, 'Channel sent');
   strictEqual(channel.transaction_id, chan.transaction_id, 'Chan funding tx');
-  strictEqual(channel.transaction_vout, 0, 'Channel transactin vout');
+  strictEqual(channel.transaction_vout, 0, 'Channel transaction vout');
   strictEqual(channel.type, 'anchor', 'Channel type is returned');
   strictEqual(channel.unsettled_balance, 0, 'Channel unsettled balance');
 

@@ -63,7 +63,7 @@ test(`Send peer message`, async () => {
         public_key: target.id,
       });
 
-      if (!messages.length) {
+      if (messages.length === 0) {
         throw new Error('ExpectedMessage');
       }
     });

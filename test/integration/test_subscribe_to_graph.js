@@ -12,7 +12,7 @@ import {
 } from 'lightning';
 
 const capacity = 1e6;
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const increaseDelay = n => n * 1000;
 const interval = 10;
 const size = 2;
@@ -62,7 +62,7 @@ test('Subscribe to channels', async t => {
       await asyncRetry({interval, times}, async () => {
         await addPeer({lnd, public_key: target.id, socket: target.socket});
 
-        if (!channelUpdated.length) {
+        if (channelUpdated.length === 0) {
           throw new Error('ExpectedChannelUpdated');
         }
 
@@ -76,7 +76,7 @@ test('Subscribe to channels', async t => {
       await asyncRetry({interval, times}, async () => {
         await generate({});
 
-        if (!channelClosed.length) {
+        if (channelClosed.length === 0) {
           throw new Error('ExpectedChannelClosed');
         }
       });
@@ -111,7 +111,7 @@ test('Subscribe to channels', async t => {
         };
       });
 
-      expectedUpdates.forEach(update => {
+      for (const update of expectedUpdates) {
         const [key1, key2] = update.public_keys;
 
         const gotUpdate = channelUpdated.find(chan => {
@@ -125,12 +125,12 @@ test('Subscribe to channels', async t => {
         delete gotUpdate.updated_at;
 
         deepEqual(gotUpdate, update, 'Got expected channel announcement');
-      });
+      }
 
       const gotControl = nodeUpdated.find(n => n.public_key === control.id);
 
       const expectedControl = {
-        alias: control.id.substring(0, 20),
+        alias: control.id.slice(0, 20),
         color: '#3399ff',
         public_key: control.id,
         sockets: gotControl.sockets,
@@ -139,7 +139,7 @@ test('Subscribe to channels', async t => {
       const gotTarget = nodeUpdated.find(n => n.public_key === target.id);
 
       const expectedTarget = {
-        alias: target.id.substring(0, 20),
+        alias: target.id.slice(0, 20),
         color: '#3399ff',
         public_key: target.id,
         sockets: gotTarget.sockets,

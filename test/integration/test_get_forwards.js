@@ -10,7 +10,7 @@ import {
   pay
 } from 'lightning';
 
-const delay = n => new Promise(resolve => setTimeout(resolve, n));
+const delay = n => new Promise(resolve => {setTimeout(resolve, n)});
 const interval = 100;
 const limit = 1;
 const size = 3;

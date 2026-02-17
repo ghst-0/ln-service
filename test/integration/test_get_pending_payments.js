@@ -22,11 +22,11 @@ test(`Get pending payments`, async () => {
 
   const [{generate, lnd}, target, remote] = nodes;
 
-  const channel = await setupChannel({generate, lnd, to: target});
+  await setupChannel({generate, lnd, to: target});
 
   await remote.generate({count: 100});
 
-  const remoteChan = await setupChannel({
+  await setupChannel({
     lnd: target.lnd,
     generate: target.generate,
     to: remote,
@@ -34,7 +34,7 @@ test(`Get pending payments`, async () => {
 
   await addPeer({lnd, public_key: remote.id, socket: remote.socket});
 
-  const {routes} = await waitForRoute({lnd, tokens, destination: remote.id});
+  await waitForRoute({lnd, tokens, destination: remote.id});
 
   {
     const invoice = await createInvoice({tokens, lnd: remote.lnd});
@@ -42,7 +42,7 @@ test(`Get pending payments`, async () => {
     const sub = subscribeToForwardRequests({lnd: target.lnd});
 
     sub.once('forward_request', async forward => {
-      const {pending} = await getPayment({lnd, id: invoice.id});
+      await getPayment({lnd, id: invoice.id});
 
       const {next, payments} = await getPendingPayments({lnd});
 

@@ -2,7 +2,7 @@ import asyncRetry from 'async/retry.js';
 
 import { getUtxos } from 'lightning';
 
-const interval = retryCount => 50 * Math.pow(2, retryCount);
+const interval = retryCount => 50 * 2 ** retryCount;
 const times = 10;
 
 /** Wait for lnd to get a UTXO
@@ -35,7 +35,7 @@ export default ({confirmations, id, lnd}, cbk) => {
 
   return asyncRetry({interval, times}, cbk => {
     return getUtxos({lnd}, (err, res) => {
-      if (!!err) {
+      if (err) {
         return cbk(err);
       }
 

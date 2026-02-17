@@ -134,7 +134,7 @@ test(`Begin group signing session`, async () => {
       );
     });
 
-    const controlSign = await updateGroupSigningSession({
+    await updateGroupSigningSession({
       lnd,
       hash: hashToSign.toString('hex'),
       id: controlGroup.id,
@@ -157,7 +157,9 @@ test(`Begin group signing session`, async () => {
     });
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => tx.setWitness(i, [hexAsBuffer(signature)]));
+    for (let i = 0; i < tx.ins.length; i++) {
+      tx.setWitness(i, [hexAsBuffer(signature)])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 
@@ -261,7 +263,7 @@ test(`Begin group signing session`, async () => {
       );
     });
 
-    const controlSign = await updateGroupSigningSession({
+    await updateGroupSigningSession({
       lnd,
       hash: hashToSign.toString('hex'),
       id: controlGroup.id,
@@ -284,7 +286,9 @@ test(`Begin group signing session`, async () => {
     });
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => tx.setWitness(i, [hexAsBuffer(signature)]));
+    for (let i = 0; i < tx.ins.length; i++) {
+      tx.setWitness(i, [hexAsBuffer(signature)])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 
@@ -379,7 +383,7 @@ test(`Begin group signing session`, async () => {
       );
     });
 
-    const controlSign = await updateGroupSigningSession({
+    await updateGroupSigningSession({
       lnd,
       hash: hashToSign.toString('hex'),
       id: controlGroup.id,
@@ -408,13 +412,13 @@ test(`Begin group signing session`, async () => {
     });
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => {
-      return tx.setWitness(i, [
+    for (let i = 0; i < tx.ins.length; i++){
+      tx.setWitness(i, [
         hexAsBuffer(signature),
         hexAsBuffer(witnessScript),
         hexAsBuffer(block),
-      ]);
-    });
+      ])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 

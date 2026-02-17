@@ -37,7 +37,7 @@ test(`Get an invoice`, async () => {
 
   const paid = await getInvoice({lnd, id: created.id});
 
-  if (!!paid.payments.length) {
+  if (paid.payments.length > 0) {
     strictEqual(paid.payments.length, [created.request].length, 'Paid once');
 
     const [payment] = paid.payments;
@@ -58,6 +58,4 @@ test(`Get an invoice`, async () => {
   strictEqual(paid.is_confirmed, true, 'Invoice has been paid');
 
   await kill({});
-
-  return;
 });

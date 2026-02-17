@@ -57,15 +57,15 @@ test(`Subscribe to past payment`, async () => {
       if (forwards.length !== 2) {
         throw new Error('ExpectedForwardsEvents');
       }
-
-      return;
     });
 
     const [got] = payments;
 
     const sent = forwards.find(n => n.is_confirmed && n.is_send);
 
-    [sub, sub2].forEach(n => n.removeAllListeners());
+    for (const n of [sub, sub2]) {
+      n.removeAllListeners()
+    }
 
     // LND 0.13.4 and below do not support preimages in forward notifications
     if (!!sent && !!sent.secret) {

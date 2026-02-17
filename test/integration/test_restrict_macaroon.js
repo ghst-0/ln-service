@@ -9,7 +9,7 @@ import {
 
 import { restrictMacaroon } from './../../macaroons/index.js';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const format = 'p2wpkh';
 const ip = '127.0.0.1';
 const methods = ['createChainAddress'];
@@ -52,7 +52,7 @@ test(`Restricted macaroons restrict access`, async () => {
       );
     }
 
-    // A macaroon that is time limited is allowed at first
+    // A macaroon that is time-limited is allowed at first
     {
       const {macaroon} = restrictMacaroon({
         expires_at: new Date(Date.now() + 1000).toISOString(),

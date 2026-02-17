@@ -53,7 +53,8 @@ test(`Get invoices`, async () => {
       .concat(secondPage.invoices)
       .concat(thirdPage.invoices);
 
-    receivedInvoices.forEach((invoice, i) => {
+    for (let i = 0; i < receivedInvoices.length; i++){
+      const invoice = receivedInvoices[i]
       const expected = invoices[i];
 
       strictEqual(invoice.chain_address, expected.chain_address, 'Address');
@@ -62,7 +63,7 @@ test(`Get invoices`, async () => {
       strictEqual(invoice.request, expected.request, 'Payment request');
       strictEqual(invoice.secret, expected.secret, 'Payment secret');
       strictEqual(invoice.tokens, expected.tokens, 'Tokens');
-    });
+    }
 
     const reversed = invoices.slice().reverse();
 
@@ -78,6 +79,4 @@ test(`Get invoices`, async () => {
   }
 
   await kill({});
-
-  return;
 });

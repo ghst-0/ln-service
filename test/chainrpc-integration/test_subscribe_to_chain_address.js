@@ -27,7 +27,7 @@ test(`Subscribe to chain transactions`, async () => {
 
     // Wait for chainrpc to be active
     await asyncRetry({interval, times}, async () => {
-      if (!!(await getChainBalance({lnd})).chain_balance) {
+      if ((await getChainBalance({lnd})).chain_balance) {
         return;
       }
 
@@ -106,7 +106,9 @@ test(`Subscribe to chain transactions`, async () => {
 
     });
 
-    [sub, sub2].forEach(n => n.removeAllListeners());
+    for (const n of [sub, sub2]) {
+      n.removeAllListeners()
+    }
 
     await kill({});
   });

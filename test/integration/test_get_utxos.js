@@ -27,7 +27,7 @@ test(`Get utxos`, async () => {
 
   const {utxos} = await getUtxos({lnd});
 
-  strictEqual(!!utxos.length, true, 'Unspent output returned');
+  strictEqual(utxos.length > 0, true, 'Unspent output returned');
 
   const [utxo] = utxos;
 

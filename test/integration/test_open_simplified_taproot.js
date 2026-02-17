@@ -32,7 +32,7 @@ test(`Open simplified taproot channel`, async () => {
 
     await generate({count});
 
-    const channelOpen = await asyncRetry({interval, times}, async () => {
+    await asyncRetry({interval, times}, async () => {
       await addPeer({lnd, public_key: target.id, socket: target.socket});
 
       return await openChannel({
@@ -74,13 +74,13 @@ test(`Open simplified taproot channel`, async () => {
       lnd_configuration: ['--protocol.simple-taproot-chans'],
     });
 
-    const [{generate, id, lnd}, target] = nodes;
+    const [{generate, lnd}, target] = nodes;
 
     await generate({count});
 
     await addPeer({lnd, public_key: target.id, socket: target.socket});
 
-    const channelOpen = await asyncRetry({interval, times}, async () => {
+    await asyncRetry({interval, times}, async () => {
       await addPeer({lnd, public_key: target.id, socket: target.socket});
 
       return await openChannel({

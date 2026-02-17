@@ -11,7 +11,7 @@ import {
 } from 'lightning';
 
 const conf = ['--watchtower.active', '--wtclient.active'];
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const interval = 50;
 const size = 2;
 const times = 3000;

@@ -25,11 +25,11 @@ export default args => {
 
   const macaroon = importMacaroon(Buffer.from(args.macaroon, 'base64'));
 
-  if (!!args.expires_at) {
+  if (args.expires_at) {
     macaroon.addFirstPartyCaveat(`time-before ${args.expires_at}`);
   }
 
-  if (!!args.ip) {
+  if (args.ip) {
     macaroon.addFirstPartyCaveat(`ipaddr ${args.ip}`);
   }
 

@@ -22,7 +22,7 @@ test(`Get fee rates`, async () => {
 
   const [channel] = channels || [{}];
 
-  if (!!channel.id) {
+  if (channel.id) {
     strictEqual(channel.id, channelOpen.id, 'Channel id is represented');
   }
 

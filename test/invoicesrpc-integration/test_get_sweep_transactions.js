@@ -51,7 +51,7 @@ test(`Get sweep transactions`, async t => {
   await asyncRetry({interval, times}, async () => {
     await generate({});
 
-    if (!!(await getClosedChannels({lnd})).channels.length) {
+    if ((await getClosedChannels({lnd})).channels.length > 0) {
       return;
     }
 
@@ -73,7 +73,7 @@ test(`Get sweep transactions`, async t => {
   const [transaction] = transactions;
 
   const [anchorTokens, sweepTokens] = transactions
-    .map(n => n.tokens).sort();
+    .map(n => n.tokens).toSorted();
 
   equal(transactions.length, 2, 'Got closed channel sweep');
 
@@ -97,9 +97,9 @@ test(`Get sweep transactions`, async t => {
   equal(transaction.id.length, 64, 'Sweep has transaction id');
   equal(transaction.is_confirmed, true, 'Sweep is confirmed');
   equal(transaction.output_addresses.length, 1, 'Sweep has out address');
-  equal(!!transaction.transaction.length, true, 'Sweep has transaction');
+  equal(transaction.transaction.length > 0, true, 'Sweep has transaction');
 
-  if (!!transaction.description) {
+  if (transaction.description) {
     equal(transaction.description, '0:sweep', 'Sweep has description');
   } else {
     equal(transaction.description, undefined, 'Sweep has description');

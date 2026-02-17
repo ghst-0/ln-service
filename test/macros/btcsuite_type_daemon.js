@@ -63,7 +63,7 @@ export default (args, cbk) => {
       const stopPort = port + 1000;
 
       return openPortFinder.getPort({port, stopPort}, (err, port) => {
-        if (!!err) {
+        if (err) {
           return cbk([500, 'FailedToFindOpenPortForListenPort', err]);
         }
 
@@ -78,7 +78,7 @@ export default (args, cbk) => {
       const stopPort = port + 1000;
 
       return openPortFinder.getPort({port, stopPort}, (err, port) => {
-        if (!!err) {
+        if (err) {
           return cbk([500, 'FailedToFindOpenPortForRpc', err]);
         }
 
@@ -104,7 +104,7 @@ export default (args, cbk) => {
         '--listen', `${localhost}:${listenPort}`,
         '--logdir', args.dir,
         '--miningaddr', p2pkh({network, pubkey}).address,
-        (!args.is_tls ? '--notls' : null),
+        (args.is_tls ? null : '--notls'),
         '--regtest',
         '--relaynonstd',
         '--rpccert', join(args.dir, 'rpc.cert'),
@@ -123,13 +123,11 @@ export default (args, cbk) => {
         if (rpcServerReady.test(`${data}`)) {
           return cbk(null, daemon);
         }
-
-        return;
       });
     }],
   },
   (err, res) => {
-    if (!!err) {
+    if (err) {
       return cbk(err);
     }
 

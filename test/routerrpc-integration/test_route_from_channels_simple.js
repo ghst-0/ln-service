@@ -46,7 +46,7 @@ test(`Get route through hops`, async () => {
       socket: remote.socket,
     });
 
-    return await setupChannel({
+    await setupChannel({
       generate: target.generate,
       lnd: target.lnd,
       to: remote,
@@ -77,7 +77,7 @@ test(`Get route through hops`, async () => {
 
   await waitForRoute({lnd, destination: remote.id, tokens: invoice.tokens});
 
-  const {route} = await asyncRetry({interval, times}, async () => {
+  await asyncRetry({interval, times}, async () => {
     return await getRouteToDestination({
       lnd,
       cltv_delta: decodedRequest.cltv_delta,
@@ -126,7 +126,7 @@ test(`Get route through hops`, async () => {
     total_mtokens: decodedRequest.mtokens,
   });
 
-  const lndRoute = await asyncRetry({interval, times}, async () => {
+  await asyncRetry({interval, times}, async () => {
     return await getRouteThroughHops({
       lnd,
       cltv_delta: decodedRequest.cltv_delta + confirmationCount,

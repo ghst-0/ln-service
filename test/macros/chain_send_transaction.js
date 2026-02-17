@@ -69,13 +69,14 @@ export default args => {
 
   try {
     tx.addOutput(outputScript, (args.tokens - (args.fee || 0)));
-  } catch (err) {
+  } catch {
     throw new Error('ErrorAddingOutputToSendOnChainTransaction');
   }
 
-  const sigHashAll = parseInt(SIGHASH_ALL, hexBase);
+  const sigHashAll = Number.parseInt(SIGHASH_ALL, hexBase);
 
-  [keyPair].forEach((signingKey, vin) => {
+  for (let vin = 0; vin < [keyPair].length; vin++){
+    const signingKey = [keyPair][vin]
     const flag = sigHashAll;
     const {publicKey} = signingKey;
 
@@ -93,9 +94,7 @@ export default args => {
     const scriptSig = Buffer.concat([sigPush, pubKeyPush]);
 
     tx.setInputScript(vin, scriptSig);
-
-    return;
-  });
+  }
 
   return {transaction: tx.toHex()};
 };

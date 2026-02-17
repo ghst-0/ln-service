@@ -10,7 +10,7 @@ const feature = 12345;
 test(`Add external socket`, async () => {
   const {kill, nodes} = await spawnLightningCluster({});
 
-  const [{id, lnd}] = nodes;
+  const [{lnd}] = nodes;
 
   try {
     await addAdvertisedFeature({feature, lnd});

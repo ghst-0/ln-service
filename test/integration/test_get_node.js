@@ -24,13 +24,13 @@ test(`Get node`, async () => {
     const controlToTarget = await asyncRetry({interval, times}, async () => {
       await generate({});
 
-      return await setupChannel({generate, lnd, to: target});
+      await setupChannel({generate, lnd, to: target});
     });
 
-    const targetToRemote = await asyncRetry({interval, times}, async () => {
+    await asyncRetry({interval, times}, async () => {
       await target.generate({});
 
-      return await setupChannel({
+      await setupChannel({
         generate: target.generate,
         lnd: target.lnd,
         to: remote,
@@ -71,7 +71,7 @@ test(`Get node`, async () => {
       strictEqual(channels.length, [].length, 'Channels are omitted');
     }
 
-    if (!!node.channels.length) {
+    if (node.channels.length > 0) {
       const [{policies}] = node.channels;
 
       const policy = policies.find(n => n.public_key === id);

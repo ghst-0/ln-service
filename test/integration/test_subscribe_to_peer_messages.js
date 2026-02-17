@@ -81,7 +81,7 @@ test(`Subscribe to peer messages`, async () => {
           public_key: remote.id,
         });
 
-        if (!messages.length) {
+        if (messages.length === 0) {
           throw new Error('ExpectedMessage');
         }
       });
@@ -97,14 +97,14 @@ test(`Subscribe to peer messages`, async () => {
         type: 40805,
       });
 
-      if (!targetMessages.length) {
+      if (targetMessages.length === 0) {
         throw new Error('ExpectedTargetMessageReceived');
       }
     });
 
     // Wait for message to appear
     await asyncRetry({interval, times}, async () => {
-      if (!messages.length) {
+      if (messages.length === 0) {
         throw new Error('ExpectedMessage');
       }
     });

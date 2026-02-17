@@ -66,7 +66,7 @@ test(`Open channel`, async () => {
       throw new Error('ExpectedChannelOpened');
     }
 
-    if (!!channel.description) {
+    if (channel.description) {
       strictEqual(channel.description, description, 'Description set');
     }
 

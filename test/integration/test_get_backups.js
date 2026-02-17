@@ -23,7 +23,7 @@ test(`Get channel backup`, async () => {
 
     const [chanBackup] = channels;
 
-    strictEqual(!!chanBackup.backup.length, true, 'Channel backup has blob');
+    strictEqual(chanBackup.backup.length > 0, true, 'Channel backup has blob');
     strictEqual(chanBackup.transaction_id, channel.transaction_id, 'Chan id');
     strictEqual(chanBackup.transaction_vout, channel.transaction_vout, 'Vout');
 

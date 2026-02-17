@@ -6,7 +6,7 @@ import { addPeer, cancelPendingChannel, openChannels } from 'lightning';
 
 const capacity = 1e6;
 const count = 100;
-const delay = n => new Promise(resolve => setTimeout(resolve, n));
+const delay = n => new Promise(resolve => {setTimeout(resolve, n)});
 const interval = 100;
 const race = promises => Promise.race(promises);
 const size = 2;

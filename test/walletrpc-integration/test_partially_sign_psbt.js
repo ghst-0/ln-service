@@ -152,7 +152,7 @@ test(`Partially sign PSBT`, async () => {
     const targetTransactions = targetDecoded.inputs
       .map(n => n.non_witness_utxo);
 
-    const remoteTransactions = remoteDecoded.inputs
+    remoteDecoded.inputs
       .map(n => n.non_witness_utxo);
 
     const allDerivations = []
@@ -163,7 +163,7 @@ test(`Partially sign PSBT`, async () => {
     const bip32Derivations = flatten(allDerivations);
 
     // Exit early when derivations are not supported
-    if (!!bip32Derivations.filter(n => !n).length) {
+    if (bip32Derivations.some(n => !n)) {
       await partiallySignPsbt({lnd: control.lnd, psbt: base.psbt});
     }
 

@@ -24,7 +24,7 @@ const {from} = Buffer;
 const {fromBech32} = address;
 const {fromHex} = Transaction;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
-const interval = retryCount => 10 * Math.pow(2, retryCount);
+const interval = retryCount => 10 * 2 ** retryCount;
 const OP_CHECKSIG = 172;
 const smallTokens = 2e5;
 const times = 20;
@@ -194,7 +194,9 @@ test(`Fund PSBT`, async () => {
     const signature = hexAsBuffer(signedInput.signature);
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => tx.setWitness(i, [signature]));
+    for (let i = 0; i < tx.ins.length; i++) {
+      tx.setWitness(i, [signature])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 
@@ -284,13 +286,13 @@ test(`Fund PSBT`, async () => {
     });
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => {
-      return tx.setWitness(i, [
+    for (let i = 0; i < tx.ins.length; i++){
+      tx.setWitness(i, [
         signature,
         hexAsBuffer(witnessScript),
         hexAsBuffer(block),
-      ]);
-    });
+      ])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 
@@ -378,7 +380,9 @@ test(`Fund PSBT`, async () => {
     const signature = hexAsBuffer(signedInput.signature);
 
     // Add the signature to the input
-    tx.ins.forEach((input, i) => tx.setWitness(i, [Buffer.from(signature)]));
+    for (let i = 0; i < tx.ins.length; i++) {
+      tx.setWitness(i, [Buffer.from(signature)])
+    }
 
     await broadcastChainTransaction({lnd, transaction: tx.toHex()});
 

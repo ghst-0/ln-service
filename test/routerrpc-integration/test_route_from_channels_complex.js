@@ -56,7 +56,7 @@ test(`Get route through complex hops`, async () => {
         socket: remote.socket,
       });
 
-      return await setupChannel({
+      await setupChannel({
         generate: target.generate,
         lnd: target.lnd,
         to: remote,
@@ -70,7 +70,7 @@ test(`Get route through complex hops`, async () => {
 
       await addPeer({lnd: remote.lnd, public_key: far.id, socket: far.socket});
 
-      return await setupChannel({
+      await setupChannel({
         generate: remote.generate,
         lnd: remote.lnd,
         to: far,
@@ -92,7 +92,7 @@ test(`Get route through complex hops`, async () => {
         socket: farthest.socket,
       });
 
-      return await setupChannel({
+      await setupChannel({
         generate: far.generate,
         lnd: far.lnd,
         to: farthest,
@@ -138,7 +138,7 @@ test(`Get route through complex hops`, async () => {
     await asyncRetry({interval, times}, async () => {
       const {features} = await getNode({lnd, public_key: far.id});
 
-      if (!features.length) {
+      if (features.length === 0) {
         throw new Error('ExpectedFarFeatures');
       }
     });
@@ -150,7 +150,7 @@ test(`Get route through complex hops`, async () => {
 
       await addPeer({lnd, public_key: farthest.id, socket: farthest.socket});
 
-      if (!features.length) {
+      if (features.length === 0) {
         throw new Error('ExpectedFarthestFeatures');
       }
     });
@@ -161,7 +161,6 @@ test(`Get route through complex hops`, async () => {
       lnd: farthest.lnd,
     });
 
-    const {id} = invoice;
     const {request} = invoice;
 
     const decodedRequest = await decodePaymentRequest({lnd, request});
@@ -172,7 +171,7 @@ test(`Get route through complex hops`, async () => {
       tokens: invoice.tokens,
     });
 
-    const {route} = await asyncRetry({interval, times}, async () => {
+    await asyncRetry({interval, times}, async () => {
       return await getRouteToDestination({
         lnd,
         cltv_delta: decodedRequest.cltv_delta,
@@ -255,9 +254,6 @@ test(`Get route through complex hops`, async () => {
       return policy;
     });
 
-    // A discount should be set for traffic from control to remote
-    const discountFee = policyA.policies.find(n => n.public_key === target.id);
-
     // Wait for policy to be updated
     const policyB = await asyncRetry({interval, times}, async () => {
       const policy = await getChannel({lnd, id: targetRemoteChannel.id});
@@ -300,7 +296,7 @@ test(`Get route through complex hops`, async () => {
       total_mtokens: decodedRequest.mtokens,
     });
 
-    const lndRoute = await getRouteThroughHops({
+    await getRouteThroughHops({
       lnd,
       cltv_delta: decodedRequest.cltv_delta + confirmationCount,
       mtokens: decodedRequest.mtokens,
@@ -308,8 +304,6 @@ test(`Get route through complex hops`, async () => {
       public_keys: [target.id, remote.id, far.id, farthest.id],
       total_mtokens: decodedRequest.mtokens,
     });
-
-    const discounted = BigInt(discountFee.inbound_base_discount_mtokens);
 
     const gotTotalFee = BigInt(channelsRoute.route.fee_mtokens);
 

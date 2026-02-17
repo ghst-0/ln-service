@@ -50,7 +50,7 @@ test(`Subscribe to chain spend`, async () => {
     }
   });
 
-  const sent = await asyncRetry({times}, async () => {
+  await asyncRetry({times}, async () => {
     await control.generate({});
 
     return await sendToChainAddress({address, lnd, tokens});

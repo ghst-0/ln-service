@@ -33,7 +33,7 @@ test(`Remove a peer`, async () => {
     await asyncRetry({interval, times}, async () => {
       const postRemovalPeers = await getPeers({lnd});
 
-      if (!!postRemovalPeers.peers.length) {
+      if (postRemovalPeers.peers.length > 0) {
         throw new Error('ExpectedPeerRemoved');
       }
 

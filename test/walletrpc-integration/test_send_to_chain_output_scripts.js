@@ -51,7 +51,7 @@ test(`Send to chain output scripts`, async () => {
 
     const tx = transactions.find(n => n.transaction === sent.transaction);
 
-    if (!!tx.is_confirmed) {
+    if (tx.is_confirmed) {
       return;
     }
 

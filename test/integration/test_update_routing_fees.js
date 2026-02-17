@@ -63,7 +63,7 @@ test(`Update routing fees`, async () => {
   }];
 
   // Failures is not supported on LND 0.13.4 and below
-  if (!!failures.length) {
+  if (failures.length > 0) {
     deepEqual(failures, expectedFailures, 'Got expected failures');
   }
 
@@ -84,7 +84,7 @@ test(`Update routing fees`, async () => {
     });
 
     // LND 0.17.5 and below do not support fee discounts
-    if (!!policy.inbound_rate_discount) {
+    if (policy.inbound_rate_discount) {
       equal(policy.inbound_base_discount_mtokens, '1', 'Got base discount');
       equal(policy.inbound_rate_discount, 1, 'Got rate discount');
     }

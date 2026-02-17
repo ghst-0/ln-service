@@ -57,7 +57,7 @@ test(`Pay via routes`, async () => {
     to: remote,
   });
 
-  const [remoteChannel] = (await getChannels({lnd: remoteLnd})).channels;
+  await getChannels({lnd: remoteLnd});
 
   await target.generate({count: confirmationCount});
 
@@ -70,7 +70,7 @@ test(`Pay via routes`, async () => {
 
     const {routes} = await decodePaymentRequest({lnd, request});
 
-    if (!!routes.length) {
+    if (routes.length > 0) {
       return;
     }
 
@@ -102,7 +102,7 @@ test(`Pay via routes`, async () => {
     payment: invoice.payment,
     routes: decodedRequest.routes,
     tokens: invoice.tokens,
-    total_mtokens: !!invoice.payment ? invoice.mtokens : undefined,
+    total_mtokens: invoice.payment ? invoice.mtokens : undefined,
   });
 
   // Pay invoice, but with an invalid id
@@ -114,7 +114,7 @@ test(`Pay via routes`, async () => {
     equal(code, 404, 'Invoice is unknown');
     equal(message, 'UnknownPaymentHash', 'Payment hash not recognized');
 
-    const [[failCode, failMessage, failDetails]] = failures;
+    const [[failCode, failMessage]] = failures;
 
     equal(failCode, 404, 'No known entity');
     equal(failMessage, 'UnknownPaymentHash', 'This is an unknown hash');
@@ -125,7 +125,9 @@ test(`Pay via routes`, async () => {
     id: targetToRemoteChan.id,
   });
 
-  toRemote.policies.forEach(n => n.base_fee_mtokens = '0');
+  for (const n of toRemote.policies) {
+    n.base_fee_mtokens = '0'
+  }
 
   const insufficientFeeRoute = routeFromChannels({
     channels: [await getChannel({lnd, id: channel.id}), toRemote],
@@ -142,10 +144,10 @@ test(`Pay via routes`, async () => {
 
     const [[,, details]] = failures;
 
-    let flags = !details.policy.is_disabled ? 0 : 1;
+    let flags = details.policy.is_disabled ? 1 : 0;
 
     if (target.id > remote.id) {
-      flags = !flags ? 1 : 0;
+      flags = flags ? 0 : 1;
     }
 
     if (details.index !== undefined) {
@@ -179,7 +181,9 @@ test(`Pay via routes`, async () => {
   const forwardMessages = [];
 
   sub.on('forward_request', request => {
-    request.messages.forEach(message => forwardMessages.push(message));
+    for (const message of request.messages) {
+      forwardMessages.push(message)
+    }
 
     return request.accept();
   });
@@ -192,12 +196,12 @@ test(`Pay via routes`, async () => {
 
   const paidInvoice = await getInvoice({id, lnd: remote.lnd});
 
-  if (!!paidInvoice.payments.length) {
+  if (paidInvoice.payments.length > 0) {
     const [payment] = paidInvoice.payments;
 
     const messages = payment.messages.filter(n => n.type !== '106823');
 
-    if (!!messages.length) {
+    if (messages.length > 0) {
       const [message] = messages;
 
       equal(message.type, tlvType, 'Got message type');

@@ -74,7 +74,7 @@ test(`Send to chain address`, async () => {
           lnd: control.lnd,
         });
 
-        if (!!(await getChainBalance({lnd: control.lnd})).chain_balance) {
+        if ((await getChainBalance({lnd: control.lnd})).chain_balance) {
           throw new Error('ExpectedChainBalanceOnControlEmptiedOut');
         }
       });

@@ -43,7 +43,7 @@ test(`Pay with multiple paths`, async () => {
 
     await generate({});
 
-    if (!channels.length) {
+    if (channels.length === 0) {
       throw new Error('ExpectedChannelCreated');
     }
   });

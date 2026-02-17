@@ -24,7 +24,7 @@ test(`Get network graph`, async () => {
   const graph = await asyncRetry({interval, times}, async () => {
     const networkGraph = await getNetworkGraph({lnd});
 
-    if (!networkGraph.nodes.find(n => n.public_key === control.id)) {
+    if (!networkGraph.nodes.some(n => n.public_key === control.id)) {
       throw new Error('ExpectedToFindNodeInGraph');
     }
 
@@ -36,7 +36,7 @@ test(`Get network graph`, async () => {
 
   const nodeDetails = await getNode({lnd, public_key: node.public_key});
 
-  if (!!nodeDetails && !!nodeDetails.channels.length) {
+  if (nodeDetails && nodeDetails.channels.length > 0) {
     const [chan] = nodeDetails.channels;
 
     deepStrictEqual(chan, channel, 'Graph channel matches node details');
@@ -48,7 +48,7 @@ test(`Get network graph`, async () => {
   deepStrictEqual(node.sockets.length, 1, 'Socket');
   deepStrictEqual(new Date() - new Date(node.updated_at) < 1e5, true, 'At');
 
-  channel.policies.forEach(policy => {
+  for (const policy of channel.policies) {
     deepStrictEqual(policy.base_fee_mtokens, '1000', 'Default channel base');
     deepStrictEqual([40, 80].includes(policy.cltv_delta), true, 'Cltv delta');
     deepStrictEqual(policy.fee_rate, 1, 'Default channel fee rate');
@@ -60,7 +60,7 @@ test(`Get network graph`, async () => {
     deepStrictEqual(!!policy.min_htlc_mtokens, true, 'Default min htlc value');
     deepStrictEqual(!!policy.public_key, true, 'Policy has public key');
     deepStrictEqual(new Date()-new Date(policy.updated_at) < 1e5, true, 'At');
-  });
+  }
 
   deepStrictEqual(channel.capacity, expectedChannel.capacity, 'Capacity');
   deepStrictEqual(channel.id, expectedChannel.id, 'Channel id');

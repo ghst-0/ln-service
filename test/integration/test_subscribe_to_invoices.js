@@ -23,7 +23,7 @@ test('Subscribe to invoices', async () => {
     await generate({count: 100});
 
     // Create a channel from the control to the target node
-    const controlToTargetChannel = await setupChannel({
+    await setupChannel({
       generate,
       lnd,
       give_tokens: 1e5,
@@ -31,7 +31,7 @@ test('Subscribe to invoices', async () => {
     });
 
     // Create a channel from the target back to the control
-    const targetToControlChannel = await setupChannel({
+    await setupChannel({
       lnd: target.lnd,
       generate: target.generate,
       give_tokens: 1e5,

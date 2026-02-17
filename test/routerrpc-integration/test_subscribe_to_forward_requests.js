@@ -38,7 +38,7 @@ test(`Subscribe to requests`, async () => {
 
   await addPeer({lnd, public_key: remote.id, socket: remote.socket});
 
-  const {routes} = await waitForRoute({lnd, tokens, destination: remote.id});
+  await waitForRoute({lnd, tokens, destination: remote.id});
 
   let height;
 

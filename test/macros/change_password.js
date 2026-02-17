@@ -67,7 +67,7 @@ export default ({network}, cbk) => {
         50);
       },
       (err, ports) => {
-        if (!!err || !Array.isArray(ports) || !ports.length) {
+        if (!!err || !Array.isArray(ports) || ports.length === 0) {
           return cbk([500, 'FailedToFindOpenPorts', err]);
         }
 
@@ -104,7 +104,7 @@ export default ({network}, cbk) => {
     getChainDaemonCert: ['spawnChainDaemon', ({spawnChainDaemon}, cbk) => {
       return asyncRetry({interval, times}, cbk => {
         return readFile(spawnChainDaemon.rpc_cert, (err, data) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToGetChainDaemonRpcCert', {err}]);
           }
 
@@ -183,12 +183,8 @@ export default ({network}, cbk) => {
           isReady = true;
 
           return cbk();
-        };
-
-        return;
+        }
       });
-
-      return;
     }],
 
     // Get connection to the no-wallet lnd
@@ -247,7 +243,7 @@ export default ({network}, cbk) => {
         seed: createSeed.seed,
       },
       err => {
-        if (!!err) {
+        if (err) {
           return cbk(err);
         }
 
@@ -262,7 +258,7 @@ export default ({network}, cbk) => {
       ({spawnChainDaemon}, cbk) =>
     {
       const {dir} = spawnChainDaemon;
-      const interval = retryCount => 50 * Math.pow(2, retryCount);
+      const interval = retryCount => 50 * 2 ** retryCount;
       const times = 15;
 
       const macaroonPath = join(dir, adminMacaroonFileName);
@@ -360,12 +356,8 @@ export default ({network}, cbk) => {
           isReady = true;
 
           return cbk(null, {daemon});
-        };
-
-        return;
+        }
       });
-
-      return;
     }],
 
     // Get tls cert
@@ -415,7 +407,7 @@ export default ({network}, cbk) => {
     }],
   },
   (err, res) => {
-    if (!!err) {
+    if (err) {
       return cbk(err);
     }
 
@@ -424,8 +416,6 @@ export default ({network}, cbk) => {
     const kill = () => {
       res.spawnChainDaemon.daemon.kill(9);
       res.restartLnd.daemon.kill(9);
-
-      return;
     };
 
     process.on('uncaughtException', err => {

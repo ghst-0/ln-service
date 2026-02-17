@@ -27,7 +27,7 @@ const times = 3000;
 // Using a channel backup should recover funds
 test(`Recover funds from channel`, async () => {
   const control = await asyncRetry({interval, times}, async () => {
-    return await spawnLightningDocker({
+    await spawnLightningDocker({
       seed,
       chain_p2p_port: await getPort({port: 8000, stopPort: 9000}),
       chain_rpc_port: await getPort({port: 9001, stopPort: 10000}),
@@ -41,7 +41,7 @@ test(`Recover funds from channel`, async () => {
   });
 
   const target = await asyncRetry({interval, times}, async () => {
-    return await spawnLightningDocker({
+    await spawnLightningDocker({
       chain_p2p_port: await getPort({port: 8000, stopPort: 9000}),
       chain_rpc_port: await getPort({port: 9001, stopPort: 10000}),
       chain_zmq_block_port: await getPort({port: 10001, stopPort: 11000}),
@@ -83,7 +83,7 @@ test(`Recover funds from channel`, async () => {
         });
 
         if (!count || count < maturity) {
-          return resolve();
+          resolve();
         }
 
         await asyncRetry({interval, times}, async () => {
@@ -111,7 +111,7 @@ test(`Recover funds from channel`, async () => {
   await control.kill({});
 
   const clone = await asyncRetry({interval, times}, async () => {
-    return await spawnLightningDocker({
+    await spawnLightningDocker({
       seed,
       chain_p2p_port: await getPort({port: 8000, stopPort: 9000}),
       chain_rpc_port: await getPort({port: 9001, stopPort: 10000}),

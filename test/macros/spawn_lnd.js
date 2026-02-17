@@ -96,7 +96,7 @@ export default (args, cbk) => {
           round(random() * 100));
         },
         (err, ports) => {
-          if (!!err || !isArray(ports) || !ports.length) {
+          if (!!err || !isArray(ports) || ports.length === 0) {
             return setTimeout(() => {
               return cbk([500, 'FailedToFindOpenPortsWhenSpawningLnd', {err}]);
             },
@@ -138,7 +138,7 @@ export default (args, cbk) => {
     getChainDaemonCert: ['spawnChainDaemon', ({spawnChainDaemon}, cbk) => {
       return asyncRetry({interval, times}, cbk => {
         return readFile(spawnChainDaemon.rpc_cert, (err, data) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToGetChainDaemonRpcCert', {err}]);
           }
 
@@ -219,7 +219,9 @@ export default (args, cbk) => {
           '--btcd.rpcuser', chainUser,
         ];
 
-        btcdArgs.forEach(n => arguments.push(n));
+        for (const n of btcdArgs) {
+          arguments.push(n)
+        }
 
         const towerArgs = [
           '--watchtower.active',
@@ -228,27 +230,29 @@ export default (args, cbk) => {
           '--watchtower.towerdir', dir,
         ]
 
-        if (!!args.circular) {
+        if (args.circular) {
           args.push('--allow-circular-route');
         }
 
-        if (!!args.intercept) {
+        if (args.intercept) {
           args.push('--rpcmiddleware.enable')
         }
 
-        if (!!args.keysend) {
+        if (args.keysend) {
           args.push('--accept-keysend');
         }
 
-        if (!!args.noauth) {
+        if (args.noauth) {
           args.push('--no-macaroons');
         }
 
-        if (!!args.tower) {
-          towerArgs.forEach(n => arguments.push(n));
+        if (args.tower) {
+          for (const n of towerArgs) {
+            arguments.push(n)
+          }
         }
 
-        if (!!args.watchers) {
+        if (args.watchers) {
           args.push('--wtclient.active');
         }
 
@@ -258,7 +262,7 @@ export default (args, cbk) => {
         let isReady = false;
 
         const finished = (err, res) => {
-          if (!!isFinished) {
+          if (isFinished) {
             return;
           }
 
@@ -287,9 +291,7 @@ export default (args, cbk) => {
             isReady = true;
 
             return finished(null, {daemon});
-          };
-
-          return;
+          }
         });
       },
       cbk);
@@ -369,14 +371,12 @@ export default (args, cbk) => {
 
         return cbk(err);
       });
-
-      return;
     }],
 
     // Create seed
     createSeed: ['nonAuthenticatedLnd', ({nonAuthenticatedLnd}, cbk) => {
       // Exit early when a seed is pre-supplied
-      if (!!args.seed) {
+      if (args.seed) {
         return cbk(null, {seed: args.seed});
       }
 
@@ -415,7 +415,7 @@ export default (args, cbk) => {
       ({spawnChainDaemon}, cbk) =>
     {
       // Exit early when spawning an LND that has no auth
-      if (!!args.noauth) {
+      if (args.noauth) {
         return cbk();
       }
 
@@ -472,7 +472,7 @@ export default (args, cbk) => {
         {interval, times},
         cbk => {
           return getWalletInfo({lnd}, (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk(err);
             }
 
@@ -488,7 +488,7 @@ export default (args, cbk) => {
     }],
   },
   (err, res) => {
-    if (!!err) {
+    if (err) {
       return cbk(err);
     }
 
@@ -500,8 +500,6 @@ export default (args, cbk) => {
         res.spawnLightningDaemon.daemon.kill('SIGKILL');
       },
       1000 * 3);
-
-      return;
     };
 
     const generate = ({count}) => new Promise(async (resolve, reject) => {

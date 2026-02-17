@@ -31,7 +31,7 @@ test('Get forwarding confidence', async () => {
     to: target,
   });
 
-  const [controlChannel] = (await getChannels({lnd})).channels;
+  await getChannels({lnd});
 
   await setupChannel({
     capacity: channelCapacityTokens,

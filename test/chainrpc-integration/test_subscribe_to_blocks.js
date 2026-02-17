@@ -55,7 +55,7 @@ test(`Subscribe to blocks`, async () => {
   try {
     // Wait for chainrpc to be active
     await asyncRetry({interval, times}, async () => {
-      if (!!(await getChainBalance({lnd})).chain_balance) {
+      if ((await getChainBalance({lnd})).chain_balance) {
         return;
       }
 
@@ -67,12 +67,11 @@ test(`Subscribe to blocks`, async () => {
     });
 
     const sub = subscribeToBlocks({lnd});
-    const startHeight = (await getHeight({lnd})).current_block_height;
 
     sub.on('block', data => blocks.push(data));
     sub.on('error', err => {});
 
-    const {address} = await createChainAddress({lnd});
+    await createChainAddress({lnd});
 
     await asyncRetry({interval, times}, async () => {
       await generate({});
@@ -82,10 +81,10 @@ test(`Subscribe to blocks`, async () => {
       }
     });
 
-    blocks.forEach(({height, id}) => {
+    for (const { height, id } of blocks) {
       strictEqual(!!height, true, 'Got expected block height');
       strictEqual(id.length, 64, 'Got expected block hash length');
-    });
+    }
   } catch (err) {
     strictEqual(err, null, 'Expected no error');
   } finally {

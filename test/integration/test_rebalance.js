@@ -50,7 +50,7 @@ test('Rebalance', async () => {
         destination: control.id,
         outgoing_channel: inChanId,
         payment: invoice.payment,
-        total_mtokens: !!invoice.payment ? invoice.mtokens : undefined,
+        total_mtokens: invoice.payment ? invoice.mtokens : undefined,
       });
 
       const selfPay = await pay({

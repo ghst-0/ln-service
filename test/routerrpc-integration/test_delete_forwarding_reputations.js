@@ -29,13 +29,13 @@ test('Delete forwarding reputations', async () => {
   const [{generate, lnd}, target, remote] = nodes;
 
   try {
-    const controlToTargetChan = await setupChannel({
+    await setupChannel({
       generate,
       lnd,
       to: target,
     });
 
-    const targetToRemoteChan = await setupChannel({
+    await setupChannel({
       generate: target.generate,
       lnd: target.lnd,
       to: remote,
@@ -49,18 +49,18 @@ test('Delete forwarding reputations', async () => {
       const {channels, nodes} = await getNetworkGraph({lnd});
 
       const limitedFeatures = nodes.find(node => {
-        return !node.features.find(n => n.bit === tlvOnionBit);
+        return !node.features.some(n => n.bit === tlvOnionBit);
       });
 
       const policies = flatten(channels.map(n => n.policies));
 
       const cltvDeltas = policies.map(n => n.cltv_delta);
 
-      if (!!cltvDeltas.filter(n => !n).length) {
+      if (cltvDeltas.some(n => !n)) {
         throw new Error('ExpectedAllChannelPolicies');
       }
 
-      if (!!limitedFeatures) {
+      if (limitedFeatures) {
         throw new Error('NetworkGraphSyncIncomplete');
       }
     });
@@ -75,7 +75,9 @@ test('Delete forwarding reputations', async () => {
 
     try {
       await probeForRoute({lnd, tokens, destination: remote.id});
-    } catch (err) {}
+    } catch  {
+      /**/
+    }
 
     {
       const {nodes} = await getForwardingReputations({lnd});

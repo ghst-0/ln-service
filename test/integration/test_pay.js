@@ -38,8 +38,6 @@ test(`Pay`, async ({end, equal, strictSame}) => {
 
   const invoice = await createInvoice({tokens, lnd: remote.lnd});
 
-  const commitTxFee = channel.commit_transaction_fee;
-
   const paid = await asyncRetry({interval, times}, async () => {
     return await pay({lnd, request: invoice.request});
   });
@@ -55,7 +53,7 @@ test(`Pay`, async ({end, equal, strictSame}) => {
 
   const height = (await getHeight({lnd})).current_block_height;
 
-  paid.hops.forEach(n => {
+  for (const n of paid.hops) {
     strictEqual(
       n.timeout === height + 40 ||
       n.timeout === height + 43 ||
@@ -64,7 +62,7 @@ test(`Pay`, async ({end, equal, strictSame}) => {
     );
 
     delete n.timeout;
-  });
+  }
 
   const expectedHops = [
     {
@@ -104,7 +102,7 @@ test(`Pay`, async ({end, equal, strictSame}) => {
       lnd,
       payment: invoice2.payment,
       tokens: invoice2.tokens,
-      total_mtokens: !!invoice2.payment ? invoice2.mtokens : undefined,
+      total_mtokens: invoice2.payment ? invoice2.mtokens : undefined,
     });
 
     if (!route) {
@@ -128,7 +126,7 @@ test(`Pay`, async ({end, equal, strictSame}) => {
   }
 
   // Test paying regularly to a destination
-  const directPay = await pay({
+  await pay({
     lnd,
     path: {routes: [route], id: invoice2.id},
   });

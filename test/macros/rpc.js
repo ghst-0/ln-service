@@ -48,7 +48,7 @@ export default (args, cbk) => {
       // Send request to the server
       request: ['agent', async ({agent}) => {
         const credentials = Buffer.from(`${args.user}:${args.pass}`);
-        const scheme = !!args.cert ? 'https' : 'http';
+        const scheme = args.cert ? 'https' : 'http';
 
         try {
           const response = await fetch(

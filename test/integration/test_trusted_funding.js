@@ -135,7 +135,7 @@ test(`Open unconfirmed channels`, async () => {
     const channel = await asyncRetry({interval, times}, async () => {
       const {channels} = await getChannels({lnd, is_active: true});
 
-      if (!channels.length) {
+      if (channels.length === 0) {
         throw new Error('ExpectedTrustedChannelToAppear');
       }
 
@@ -177,7 +177,7 @@ test(`Open unconfirmed channels`, async () => {
       return confirmed;
     });
 
-    match(confirmed.id, /1[\d][\d]x1x0/, 'Channel id is real now');
+    match(confirmed.id, /1\d\dx1x0/, 'Channel id is real now');
     equal(confirmed.is_trusted_funding, true, 'Channel funding was trusted');
     equal(confirmed.other_ids.length, 1, 'Got ephemeral id');
 
@@ -228,7 +228,7 @@ test(`Open unconfirmed channels`, async () => {
     });
 
     // Confirm the private channel
-    const privateConfirmed = await asyncRetry({interval, times}, async () => {
+    await asyncRetry({interval, times}, async () => {
       // Generate the channel into a block
       await broadcastChainTransaction({
         lnd,
@@ -241,7 +241,7 @@ test(`Open unconfirmed channels`, async () => {
 
       const shut = await getClosedChannels({lnd});
 
-      if (!shut.channels.length) {
+      if (shut.channels.length === 0) {
         throw new Error('ExpectedClosedChannel');
       }
 

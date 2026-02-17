@@ -27,14 +27,14 @@ test('Payment errors', async () => {
   const {lnd} = control;
 
   // Create a channel from the control to the target node
-  const controlToTargetChannel = await setupChannel({
+  await setupChannel({
     lnd,
     generate: control.generate,
     to: target,
   });
 
   // Create a channel from the target back to the control
-  const targetToControlChannel = await setupChannel({
+  await setupChannel({
     generate: target.generate,
     lnd: target.lnd,
     to: control,
@@ -89,7 +89,7 @@ test('Payment errors', async () => {
     await kill({});
 
     if (Array.isArray(err)) {
-      const [, code, context] = err;
+      const [, code] = err;
 
       strictEqual(code, 'FeeInsufficient', 'Pay fails due to low fee');
     } else {

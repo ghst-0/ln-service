@@ -84,7 +84,7 @@ export default (args, cbk) => {
 
     // Create remote lnd
     remote: cbk => {
-      if (!!args.is_remote_skipped) {
+      if (args.is_remote_skipped) {
         return cbk();
       }
 
@@ -97,7 +97,7 @@ export default (args, cbk) => {
 
     // Get the remote node info
     remoteNode: ['remote', ({remote}, cbk) => {
-      if (!!args.is_remote_skipped) {
+      if (args.is_remote_skipped) {
         return cbk();
       }
 
@@ -136,7 +136,7 @@ export default (args, cbk) => {
       'remote',
       ({control, controlCert, remote}, cbk) =>
     {
-      if (!!args.is_remote_skipped) {
+      if (args.is_remote_skipped) {
         return cbk();
       }
 
@@ -318,7 +318,7 @@ export default (args, cbk) => {
       'target',
       ({remote, remoteNode, target}, cbk) =>
     {
-      if (!!args.is_remote_skipped) {
+      if (args.is_remote_skipped) {
         return cbk();
       }
 
@@ -348,7 +348,7 @@ export default (args, cbk) => {
 
         return asyncRetry({interval: retryMs, times: retryTimes}, cbk => {
           return getWalletInfo({lnd: node.lnd}, (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk(err);
             }
 
@@ -377,7 +377,7 @@ export default (args, cbk) => {
       res.target.kill();
     }
 
-    if (!!err) {
+    if (err) {
       return cbk(err);
     }
 
@@ -390,7 +390,9 @@ export default (args, cbk) => {
       const nodes = [control, remote, target].concat(args.nodes)
         .filter(n => !!n);
 
-      nodes.forEach(({kill}) => kill());
+      for (const { kill1 } of nodes) {
+        kill1()
+      }
 
       return asyncEach(nodes, ({lnd}, cbk) => {
         return waitForTermination({lnd}, cbk);
@@ -416,7 +418,7 @@ export default (args, cbk) => {
       remote,
       generate,
       target,
-      remote_node_public_key: !remoteNode ? null : remoteNode.public_key,
+      remote_node_public_key: remoteNode ? remoteNode.public_key : null,
       target_node_public_key: res.targetNode.public_key,
     });
   });

@@ -35,9 +35,9 @@ test(`Subscribe to peers`, async () => {
     const disconnect = removePeer({lnd, public_key: target.id});
     const receiveDisconnect = once(sub, 'disconnected');
 
-    const [disconectMessage] = await all([receiveDisconnect, disconnect]);
+    const [disconnectMessage] = await all([receiveDisconnect, disconnect]);
 
-    const [disconnected] = disconectMessage;
+    const [disconnected] = disconnectMessage;
 
     equal(disconnected.public_key, target.id, 'Got d/c event');
 

@@ -44,20 +44,11 @@ export default (args, cbk) => {
       mining_public_key: args.mining_public_key,
     },
     (err, res) => {
-      if (!!err) {
+      if (err) {
         return cbk(err);
       }
 
       res.daemon.stderr.on('data', data => {
-        if (/mandatory.script.verify.flag/gim.test(data+'')) {
-          return;
-        }
-
-        if (/txn.already.in.mempool/gim.test(data+'')) {
-          return;
-        }
-
-        return;
       });
 
       res.daemon.on('close', async code => await rimraf(dir));
@@ -82,7 +73,5 @@ export default (args, cbk) => {
   default:
     return cbk([400, 'UnknownDaemonType', args.daemon]);
   }
-
-  return;
 };
 

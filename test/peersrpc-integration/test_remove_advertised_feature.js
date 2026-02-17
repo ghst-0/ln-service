@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { equal } from 'node:assert/strict';
+import { deepEqual, equal } from 'node:assert/strict';
 
 import { spawnLightningCluster } from 'ln-docker-daemons';
 import { addAdvertisedFeature, getWalletInfo, removeAdvertisedFeature } from 'lightning';

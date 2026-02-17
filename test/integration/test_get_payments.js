@@ -19,7 +19,7 @@ test('Get payments', async () => {
 
   const invoice = await createInvoice({tokens, lnd: target.lnd});
 
-  const paid = await pay({lnd, request: invoice.request});
+  await pay({lnd, request: invoice.request});
 
   const [payment] = (await getPayments({lnd})).payments;
 
@@ -35,19 +35,17 @@ test('Get payments', async () => {
   strictEqual(payment.secret, invoice.secret, 'Payment secret');
   strictEqual(payment.tokens, tokens, 'Paid tokens');
 
-  if (!!payment.request) {
+  if (payment.request) {
     strictEqual(payment.request, invoice.request, 'Returns original request');
   }
 
   await asyncTimesSeries(4, async () => {
     const {request} = await createInvoice({tokens, lnd: target.lnd});
 
-    const paid = await pay({lnd, request});
+    await pay({lnd, request});
   });
 
   const page1 = await getPayments({lnd, limit: 2});
-
-  const [firstOfPage1] = page1.payments;
 
   const page2 = await getPayments({lnd, token: page1.next});
 
@@ -60,6 +58,4 @@ test('Get payments', async () => {
   strictEqual(!!page3.next, false, 'There is no page 4');
 
   await kill({});
-
-  return;
 });

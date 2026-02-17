@@ -55,6 +55,4 @@ test(`Get chain fee estimate`, async () => {
   }
 
   await kill({});
-
-  return;
 });

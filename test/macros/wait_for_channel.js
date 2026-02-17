@@ -81,11 +81,11 @@ export default ({hidden, id, lnd, vout}, cbk) => {
       gotChannel: ['getChannel', ({getChannel}, cbk) => {
         const {policies} = getChannel;
 
-        if (!!hidden) {
+        if (hidden) {
           return cbk();
         }
 
-        if (!!policies.find(n => !n.cltv_delta)) {
+        if (policies.some(n => !n.cltv_delta)) {
           return cbk([503, 'FailedToFindChannelWithFullPolicyDetails']);
         }
 

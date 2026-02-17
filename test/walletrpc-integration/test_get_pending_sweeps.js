@@ -1,5 +1,6 @@
 import test from 'node:test';
 import { equal } from 'node:assert/strict';
+import { exit } from 'node:process';
 
 import asyncRetry from 'async/retry.js';
 import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
@@ -52,7 +53,7 @@ test(`Get pending sweeps`, async t => {
   await asyncRetry({interval, times}, async () => {
     await generate({});
 
-    if (!!(await getClosedChannels({lnd})).channels.length) {
+    if ((await getClosedChannels({lnd})).channels.length > 0) {
       return;
     }
 

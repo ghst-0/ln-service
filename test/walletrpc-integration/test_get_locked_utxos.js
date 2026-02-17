@@ -48,7 +48,7 @@ test(`Get locked UTXOs`, async () => {
     deepEqual(got, expected, 'Got expected UTXO lock');
 
     // LND 0.15.0 and below do not support locked UTXO output script
-    if (!!locked.output_script) {
+    if (locked.output_script) {
       equal(locked.output_script, utxo.output_script, 'Got output script');
       equal(locked.tokens, utxo.tokens, 'Got output value');
     }

@@ -82,7 +82,7 @@ test(`Propose a channel with a coop delay`, async () => {
       }
     });
 
-    const {features} = await getWalletInfo({lnd});
+    await getWalletInfo({lnd});
 
     // Derive a temporary key for control to pay into
     const controlDerivedKey = await getPublicKey({
@@ -148,10 +148,10 @@ test(`Propose a channel with a coop delay`, async () => {
     const targetPsbt = decodePsbt({ecp, psbt: targetFundPsbt.psbt});
 
     // Derive the id of the control pre-funding tx
-    const controlId = fromHex(controlPsbt.unsigned_transaction).getId();
+    fromHex(controlPsbt.unsigned_transaction).getId();
 
     // Derive the id of the target pre-funding tx
-    const targetId = fromHex(targetPsbt.unsigned_transaction).getId();
+    fromHex(targetPsbt.unsigned_transaction).getId();
 
     // Derive a new control key for a 2:2 multisig
     const controlMultiSigKey = await getPublicKey({family, lnd});
@@ -196,13 +196,13 @@ test(`Propose a channel with a coop delay`, async () => {
     const targetWithoutWitnessTx = fromHex(targetSignPsbt.transaction);
 
     // Eliminate the witnesses
-    controlWithoutWitnessTx.ins.forEach((input, index) => {
-      return controlWithoutWitnessTx.setWitness(index, []);
-    });
+    for (let index = 0; index < controlWithoutWitnessTx.ins.length; index++){
+      controlWithoutWitnessTx.setWitness(index, [])
+    }
 
-    targetWithoutWitnessTx.ins.forEach((input, index) => {
-      return targetWithoutWitnessTx.setWitness(index, []);
-    });
+    for (let index = 0; index < targetWithoutWitnessTx.ins.length; index++){
+      targetWithoutWitnessTx.setWitness(index, [])
+    }
 
     // Add the spending transactions to the psbt
     const psbtWithSpending = updatePsbt({
@@ -251,8 +251,6 @@ test(`Propose a channel with a coop delay`, async () => {
       transaction: decodePayout.unsigned_transaction,
     });
 
-    const [controlDerivedSignature] = controlSignDerivedKey.signatures;
-
     const controlSignSpendingPsbt = updatePsbt({
       ecp,
       psbt: psbtWithSpending.psbt,
@@ -286,8 +284,6 @@ test(`Propose a channel with a coop delay`, async () => {
         psbt: psbtWithSpending.psbt,
       }).unsigned_transaction,
     });
-
-    const [targetDerivedSignature] = targetSignDerivedKey.signatures;
 
     const targetSignSpendingPsbt = updatePsbt({
       ecp,
@@ -364,7 +360,7 @@ test(`Propose a channel with a coop delay`, async () => {
     strictEqual(incoming.transaction_id, fundingTxId, 'Funding tx id correct');
     strictEqual(incoming.transaction_vout, fundingTxVout, 'Funding vout');
 
-    // Setup the combined signed PSBTs that fund the channel
+    // Set up the combined signed PSBTs that fund the channel
     const combinedTempPsbt = combinePsbts({
       ecp,
       psbts: [
@@ -408,7 +404,7 @@ test(`Propose a channel with a coop delay`, async () => {
 
       const {channels} = await getChannels({lnd});
 
-      if (!channels.find(n => n.is_active)) {
+      if (!channels.some(n => n.is_active)) {
         throw new Error('ExpectedActiveChannel');
       }
     });

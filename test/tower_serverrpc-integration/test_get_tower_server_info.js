@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { equal } from 'node:assert/strict';
+import { equal, match } from 'node:assert/strict';
 
 import { spawnLightningCluster } from 'ln-docker-daemons';
 import { getTowerServerInfo } from 'lightning';
@@ -18,7 +18,7 @@ test(`Get tower server info`, async () => {
 
   const [socket] = tower.sockets;
 
-  match(socket, /127.0.0.1\:\d\d\d\d/, 'Tower socket returned');
+  match(socket, /127.0.0.1:\d\d\d\d/, 'Tower socket returned');
 
   equal(tower.public_key.length, 66, 'Public key returned');
 

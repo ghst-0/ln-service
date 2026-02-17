@@ -46,9 +46,9 @@ test(`Pay private invoice`, async () => {
       }
     });
 
-    const channel = await setupChannel({generate, lnd, to: target});
+    await setupChannel({generate, lnd, to: target});
 
-    const remoteChannel = await setupChannel({
+    await setupChannel({
       generate: target.generate,
       is_private: true,
       lnd: target.lnd,
@@ -91,7 +91,7 @@ test(`Pay private invoice`, async () => {
         payment: invoice.payment,
         routes: decodedRequest.routes,
         tokens: invoice.tokens,
-        total_mtokens: !!invoice.payment ? invoice.mtokens : undefined,
+        total_mtokens: invoice.payment ? invoice.mtokens : undefined,
       });
 
       if (!route) {
@@ -101,7 +101,7 @@ test(`Pay private invoice`, async () => {
       return route;
     });
 
-    const payment = await pay({lnd, path: {id, routes: [route]}});
+    await pay({lnd, path: {id, routes: [route]}});
 
     const paidInvoice = await getInvoice({id, lnd: remote.lnd});
 

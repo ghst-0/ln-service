@@ -88,7 +88,7 @@ export default ({cert, chain, count, host, key, pass, port, user}, cbk) => {
           user,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGeneratingBlocks']);
           }
 
@@ -113,7 +113,7 @@ export default ({cert, chain, count, host, key, pass, port, user}, cbk) => {
 
           return asyncRetry({interval, times: retryTimes}, cbk => {
             return rpc(opts, (err, res) => {
-              if (!!err) {
+              if (err) {
                 return cbk([503, 'UnexpectedErrorGettingBlock', {err}]);
               }
 

@@ -60,7 +60,7 @@ export default ({cert, chain, host, pass, port, transaction, user}, cbk) => {
           params: [transaction],
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorBroadcastingTransaction', {err}]);
           }
 

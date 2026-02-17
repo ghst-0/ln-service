@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { deepStrictEqual } from 'node:assert/strict';
+import { deepStrictEqual, equal } from 'node:assert/strict';
 
 import asyncRetry from 'async/retry.js';
 import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
@@ -57,7 +57,7 @@ test(`Get settlement status`, async () => {
 
     const {request} = await createInvoice({tokens, lnd: target.lnd});
 
-    const payment = await pay({lnd, request});
+    await pay({lnd, request});
 
     const settlement = await asyncRetry({interval, times}, async () => {
       return await getSettlementStatus({

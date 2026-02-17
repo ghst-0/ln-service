@@ -39,7 +39,7 @@ test(`Verify bytes signature`, async () => {
         const key = Buffer.from(recover(hash, realSig, flag, true));
 
         return key.equals(Buffer.from(id, 'hex'));
-      } catch (err) {
+      } catch {
         return false;
       }
     });

@@ -41,7 +41,7 @@ test(`Verify chain address message`, async () => {
   }
 
   try {
-    const verify = await verifyChainAddressMessage({
+    await verifyChainAddressMessage({
       address,
       lnd,
       message,

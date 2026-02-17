@@ -87,7 +87,7 @@ test(`Close channel with wait for pending`, async () => {
         await asyncRetry({interval, times}, async () => {
           const {channels} = await getChannels({lnd: control.lnd});
 
-          if (!channels.filter(n => !n.is_active).length) {
+          if (channels.filter(n => !n.is_active).length === 0) {
             throw new Error('ExpectedInactiveChannels');
           }
         });
@@ -105,7 +105,7 @@ test(`Close channel with wait for pending`, async () => {
 
           await control.generate({});
 
-          if (!channels.filter(n => !!n.is_cooperative_close).length) {
+          if (channels.filter(n => !!n.is_cooperative_close).length === 0) {
             throw new Error('ExpectedCooperativelyClosedChannels');
           }
         });

@@ -74,7 +74,7 @@ test(`Pay via payment details`, async () => {
     await waitForRoute({lnd, destination: remote.id, tokens: invoice.tokens});
 
     try {
-      const paid = await payViaPaymentDetails({
+      await payViaPaymentDetails({
         features,
         lnd,
         destination: remote.id,
@@ -125,7 +125,9 @@ test(`Pay via payment details`, async () => {
       equal(paid.mtokens, '101000', 'Paid mtokens');
       equal(paid.secret, invoice.secret, 'Paid for invoice secret');
 
-      paid.hops.forEach(n => delete n.timeout);
+      for (const n of paid.hops) {
+        delete n.timeout
+      }
 
       deepEqual(paid.hops, expectedHops, 'Hops are returned');
     } catch (err) {
@@ -135,12 +137,12 @@ test(`Pay via payment details`, async () => {
     {
       const {payments} = await getInvoice({id: invoice.id, lnd: remote.lnd});
 
-      if (!!payments) {
+      if (payments) {
         const [payment] = payments;
 
         const messages = payment.messages.filter(n => n.type !== '106823');
 
-        if (!!payment && !!messages.length) {
+        if (payment && messages.length > 0) {
           const [message] = messages;
 
           equal(message.type, tlvType, 'Got TLV type');
@@ -154,12 +156,12 @@ test(`Pay via payment details`, async () => {
 
       const [{payments}] = invoices;
 
-      if (!!payments.length) {
+      if (payments.length > 0) {
         const [payment] = payments;
 
         const messages = payment.messages.filter(n => n.type !== '106823');
 
-        if (!!payment && !!messages.length) {
+        if (payment && messages.length > 0) {
           const [message] = messages;
 
           equal(message.type, tlvType, 'Got TLV type');

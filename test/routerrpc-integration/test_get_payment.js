@@ -91,11 +91,11 @@ test(`Get payment`, async () => {
 
     const height = (await getHeight({lnd})).current_block_height;
 
-    payment.hops.forEach(n => {
+    for (const n of payment.hops) {
       equal(n.timeout === height + 40 || n.timeout === height + 43, true);
 
       delete n.timeout;
-    });
+    }
 
     const expectedHops = [
       {

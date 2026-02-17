@@ -15,7 +15,7 @@ import {
   subscribeToRpcRequests
 } from 'lightning';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const interval = 10;
 const message = '00';
 const subscribeInvoiceUri = '/invoicesrpc.Invoices/SubscribeSingleInvoice';
@@ -85,31 +85,31 @@ test(`Subscribe to RPC requests`, async () => {
     const requests = intercepted.filter(n => !!n.request).map(n => n.request);
     const responses = intercepted.map(n => n.response).filter(n => !!n);
 
-    if (!requests.find(n => n.uri === '/lnrpc.Lightning/AddInvoice')) {
+    if (!requests.some(n => n.uri === '/lnrpc.Lightning/AddInvoice')) {
       fail('Expected add invoice request interception');
     }
 
-    if (!responses.find(n => n.uri === '/lnrpc.Lightning/AddInvoice')) {
+    if (!responses.some(n => n.uri === '/lnrpc.Lightning/AddInvoice')) {
       fail('Expected add invoice response interception');
     }
 
-    if (!requests.find(n => n.uri === '/lnrpc.Lightning/GetInfo')) {
+    if (!requests.some(n => n.uri === '/lnrpc.Lightning/GetInfo')) {
       fail('Expected get wallet info request interception');
     }
 
-    if (!responses.find(n => n.uri === '/lnrpc.Lightning/GetInfo')) {
+    if (!responses.some(n => n.uri === '/lnrpc.Lightning/GetInfo')) {
       fail('Expected get wallet info response interception');
     }
 
-    if (!requests.find(n => n.uri === subscribeInvoiceUri)) {
+    if (!requests.some(n => n.uri === subscribeInvoiceUri)) {
       fail('Expected invoice subscription interception');
     }
 
-    if (!requests.find(n => n.uri === '/lnrpc.Lightning/LookupInvoice')) {
+    if (!requests.some(n => n.uri === '/lnrpc.Lightning/LookupInvoice')) {
       fail('Expected get invoice interception');
     }
 
-    if (!responses.find(n => n.uri === '/lnrpc.Lightning/LookupInvoice')) {
+    if (!responses.some(n => n.uri === '/lnrpc.Lightning/LookupInvoice')) {
       fail('Expected get invoice response interception');
     }
 
@@ -151,7 +151,7 @@ test(`Subscribe to RPC requests`, async () => {
 
       subscription.on('open_channel_request', async intercepted => {
         // Stop all open channel requests that gift tokens
-        if (!!intercepted.request.give_tokens) {
+        if (intercepted.request.give_tokens) {
           await intercepted.reject({message: 'message'});
         } else {
           await intercepted.accept({});
@@ -202,7 +202,7 @@ test(`Subscribe to RPC requests`, async () => {
 
       subscription.on('close_channel_request', async intercepted => {
         // Stop all open channel requests that close out to an address
-        if (!!intercepted.request.address) {
+        if (intercepted.request.address) {
           deepEqual(intercepted.request.max_tokens_per_vbyte, 10, 'Max fee');
 
           await intercepted.reject({message: 'message'});
@@ -251,7 +251,7 @@ test(`Subscribe to RPC requests`, async () => {
       await delay(2000);
 
       subscription.on('pay_via_route_request', async intercepted => {
-        // Stop all route requests that have a non zero fee and pay to own key
+        // Stop all route requests that have a non-zero fee and pay to own key
         const feeMtokens = intercepted.request.route.fee_mtokens;
         const [finalHop] = intercepted.request.route.hops.reverse();
 

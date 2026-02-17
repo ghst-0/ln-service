@@ -11,7 +11,7 @@ import {
   subscribeToInvoice
 } from 'lightning';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const size = 2;
 const tokens = 100;
 
@@ -46,7 +46,7 @@ test(`Subscribe to canceled invoice`, async () => {
   equal(!!currentInvoice.is_confirmed, false, 'Invoice is not confirmed yet');
 
   setTimeout(async () => {
-    if (!!currentInvoice.payments.length) {
+    if (currentInvoice.payments.length > 0) {
       equal(currentInvoice.payments.length, [invoice].length, 'Invoice paid');
 
       const [payment] = currentInvoice.payments;
@@ -75,7 +75,7 @@ test(`Subscribe to canceled invoice`, async () => {
 
     await delay(1000);
 
-    if (!!currentInvoice.payments.length) {
+    if (currentInvoice.payments.length > 0) {
       equal(currentInvoice.payments.length, [invoice].length, 'Invoice paid');
 
       const [payment] = currentInvoice.payments;

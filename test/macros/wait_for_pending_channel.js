@@ -1,7 +1,7 @@
 import asyncRetry from 'async/retry.js';
 import { getPendingChannels } from 'lightning';
 
-const interval = retryCount => 10 * Math.pow(2, retryCount);
+const interval = retryCount => 10 * 2 ** retryCount;
 const times = 20;
 
 /** Wait for a pending channel to appear
@@ -26,7 +26,7 @@ export default (args, cbk) => {
 
   return asyncRetry({interval, times}, cbk => {
     return getPendingChannels({lnd: args.lnd}, (err, res) => {
-      if (!!err) {
+      if (err) {
         return cbk(err);
       }
 
@@ -36,11 +36,11 @@ export default (args, cbk) => {
         return cbk([503, 'FailedToFindPendingChannelWithTransactionId']);
       }
 
-      if (!!args.is_recovering && !!channel.is_closing) {
+      if (args.is_recovering && channel.is_closing) {
         return cbk(null, {channel});
       }
 
-      if (!!args.is_closing && !channel.close_transaction_id) {
+      if (args.is_closing && !channel.close_transaction_id) {
         return cbk([503, 'ChannelDoesNotYetHaveCloseTransactionId']);
       }
 

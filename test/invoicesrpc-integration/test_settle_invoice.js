@@ -28,7 +28,7 @@ test(`Pay a hodl invoice`, async () => {
 
   const {features} = await getWalletInfo({lnd: control.lnd});
 
-  const isAnchors = !!features.find(n => n.bit === anchorFeatureBit);
+  const isAnchors = !!features.some(n => n.bit === anchorFeatureBit);
 
   await setupChannel({
     generate: control.generate,
@@ -91,20 +91,18 @@ test(`Pay a hodl invoice`, async () => {
     const controlChannelBalance = await getChannelBalance({lnd});
 
     // LND 0.11.1 and below do not support extended channel balance details
-    if (!isAnchors) {
-      if (!!controlChannelBalance.channel_balance_mtokens) {
-        deepEqual(controlChannelBalance, {
-          channel_balance: 990950,
-          channel_balance_mtokens: '990950000',
-          inbound: 990850,
-          inbound_mtokens: '990850000',
-          pending_balance: 0,
-          pending_inbound: 0,
-          unsettled_balance: tokens,
-          unsettled_balance_mtokens: '100000',
-        },
-        'Channel balance is updated');
-      }
+    if (!isAnchors && controlChannelBalance.channel_balance_mtokens) {
+      deepEqual(controlChannelBalance, {
+        channel_balance: 990950,
+        channel_balance_mtokens: '990950000',
+        inbound: 990850,
+        inbound_mtokens: '990850000',
+        pending_balance: 0,
+        pending_inbound: 0,
+        unsettled_balance: tokens,
+        unsettled_balance_mtokens: '100000',
+      },
+      'Channel balance is updated');
     }
 
     deepEqual(invoice, held, 'Invoice is held');

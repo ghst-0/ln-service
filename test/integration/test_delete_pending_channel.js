@@ -25,7 +25,7 @@ import {
 
 const capacity = 1e6;
 const count = 100;
-const delay = n => new Promise(resolve => setTimeout(resolve, n));
+const delay = n => new Promise(resolve => {setTimeout(resolve, n)});
 const description = 'description';
 const interval = 100;
 const size = 3;
@@ -142,11 +142,11 @@ test(`Forfeit pending channel`, async t => {
 
   await generate({});
 
-  const channel = await asyncRetry({interval: 1000, times}, async () => {
+  await asyncRetry({interval: 1000, times}, async () => {
     const [channel] = (await getChannels({lnd})).channels;
 
     // Exit early when the channel is created
-    if (!!channel) {
+    if (channel) {
       return channel;
     }
 
@@ -160,7 +160,7 @@ test(`Forfeit pending channel`, async t => {
   const [pending] = (await getPendingChannels({lnd})).pending_channels;
 
   // Description is not supported in LND 0.16.4 or before
-  if (!!pending.description) {
+  if (pending.description) {
     deepEqual(pending.description, description, 'Got expected description');
     deepEqual(pending.is_private, true, 'Got pending private status');
   }

@@ -18,7 +18,7 @@ import waitForRoute from './../macros/wait_for_route.js';
 
 const channelCapacityTokens = 1e6;
 const count = 100;
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const interval = 50;
 const size = 3;
 const times = 1000;
@@ -84,7 +84,7 @@ test('Probe for route', async () => {
 
     const [, minor] = (version || '').split('.');
 
-    if (!version || parseInt(minor) > 13) {
+    if (!version || Number.parseInt(minor) > 13) {
       const {payments} = await getFailedPayments({lnd});
 
       deepEqual(payments, [], 'Probes do not leave a failed state behind');
@@ -108,7 +108,7 @@ test('Probe for route', async () => {
         destination: remote.id,
         payment: invoice.payment,
         tokens: invoice.tokens,
-        total_mtokens: !!invoice.payment ? invoice.mtokens : undefined,
+        total_mtokens: invoice.payment ? invoice.mtokens : undefined,
       });
 
       if (!route) {

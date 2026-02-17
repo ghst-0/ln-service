@@ -28,12 +28,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({description, expected}) => {
-  return test(description, async () => {
-    const [{generate, kill, lnd}] = (await spawnLightningCluster({})).nodes;
+for (const { description, expected } of tests) {
+  test(description, async () => {
+    const [{ generate, kill, lnd }] = (await spawnLightningCluster({})).nodes;
 
-    await asyncRetry({interval, times}, async () => {
-      const wallet = await getWalletInfo({lnd});
+    await asyncRetry({ interval, times }, async () => {
+      const wallet = await getWalletInfo({ lnd });
 
       await generate({});
 
@@ -43,7 +43,7 @@ tests.forEach(({description, expected}) => {
     });
 
     try {
-      const {request} = await createInvoice({
+      const { request } = await createInvoice({
         lnd,
         cltv_delta: expected.cltv_delta,
         description: expected.description,
@@ -51,8 +51,8 @@ tests.forEach(({description, expected}) => {
         tokens: expected.tokens,
       });
 
-      const decoded = await decodePaymentRequest({lnd, request});
-      const identity = (await getIdentity({lnd})).public_key;
+      const decoded = await decodePaymentRequest({ lnd, request });
+      const identity = (await getIdentity({ lnd })).public_key;
 
       strictEqual(decoded.chain_addresses, expected.chain_addresses, 'Addr');
       strictEqual(decoded.cltv_delta, expected.cltv_delta, 'Decode cltv');
@@ -70,5 +70,5 @@ tests.forEach(({description, expected}) => {
     }
 
     await kill({});
-  });
-});
+  })
+}

@@ -61,7 +61,7 @@ test('Push funds', async () => {
     height,
     mtokens,
     payment: invoice.payment,
-    total_mtokens: !!invoice.payment ? mtokens : undefined,
+    total_mtokens: invoice.payment ? mtokens : undefined,
   });
 
   await pay({lnd, path: {id: invoice.id, routes: [route]}});

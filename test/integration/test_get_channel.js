@@ -22,7 +22,7 @@ test(`Get channel`, async () => {
   strictEqual(details.capacity, channel.capacity, 'Capacity');
   strictEqual(details.policies.length, size, 'Policies for both nodes');
 
-  details.policies.forEach(policy => {
+  for (const policy of details.policies) {
     strictEqual(policy.base_fee_mtokens, '1000', 'Base fee mtokens');
     strictEqual([40, 80].includes(policy.cltv_delta), true, 'CLTV policy');
     strictEqual(policy.fee_rate, 1, 'Fee rate');
@@ -31,7 +31,7 @@ test(`Get channel`, async () => {
     strictEqual(!!policy.min_htlc_mtokens, true, 'Min HTLC value');
     strictEqual(policy.public_key.length, 66, 'Policy public key');
     strictEqual(Date.now()-new Date(policy.updated_at) < 1e5, true, 'Updated');
-  });
+  }
 
   strictEqual(details.transaction_id, channel.transaction_id, 'Funding tx id');
   strictEqual(details.transaction_vout, channel.transaction_vout, 'Tx vout');
@@ -39,7 +39,7 @@ test(`Get channel`, async () => {
   strictEqual(Date.now()-new Date(details.updated_at) < 1e5, true, 'Updated');
 
   try {
-    const details = await getChannel({
+    await getChannel({
       lnd,
       transaction_id: channel.transaction_id,
       transaction_vout: channel.transaction_vout,

@@ -16,7 +16,7 @@ import {
 
 const defaultFee = 1e3;
 const interval = 125;
-const maxChanTokens = Math.pow(2, 24) - 1;
+const maxChanTokens = 2 ** 24 - 1;
 const size = 2;
 const times = 1000;
 
@@ -47,7 +47,7 @@ test(`Get closed channels`, async t => {
 
   const {features} = await getWalletInfo({lnd});
 
-  const isAnchors = !!features.find(n => n.bit === 23);
+  const isAnchors = !!features.some(n => n.bit === 23);
 
   // Wait for channel to close
   await asyncRetry({interval, times}, async () => {
@@ -55,7 +55,7 @@ test(`Get closed channels`, async t => {
 
     const {channels} = await getClosedChannels({lnd});
 
-    if (!channels.length) {
+    if (channels.length === 0) {
       throw new Error('ExpectedClosedChannel');
     }
   });
@@ -123,23 +123,23 @@ test(`Get closed channels`, async t => {
   subSettleInvoice.on('invoice_updated', n => settleInvoiceUpdates.push(n));
 
   // Kick off a payment to the cancel invoice
-  const payToCancel = subscribeToPayViaRequest({
+  subscribeToPayViaRequest({
     lnd: target.lnd,
     request: cancelInvoice.request,
   });
 
   // Kick off a payment to the settle invoice
-  const payToSettle = subscribeToPayViaRequest({
+  subscribeToPayViaRequest({
     lnd: target.lnd,
     request: settleInvoice.request,
   });
 
   await asyncRetry({interval, times}, async () => {
-    if (!cancelInvoiceUpdates.filter(n => !!n.is_held).length) {
+    if (cancelInvoiceUpdates.filter(n => !!n.is_held).length === 0) {
       throw new Error('WaitingForLockToCancelInvoice');
     }
 
-    if (!settleInvoiceUpdates.filter(n => !!n.is_held).length) {
+    if (settleInvoiceUpdates.filter(n => !!n.is_held).length === 0) {
       throw new Error('WaitingForLockToSettleInvoice');
     }
 
@@ -174,7 +174,7 @@ test(`Get closed channels`, async t => {
   strictEqual(forced.capacity, 7e5, 'Got force close capacity');
   strictEqual(!!forced.close_balance_spent_by, true, 'Got a spend id');
   strictEqual(forced.close_balance_vout !== undefined, true, 'Got a vout');
-  strictEqual(!!forced.close_confirm_height !== undefined, true, 'Height');
+  strictEqual(forced.close_confirm_height !== undefined, true, 'Height');
   strictEqual(forced.close_payments.length, 2, '2 pending payments');
   strictEqual(!!forced.close_transaction_id, true, 'Got closed tx id');
   strictEqual(!!forced.final_local_balance, true, 'Got final balance');
@@ -231,7 +231,7 @@ test(`Get closed channels`, async t => {
   strictEqual(!!forceClosed.close_balance_spent_by, true, 'Target spent by');
   strictEqual(forceClosed.close_balance_vout !== undefined, true, 'Balance');
   strictEqual(!!forceClosed.close_confirm_height, true, 'Has confirm height');
-  strictEqual(!!forceClosed.close_payments.length, true, 'Has close payments');
+  strictEqual(forceClosed.close_payments.length > 0, true, 'Has close payments');
   strictEqual(!!forceClosed.close_transaction_id, true, 'Has close id');
   strictEqual(forceClosed.final_local_balance, 1e5, 'Has local balance');
   strictEqual(forceClosed.final_time_locked_balance, 3e5, 'Timelock balance');

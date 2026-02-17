@@ -42,7 +42,7 @@ test(`Delete chain transaction`, async () => {
   });
 
   // Wait for generation to be over
-  const tx = await asyncRetry({times}, async () => {
+  await asyncRetry({times}, async () => {
     const {transactions} = await getChainTransactions({lnd});
 
     const [tx] = transactions;

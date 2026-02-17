@@ -19,7 +19,7 @@ test(`Get pending channels`, async () => {
   const [{generate, lnd}, target] = nodes;
 
   try {
-    const {features} = await getWalletInfo({lnd});
+    await getWalletInfo({lnd});
 
     // Target starts a channel with control
     const coopChan = await setupChannel({
@@ -30,7 +30,7 @@ test(`Get pending channels`, async () => {
     });
 
     // Target closes the channel
-    const niceClose = await closeChannel({
+    await closeChannel({
       lnd: target.lnd,
       tokens_per_vbyte: 100,
       transaction_id: coopChan.transaction_id,
@@ -55,7 +55,7 @@ test(`Get pending channels`, async () => {
     const transaction = channel.close_transaction;
 
     // LND 0.17.4 and below do not support close_transaction
-    if (!!transaction) {
+    if (transaction) {
       const components = componentsOfTransaction({transaction});
 
       const closing = idForTransactionComponents({
@@ -100,7 +100,7 @@ test(`Get pending channels`, async () => {
     strictEqual(channel.transaction_vout, coopChan.transaction_vout, 'Vout');
     strictEqual(channel.transaction_weight, null, 'No funding tx weight data');
 
-    if (!!channel.remote_balance) {
+    if (channel.remote_balance) {
       strictEqual(channel.remote_balance, give, 'Opposing channel balance');
     }
 

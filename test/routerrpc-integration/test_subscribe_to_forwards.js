@@ -16,7 +16,7 @@ import {
 } from 'lightning';
 
 const anchorsFeatureBit = 23;
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const interval = 10;
 const size = 3;
 const times = 1000;
@@ -30,7 +30,7 @@ test('Subscribe to forwards', async () => {
 
   try {
     await getLockedUtxos({lnd});
-  } catch (err) {
+  } catch {
     // Skip test on LND 0.12 due to timeout timing
     await kill({});
 
@@ -49,9 +49,9 @@ test('Subscribe to forwards', async () => {
 
   try {
     const {features} = await getWalletInfo({lnd});
-    const testSub = subscribeToForwards({lnd});
+    subscribeToForwards({lnd});
 
-    const isAnchors = !!features.find(n => n.bit === anchorsFeatureBit);
+    const isAnchors = !!features.some(n => n.bit === anchorsFeatureBit);
 
     const controlChannel = await setupChannel({generate, lnd, to: target});
 
@@ -137,23 +137,23 @@ test('Subscribe to forwards', async () => {
       if (controlForwards.length !== 6) {
         throw new Error('ExpectedFullListOfControlForwards');
       }
-
-      return;
     });
 
-    [controlSub, remoteSub, targetSub].forEach(n => n.removeAllListeners());
+    for (const n of [controlSub, remoteSub, targetSub]) {
+      n.removeAllListeners()
+    }
 
     // LND 0.13.0 and below do not support secret
-    [controlForwards, targetForwards, remoteForwards].forEach(forwards => {
-      return forwards.forEach(n =>
-        delete n.at &&
-        delete n.cltv_delta &&
-        delete n.secret &&
+    for (const forwards of [controlForwards, targetForwards, remoteForwards]) {
+      for (const n of forwards) {
+        delete n.at
+        delete n.cltv_delta
+        delete n.secret
         delete n.timeout
-      );
-    });
+      }
+    }
 
-    const height = (await getHeight({lnd})).current_block_height;
+    await getHeight({lnd});
 
     // LND 0.11.1 and before do not use anchor channels
     if (!isAnchors) {

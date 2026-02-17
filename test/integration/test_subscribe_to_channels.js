@@ -35,7 +35,7 @@ test('Subscribe to channels', async () => {
 
   const {socket} = target;
 
-  const {features} = await getWalletInfo({lnd});
+  await getWalletInfo({lnd});
   const sub = subscribeToChannels({lnd});
 
   sub.on('channel_active_changed', update => activeChanged.push(update));
@@ -72,7 +72,7 @@ test('Subscribe to channels', async () => {
     // Generate to confirm the tx
     await generate({});
 
-    if (!channelOpened.length) {
+    if (channelOpened.length === 0) {
       throw new Error('ExpectedChannelOpened');
     }
   });
@@ -84,12 +84,12 @@ test('Subscribe to channels', async () => {
 
   const openEvent = channelOpened.pop();
 
-  if (!!openEvent.local_given) {
+  if (openEvent.local_given) {
     equal(openEvent.local_given, giveTokens, 'Push tokens are reflected');
     equal(openEvent.remote_given, Number(), 'Push tokens are reflected');
   }
 
-  if (!!openEvent.remote_given) {
+  if (openEvent.remote_given) {
     equal(openEvent.local_given, Number(), 'Push tokens are reflected');
     equal(openEvent.remote_given, giveTokens, 'Push tokens are reflected');
   }
@@ -99,7 +99,7 @@ test('Subscribe to channels', async () => {
   equal(openEvent.local_balance, 896530, 'Channel local balance returned');
 
   // LND 0.16.4 and below do not support channel descriptions
-  if (!!openEvent.description) {
+  if (openEvent.description) {
     equal(openEvent.description, description, 'Got channel open description');
   }
 
@@ -126,7 +126,7 @@ test('Subscribe to channels', async () => {
   await asyncRetry({interval, times}, async () => {
     try {
       // Close the channel
-      const channelClose = await closeChannel({
+      await closeChannel({
         lnd,
         tokens_per_vbyte: defaultFee,
         transaction_id: channelOpen.transaction_id,
@@ -139,7 +139,7 @@ test('Subscribe to channels', async () => {
     // Generate to confirm the close
     await generate({});
 
-    if (!channelClosed.length) {
+    if (channelClosed.length === 0) {
       throw new Error('ExpectedChannelClosed');
     }
   });

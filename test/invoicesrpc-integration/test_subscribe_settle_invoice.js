@@ -11,7 +11,7 @@ import {
   subscribeToInvoice
 } from 'lightning';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const interval = 10;
 const size = 2;
 const times = 1500;
@@ -76,12 +76,12 @@ test(`Subscribe to settled invoice`, async () => {
 
     const {payments} = currentInvoice;
 
-    if (!!payments.length) {
+    if (payments.length > 0) {
       const [payment] = payments;
 
       const messages = payment.messages.filter(n => n.type === tlvType);
 
-      if (!!messages.filter(n => n.type === tlvType).length) {
+      if (messages.some(n => n.type === tlvType)) {
         const [{type, value}] = messages;
 
         equal(type, tlvType, 'Payment message TLV type returned');

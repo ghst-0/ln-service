@@ -27,7 +27,7 @@ test(`Sign bytes`, async () => {
       preimage: unsigned.preimage,
     });
 
-    equal(!!signature.length, true, 'Signature is returned');
+    equal(signature.length > 0, true, 'Signature is returned');
 
     const {r, s} = decode(Buffer.from(signature, 'hex'));
 

@@ -90,7 +90,7 @@ test(`Open channels`, async () => {
     await asyncRetry({interval, times}, async () => {
       const {transactions} = await getChainTransactions({lnd});
 
-      if (!transactions.find(n => n.id === id)) {
+      if (!transactions.some(n => n.id === id)) {
         throw new Error('ExpectedChainTransaction');
       }
     });
@@ -107,7 +107,7 @@ test(`Open channels`, async () => {
 
     const {psbt} = finalizePsbt({ecp, psbt: fundingPsbt.psbt});
 
-    const reconstitutedTransaction = extractTransaction({ecp, psbt});
+    extractTransaction({ecp, psbt});
 
     await fundPendingChannels({
       lnd,

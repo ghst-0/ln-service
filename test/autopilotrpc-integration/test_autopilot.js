@@ -10,7 +10,7 @@ import {
 
 const avg = array => array.reduce((a, b) => a + b) / array.length;
 const confirmationCount = 6;
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const maxScore = 1e8;
 const score = 50000000;
 const size = 2;

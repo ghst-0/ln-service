@@ -32,10 +32,10 @@ test(`Get route through hops`, async () => {
 
   const [{generate, lnd}, target, remote] = nodes;
 
-  const controlToTargetChan = await asyncRetry({interval, times}, async () => {
+  await asyncRetry({interval, times}, async () => {
     await generate({});
 
-    return await setupChannel({generate, lnd, to: target});
+    await setupChannel({generate, lnd, to: target});
   });
 
   await generate({});
@@ -49,7 +49,7 @@ test(`Get route through hops`, async () => {
       socket: remote.socket,
     });
 
-    const targetToRemoteChan = await setupChannel({
+    await setupChannel({
       generate: target.generate,
       lnd: target.lnd,
       to: remote,
@@ -72,18 +72,18 @@ test(`Get route through hops`, async () => {
     const {channels, nodes} = await getNetworkGraph({lnd});
 
     const limitedFeatures = nodes.find(node => {
-      return !node.features.find(n => n.bit === tlvOnionBit);
+      return !node.features.some(n => n.bit === tlvOnionBit);
     });
 
     const policies = flatten(channels.map(n => n.policies));
 
     const cltvDeltas = policies.map(n => n.cltv_delta);
 
-    if (!!cltvDeltas.filter(n => !n).length) {
+    if (cltvDeltas.some(n => !n)) {
       throw new Error('ExpectedAllChannelPolicies');
     }
 
-    if (!!limitedFeatures) {
+    if (limitedFeatures) {
       throw new Error('NetworkGraphSyncIncomplete');
     }
   });

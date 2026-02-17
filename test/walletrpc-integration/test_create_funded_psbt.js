@@ -22,7 +22,7 @@ const {concat} = Buffer;
 const count = 100;
 const format = 'p2tr';
 const fromBech32 = address => decodeBech32Address({address}).program;
-const interval = retryCount => 10 * Math.pow(2, retryCount);
+const interval = retryCount => 10 * 2 ** retryCount;
 const OP_1 = Buffer.from([81]);
 const push32 = Buffer.from([32]);
 const sequence = 0;
@@ -71,7 +71,7 @@ test(`Create funded PSBT`, async () => {
     const output = bufferAsHex(concat(outputScriptElements));
 
     // Creating a funded PSBT requires pre-locking the inputs
-    const lock = await lockUtxo({
+    await lockUtxo({
       lnd,
       transaction_id: utxo.transaction_id,
       transaction_vout: utxo.transaction_vout,

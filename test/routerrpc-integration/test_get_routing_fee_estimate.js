@@ -56,7 +56,7 @@ test('Get route confidence', async () => {
     const destination = remote.id;
 
     // Allow time for graph sync to complete
-    const {routes} = await waitForRoute({destination, lnd, tokens});
+    await waitForRoute({destination, lnd, tokens});
 
     const {request} = await createInvoice({tokens, lnd: remote.lnd});
 

@@ -43,14 +43,10 @@ test('Get peers', async () => {
       strictEqual(!!peer.socket, true, 'Socket');
       strictEqual(peer.tokens_received, 0, 'Tokens received');
       strictEqual(peer.tokens_sent, 0, 'Tokens sent');
-
-      return;
     });
   } catch (err) {
     strictEqual(err, null, 'Expected no error');
   }
 
   await kill({});
-
-  return;
 });

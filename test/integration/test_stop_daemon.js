@@ -14,7 +14,7 @@ test(`Stop daemon`, async t => {
   await stopDaemon({lnd});
 
   try {
-    const walletInfo = await getWalletInfo({lnd});
+    await getWalletInfo({lnd});
 
     fail('Daemon should be offline');
   } catch (err) {

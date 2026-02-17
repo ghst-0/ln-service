@@ -22,9 +22,8 @@ export default scriptElements => {
     .map(element => {
       if (isBuffer(element)) {
         return Buffer.concat([encode(element.length), element]);
-      } else {
-        return new BN(element, decBase).toArrayLike(Buffer);
       }
+      return new BN(element, decBase).toArrayLike(Buffer);
     })
     .reduce((element, script) => Buffer.concat([element, script]));
 
