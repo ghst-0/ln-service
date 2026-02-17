@@ -1,15 +1,14 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, rejects } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getUtxos} = require('./../../');
-const {lockUtxo} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const {unlockUtxo} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getUtxos,
+  lockUtxo,
+  sendToChainAddress,
+  unlockUtxo
+} from 'lightning';
 
 const count = 100;
 const size = 2;
@@ -67,6 +66,4 @@ test(`Unlock UTXO`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,9 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {signMessage} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { signMessage } from 'lightning';
 
 const expectedSignatureLength = 104;
 const message = 'message';
@@ -17,6 +16,4 @@ test(`Sign message`, async () => {
   strictEqual(signature.length, expectedSignatureLength, 'Signature returned');
 
   await kill({});
-
-  return;
 });

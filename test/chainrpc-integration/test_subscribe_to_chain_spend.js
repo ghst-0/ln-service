@@ -1,21 +1,20 @@
-const {once} = require('node:events');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
+import { once } from 'node:events';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getHeight} = require('./../../');
-const {getUtxos} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const {subscribeToBlocks} = require('./../../');
-const {subscribeToChainSpend} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getHeight,
+  getUtxos,
+  sendToChainAddress,
+  subscribeToBlocks,
+  subscribeToChainSpend
+} from 'lightning';
 
 const confirmationCount = 6;
 const count = 100;
-const format = 'p2wpkh';
 const interval = 1;
 const race = promises => Promise.race(promises);
 const size = 2;
@@ -29,8 +28,6 @@ test(`Subscribe to chain spend`, async () => {
   const {kill, nodes} = await spawnLightningCluster({size});
 
   const [control, target] = nodes;
-
-  const cluster = {control, target};
 
   const {address} = await createChainAddress({lnd: target.lnd});
   const {lnd} = control;
@@ -95,7 +92,8 @@ test(`Subscribe to chain spend`, async () => {
         address: toTarget.address,
         is_send_all: true,
       });
-    } catch (err) {
+    } catch {
+      /* ignore error */
     }
 
     // Generate to confirm the tx
@@ -104,13 +102,9 @@ test(`Subscribe to chain spend`, async () => {
     if (!gotAddressConf) {
       throw new Error('ExpectedSubscribeToAddressSeesConfirmation');
     }
-
-    return;
   });
 
   await kill({});
 
   strictEqual(gotAddressConf, true, 'Subscribe to address sees confirmation');
-
-  return;
 });

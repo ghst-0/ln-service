@@ -1,17 +1,16 @@
-const {createHash} = require('node:crypto');
-const {equal} = require('node:assert').strict;
-const {randomBytes} = require('node:crypto');
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
+import { createHash, randomBytes } from 'node:crypto';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getInvoices} = require('./../../');
-const {payViaPaymentDetails} = require('./../../');
-const {subscribeToInvoices} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  getInvoice,
+  getInvoices,
+  payViaPaymentDetails,
+  subscribeToInvoices
+} from 'lightning';
 
 const interval = 10
 const keySendPreimageType = '5482373484';
@@ -87,6 +86,4 @@ test(`Pay push payment`, async () => {
   }
 
   await kill({});
-
-  return;
 });

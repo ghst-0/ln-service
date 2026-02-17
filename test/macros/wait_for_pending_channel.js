@@ -1,6 +1,5 @@
-const asyncRetry = require('async/retry');
-
-const {getPendingChannels} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { getPendingChannels } from 'lightning';
 
 const interval = retryCount => 10 * Math.pow(2, retryCount);
 const times = 20;
@@ -14,7 +13,7 @@ const times = 20;
     lnd: <Authenticated LND gRPC API Object>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   if (!args.id) {
     return cbk([400, 'ExpectedTransactionIdToWaitForChannelPending']);
   }

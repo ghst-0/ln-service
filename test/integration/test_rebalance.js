@@ -1,15 +1,15 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {deleteForwardingReputations} = require('./../../');
-const {getChannels} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {pay} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createInvoice,
+  deleteForwardingReputations,
+  getChannels,
+  getRouteToDestination,
+  pay
+} from 'lightning';
 
 const give = 1e5;
 const interval = 10;
@@ -65,6 +65,4 @@ test('Rebalance', async () => {
   }
 
   await kill({});
-
-  return;
 });

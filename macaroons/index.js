@@ -1,3 +1,3 @@
-const restrictMacaroon = require('./restrict_macaroon');
+import restrictMacaroon from './restrict_macaroon.js';
 
-module.exports = {restrictMacaroon};
+export { restrictMacaroon };

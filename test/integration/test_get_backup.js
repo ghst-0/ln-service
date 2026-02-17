@@ -1,11 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getBackup} = require('./../../');
-const {verifyBackup} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getBackup, verifyBackup } from 'lightning';
 
 const size = 2;
 
@@ -35,6 +32,4 @@ test(`Get channel backup`, async () => {
   deepStrictEqual(channelBackup.is_valid, true, 'Is a valid backup');
 
   await kill({});
-
-  return;
 });

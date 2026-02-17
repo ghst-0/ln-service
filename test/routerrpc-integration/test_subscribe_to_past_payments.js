@@ -1,16 +1,16 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {getPayment} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {payViaPaymentRequest} = require('./../../');
-const {subscribeToForwards} = require('./../../');
-const {subscribeToPastPayments} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createInvoice,
+  getPayment,
+  getWalletInfo,
+  payViaPaymentRequest,
+  subscribeToForwards,
+  subscribeToPastPayments
+} from 'lightning';
 
 const interval = 1000;
 const size = 2;
@@ -76,6 +76,4 @@ test(`Subscribe to past payment`, async () => {
   }
 
   await kill({});
-
-  return;
 });

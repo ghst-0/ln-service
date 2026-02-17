@@ -1,10 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getNetworkInfo} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getNetworkInfo } from 'lightning';
 
 const size = 2;
 const tokens = 1e6;
@@ -28,6 +26,4 @@ test(`Get network info`, async () => {
   strictEqual(result.total_capacity, tokens, 'Total capacity');
 
   await kill({});
-
-  return;
 });

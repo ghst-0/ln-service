@@ -1,14 +1,14 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {deletePayments} = require('./../../');
-const {getPayments} = require('./../../');
-const {pay} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createInvoice,
+  deletePayments,
+  getPayments,
+  pay
+} from 'lightning';
 
 const size = 2;
 const times = 1000;
@@ -37,6 +37,4 @@ test('Delete payments', async () => {
   strictEqual(priorLength - wipedLength, [paid].length, 'History deleted');
 
   await kill({});
-
-  return;
 });

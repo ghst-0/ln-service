@@ -1,10 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {signMessage} = require('./../../');
-const {verifyMessage} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { signMessage, verifyMessage } from 'lightning';
 
 const message = 'message';
 
@@ -19,6 +17,4 @@ test(`Sign message`, async () => {
   equal(verified.signed_by, id, 'Signature is verified');
 
   await kill({});
-
-  return;
 });

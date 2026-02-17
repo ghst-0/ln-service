@@ -1,15 +1,15 @@
-const {equal} = require('node:assert').strict;
-const {fail} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal, fail } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getHeight} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const {subscribeToTransactions} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getChainBalance,
+  getHeight,
+  sendToChainAddress,
+  subscribeToTransactions
+} from 'lightning';
 
 const confirmationCount = 6;
 const interval = 100;
@@ -35,7 +35,6 @@ test(`Subscribe to chain transactions`, async () => {
     throw new Error('ExpectedChainBalance');
   });
 
-  let isConfirmed = false;
   const startHeight = (await getHeight({lnd})).current_block_height
   const sub = subscribeToTransactions({lnd});
 
@@ -88,6 +87,4 @@ test(`Subscribe to chain transactions`, async () => {
   equal(tx.confirmation_height >= startHeight, true, 'Got block height');
 
   await kill({});
-
-  return;
 });

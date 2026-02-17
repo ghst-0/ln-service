@@ -1,10 +1,8 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {grantAccess} = require('./../../');
-const {verifyAccess} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { grantAccess, verifyAccess } from 'lightning';
 
 const invalidPermissions = ['address:write'];
 const permissions = ['address:read'];
@@ -33,6 +31,4 @@ test(`Verify access`, async () => {
   }
 
   await kill({});
-
-  return;
 });

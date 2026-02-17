@@ -1,18 +1,18 @@
-const {exit} = require('node:process');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
+import { exit } from 'node:process';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {closeChannel} = require('./../../');
-const {createHodlInvoice} = require('./../../');
-const {getClosedChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {settleHodlInvoice} = require('./../../');
-const {subscribeToInvoice} = require('./../../');
-const {subscribeToPayViaRequest} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  closeChannel,
+  createHodlInvoice,
+  getClosedChannels,
+  getWalletInfo,
+  settleHodlInvoice,
+  subscribeToInvoice,
+  subscribeToPayViaRequest
+} from 'lightning';
 
 const defaultFee = 1e3;
 const interval = 125;
@@ -270,6 +270,4 @@ test(`Get closed channels`, async t => {
   strictEqual(refundedHtlc.transaction_vout !== undefined, true, 'Got vout');
 
   await kill({});
-
-  return;
 });

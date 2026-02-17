@@ -1,6 +1,6 @@
-const asyncRetry = require('async/retry');
+import asyncRetry from 'async/retry.js';
 
-const {getRouteToDestination} = require('./../../');
+import { getRouteToDestination } from 'lightning';
 
 const interval = 10;
 const times = 1500;
@@ -42,7 +42,7 @@ const times = 1500;
     }]
   }
 */
-module.exports = ({destination, lnd, routes, tokens}, cbk) => {
+export default ({destination, lnd, routes, tokens}, cbk) => {
   if (!destination) {
     return cbk([400, 'ExpectedDestinationToWaitForRoute']);
   }

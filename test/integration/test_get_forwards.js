@@ -1,15 +1,14 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getForwards} = require('./../../');
-const {pay} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  getForwards,
+  pay
+} from 'lightning';
 
 const delay = n => new Promise(resolve => setTimeout(resolve, n));
 const interval = 100;
@@ -139,6 +138,4 @@ test('Get forwards', async () => {
   strictEqual(page4.next, undefined, 'Page 4 leads to nowhere');
 
   await kill({});
-
-  return;
 });

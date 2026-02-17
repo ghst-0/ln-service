@@ -1,16 +1,14 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getWalletInfo, removeExternalSocket } from 'lightning';
 
-const {getWalletInfo} = require('./../../');
-const {removeExternalSocket} = require('./../../');
-
-// Removign a node socket should result in a no longer advertised socket
+// Removing a node socket should result in a no longer advertised socket
 test(`Add external socket`, async () => {
   const {kill, nodes} = await spawnLightningCluster({});
 
-  const [{id, lnd}] = nodes;
+  const [{lnd}] = nodes;
 
   try {
     const {uris} = await getWalletInfo({lnd});
@@ -29,6 +27,4 @@ test(`Add external socket`, async () => {
   }
 
   await kill({});
-
-  return;
 });

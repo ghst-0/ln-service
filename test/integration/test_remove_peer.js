@@ -1,12 +1,9 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getPeers} = require('./../../');
-const {removePeer} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { addPeer, getPeers, removePeer } from 'lightning';
 
 const interval = 10;
 const size = 2;
@@ -16,7 +13,7 @@ const times = 2000;
 test(`Remove a peer`, async () => {
   const {kill, nodes} = await spawnLightningCluster({size});
 
-  const [{generate, id, lnd}, target] = nodes;
+  const [{generate, lnd}, target] = nodes;
 
   try {
     await asyncRetry({interval, times}, async () => {
@@ -47,6 +44,4 @@ test(`Remove a peer`, async () => {
   }
 
   await kill({});
-
-  return;
 });

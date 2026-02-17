@@ -1,10 +1,8 @@
-const {equal} = require('node:assert').strict;
-const {match} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getTowerServerInfo} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getTowerServerInfo } from 'lightning';
 
 const conf = ['--watchtower.active'];
 
@@ -29,6 +27,4 @@ test(`Get tower server info`, async () => {
   equal(uri, `${tower.public_key}@${socket}`, 'Got back socket');
 
   await kill({});
-
-  return;
 });

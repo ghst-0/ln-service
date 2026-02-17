@@ -1,18 +1,11 @@
-const {equal} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal, strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {idForTransactionComponents} = require('@alexbosworth/blockchain');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { componentsOfTransaction, idForTransactionComponents } from '@alexbosworth/blockchain';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { closeChannel, getPendingChannels, getWalletInfo } from 'lightning';
 
-const {closeChannel} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-
-const defaultFee = 1e3;
 const give = 1e4;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const interval = 10;
@@ -117,6 +110,4 @@ test(`Get pending channels`, async () => {
 
     strictEqual(err, null, 'Expected no error');
   }
-
-  return;
 });

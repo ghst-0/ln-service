@@ -1,10 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getFeeRates} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getFeeRates } from 'lightning';
 
 const defaultBaseFee = 1;
 const defaultFeeRate = 1;
@@ -35,6 +33,4 @@ test(`Get fee rates`, async () => {
   strictEqual(channel.transaction_vout, channelOpen.transaction_vout, 'Vout');
 
   await kill({});
-
-  return;
 });

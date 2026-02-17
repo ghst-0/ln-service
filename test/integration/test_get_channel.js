@@ -1,11 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChannel} = require('./../../');
-const {getChannels} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getChannel, getChannels } from 'lightning';
 
 const {ceil} = Math;
 const size = 2;
@@ -34,8 +31,6 @@ test(`Get channel`, async () => {
     strictEqual(!!policy.min_htlc_mtokens, true, 'Min HTLC value');
     strictEqual(policy.public_key.length, 66, 'Policy public key');
     strictEqual(Date.now()-new Date(policy.updated_at) < 1e5, true, 'Updated');
-
-    return;
   });
 
   strictEqual(details.transaction_id, channel.transaction_id, 'Funding tx id');
@@ -59,6 +54,4 @@ test(`Get channel`, async () => {
   }
 
   await kill({});
-
-  return;
 });

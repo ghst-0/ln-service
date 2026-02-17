@@ -1,9 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChainBalance} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getChainBalance } from 'lightning';
 
 const count = 100;
 const emptyChainBalance = 0;
@@ -31,6 +30,4 @@ test(`Get the chain balance`, async ({end, equal}) => {
   strictEqual(postDeposit.chain_balance >= tokens, true, 'Got funds');
 
   await kill({});
-
-  return;
 });

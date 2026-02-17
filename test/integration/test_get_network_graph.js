@@ -1,12 +1,9 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getNetworkGraph} = require('./../../');
-const {getNode} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getNetworkGraph, getNode } from 'lightning';
 
 const {ceil} = Math;
 const interval = 250;
@@ -63,8 +60,6 @@ test(`Get network graph`, async () => {
     deepStrictEqual(!!policy.min_htlc_mtokens, true, 'Default min htlc value');
     deepStrictEqual(!!policy.public_key, true, 'Policy has public key');
     deepStrictEqual(new Date()-new Date(policy.updated_at) < 1e5, true, 'At');
-
-    return;
   });
 
   deepStrictEqual(channel.capacity, expectedChannel.capacity, 'Capacity');
@@ -82,6 +77,4 @@ test(`Get network graph`, async () => {
   );
 
   await kill({});
-
-  return;
 });

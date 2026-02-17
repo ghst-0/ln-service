@@ -1,17 +1,17 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {getChannel} = require('./../../');
-const {getChannelBalance} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {pay} = require('./../../');
-const {routeFromChannels} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createInvoice,
+  getChannel,
+  getChannelBalance,
+  getChannels,
+  getHeight,
+  pay
+} from 'lightning';
+import { routeFromChannels } from 'bolt07';
 
 const channelCapacityTokens = 1e6;
 const {floor} = Math;
@@ -77,6 +77,4 @@ test('Push funds', async () => {
   });
 
   await kill({});
-
-  return;
 });

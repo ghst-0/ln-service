@@ -1,18 +1,18 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {cancelHodlInvoice} = require('./../../');
-const {createHodlInvoice} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getChannels} = require('./../../');
-const {getClosedChannels} = require('./../../');
-const {pay} = require('./../../');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {closeChannel} = require('./../../');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  cancelHodlInvoice,
+  createHodlInvoice,
+  getInvoice,
+  getChannels,
+  getClosedChannels,
+  pay,
+  closeChannel
+} from 'lightning';
 
 const interval = 100;
 const size = 2;
@@ -116,6 +116,4 @@ test(`Close channel with wait for pending`, async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

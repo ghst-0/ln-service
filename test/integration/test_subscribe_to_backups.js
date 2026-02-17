@@ -1,18 +1,17 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {openChannel} = require('./../../');
-const {subscribeToBackups} = require('./../../');
-const {verifyBackup} = require('./../../');
-const {verifyBackups} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  openChannel,
+  subscribeToBackups,
+  verifyBackup,
+  verifyBackups
+} from 'lightning';
 
 const channelCapacityTokens = 1e6;
-const confirmationCount = 20;
 const defaultFee = 1e3;
 const giftTokens = 1e5;
 const interval = 250;
@@ -62,8 +61,6 @@ test(`Subscribe to backups`, async () => {
     if (!got.channels) {
       throw new Error('ExpectedBackupWithChannelsData');
     }
-
-    return;
   });
 
   const [channel] = got.channels;
@@ -89,6 +86,4 @@ test(`Subscribe to backups`, async () => {
   strictEqual(singleVerification.is_valid, true, 'Single backup is valid');
 
   await kill({});
-
-  return;
 });

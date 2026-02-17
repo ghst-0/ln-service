@@ -1,20 +1,19 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {fail} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal, fail } from 'node:assert/strict';
 
-const asyncEach = require('async/each');
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {closeChannel} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-const {payViaRoutes} = require('./../../');
-const {sendMessageToPeer} = require('./../../');
-const {subscribeToInvoice} = require('./../../');
-const {subscribeToRpcRequests} = require('./../../');
+import asyncEach from 'async/each.js';
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  closeChannel,
+  createInvoice,
+  getWalletInfo,
+  openChannel,
+  payViaRoutes,
+  sendMessageToPeer,
+  subscribeToInvoice,
+  subscribeToRpcRequests
+} from 'lightning';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const interval = 10;
@@ -173,7 +172,7 @@ test(`Subscribe to RPC requests`, async () => {
 
           fail('ExpectedChannelRejected');
         } catch (err) {
-          const [code, message] = err;
+          const [message] = err;
 
           if (message !== 'FailedToOpenChannel') {
             throw err;
@@ -305,6 +304,4 @@ test(`Subscribe to RPC requests`, async () => {
   });
 
   await asyncEach(kills, async kill => await kill({}));
-
-  return;
 });

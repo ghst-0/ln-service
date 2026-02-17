@@ -1,14 +1,11 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const bip32 = require('bip32');
-const bs58check = require('bs58check').default;
-const ecc = require('tiny-secp256k1')
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getMasterPublicKeys} = require('./../../');
+import bip32 from 'bip32';
+import bs58check from 'bs58check';
+import * as ecc from 'tiny-secp256k1';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createChainAddress, getMasterPublicKeys } from 'lightning';
 
 const asHex = n => Buffer.from(n).toString('hex');
 const BIP32Factory = bip32.default;
@@ -77,6 +74,4 @@ test(`Get master public keys`, async () => {
   }
 
   await kill({});
-
-  return;
 });

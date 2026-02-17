@@ -1,12 +1,9 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChainFeeEstimate} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createChainAddress, getChainBalance, getChainFeeEstimate } from 'lightning';
 
 const expectedFee = 4625;
 const expectedFeeRate = 25;

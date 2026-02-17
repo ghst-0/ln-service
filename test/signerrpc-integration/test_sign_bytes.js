@@ -1,13 +1,10 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {decode} = require('bip66');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createSignedRequest} = require('./../../');
-const {createUnsignedRequest} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {signBytes} = require('./../../');
+import { decode } from 'bip66';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { decodePaymentRequest, signBytes } from 'lightning';
+import { createSignedRequest, createUnsignedRequest, } from 'invoices';
 
 // Signing bytes should result in a signature for the bytes
 test(`Sign bytes`, async () => {
@@ -71,6 +68,4 @@ test(`Sign bytes`, async () => {
   }
 
   await kill({});
-
-  return;
 });

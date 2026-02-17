@@ -1,19 +1,15 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {ok} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual, ok, strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getWalletInfo} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getWalletInfo } from 'lightning';
 
 const initHeight = 1;
 const interval = 10;
 const pubKeyHexLength = Buffer.alloc(33).toString('hex').length;
 const regtestChainId = '06226e46111a0b59caaf126043eb5bbf28c34f3a5e332a1fc7b2b73cf188910f';
 const times = 1000;
-const walletInfoType = 'wallet';
 
 // Getting the wallet info should return info about the wallet
 test(`Get wallet info`, async () => {
@@ -50,6 +46,4 @@ test(`Get wallet info`, async () => {
   }
 
   await kill({});
-
-  return;
 });

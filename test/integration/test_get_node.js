@@ -1,22 +1,13 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getIdentity} = require('./../../');
-const {getNode} = require('./../../');
-const {updateRoutingFees} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { addPeer, getNode, updateRoutingFees } from 'lightning';
 
 const baseFee = 1337;
-const channelCapacityTokens = 1e6;
 const cltvDelta = 42;
-const confirmationCount = 20;
-const defaultFee = 1e3;
 const defaultAliasLength = '00000000000000000000'.length;
-const delay = n => new Promise(resolve => setTimeout(resolve, n));
 const feeRate = 21;
 const interval = 10;
 const mtokPerTok = BigInt(1e3);
@@ -112,6 +103,4 @@ test(`Get node`, async () => {
 
     strictEqual(err, null, 'Expected no error');
   }
-
-  return;
 });

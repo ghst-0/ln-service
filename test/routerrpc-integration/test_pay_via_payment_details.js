@@ -1,18 +1,18 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  decodePaymentRequest,
+  getHeight,
+  getInvoice,
+  getInvoices,
+  payViaPaymentDetails
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getHeight} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getInvoices} = require('./../../');
-const {payViaPaymentDetails} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
 const size = 3;
 const start = new Date().toISOString();
@@ -172,6 +172,4 @@ test(`Pay via payment details`, async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

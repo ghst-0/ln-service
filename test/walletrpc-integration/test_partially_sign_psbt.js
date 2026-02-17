@@ -1,27 +1,28 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const asyncEach = require('async/each');
-const asyncMap = require('async/map');
-const asyncRetry = require('async/retry');
-const {combinePsbts} = require('psbt');
-const {createPsbt} = require('psbt');
-const {decodePsbt} = require('psbt');
-const {extractTransaction} = require('psbt');
-const {finalizePsbt} = require('psbt');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const tinysecp = require('tiny-secp256k1');
-const {updatePsbt} = require('psbt');
-
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getUtxos} = require('./../../');
-const {partiallySignPsbt} = require('./../../');
-const {sendToChainAddresses} = require('./../../');
+import asyncEach from 'async/each.js';
+import asyncMap from 'async/map.js';
+import asyncRetry from 'async/retry.js';
+import {
+  combinePsbts,
+  createPsbt,
+  decodePsbt,
+  extractTransaction,
+  finalizePsbt,
+  updatePsbt
+} from 'psbt';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  fundPsbt,
+  getChainBalance,
+  getUtxos,
+  partiallySignPsbt,
+  sendToChainAddresses
+} from 'lightning';
 
 const count = 150;
 const flatten = arr => [].concat(...arr);
@@ -219,6 +220,4 @@ test(`Partially sign PSBT`, async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

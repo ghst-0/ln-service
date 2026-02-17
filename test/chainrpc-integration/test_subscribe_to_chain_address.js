@@ -1,19 +1,18 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getHeight} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const {subscribeToChainAddress} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getChainBalance,
+  getChainTransactions,
+  getHeight,
+  sendToChainAddress,
+  subscribeToChainAddress
+} from 'lightning';
 
 const count = 100;
-const defaultFee = 1e3;
-const defaultVout = 0;
 const format = 'np2wpkh';
 const interval = 1;
 const times = 1500;
@@ -24,7 +23,7 @@ test(`Subscribe to chain transactions`, async () => {
   await asyncRetry({interval, times}, async () => {
     const {kill, nodes} = await spawnLightningCluster({});
 
-    const [{chain, generate, lnd}] = nodes;
+    const [{generate, lnd}] = nodes;
 
     // Wait for chainrpc to be active
     await asyncRetry({interval, times}, async () => {
@@ -78,8 +77,6 @@ test(`Subscribe to chain transactions`, async () => {
       strictEqual(firstConf.block.length, 64, 'Confirmation hash returned');
       strictEqual(firstConf.height >= 102, true, 'Got confirmation height');
       strictEqual(firstConf.transaction, transaction, 'Confirmation raw tx');
-
-      return;
     });
 
     let secondConf;
@@ -107,13 +104,10 @@ test(`Subscribe to chain transactions`, async () => {
       strictEqual(secondConf.height >= 102, true, 'Confirmation block height');
       strictEqual(secondConf.transaction, transaction, '2nd conf tx returned');
 
-      return;
     });
 
     [sub, sub2].forEach(n => n.removeAllListeners());
 
     await kill({});
   });
-
-  return;
 });

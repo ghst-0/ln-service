@@ -1,17 +1,17 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getPathfindingSettings} = require('./../../');
-const {updatePathfindingSettings} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  getPathfindingSettings,
+  updatePathfindingSettings
+} from 'lightning';
 
 // Updating pathfinding settings should update the pathfinding configuration
 test(`Get pathfinding settings`, async () => {
   const {kill, nodes} = await spawnLightningCluster({});
 
-  const [{generate, lnd}] = nodes;
+  const [{lnd}] = nodes;
 
   try {
     await getPathfindingSettings({lnd});
@@ -66,6 +66,4 @@ test(`Get pathfinding settings`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,9 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChainFeeRate} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getChainFeeRate } from 'lightning';
 
 // Getting the chain fee rate should return the fee rate estimate
 test(`Get chain fee rate`, async () => {
@@ -19,6 +18,4 @@ test(`Get chain fee rate`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,34 +1,33 @@
-const {ok} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual, ok } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {createPsbt} = require('psbt');
-const {combinePsbts} = require('psbt');
-const {decodePsbt} = require('psbt');
-const {extractTransaction} = require('psbt');
-const {finalizePsbt} = require('psbt');
-const {networks} = require('bitcoinjs-lib');
-const {payments} = require('bitcoinjs-lib');
-const {script} = require('bitcoinjs-lib');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const tinysecp = require('tiny-secp256k1');
-const {Transaction} = require('bitcoinjs-lib');
-const {updatePsbt} = require('psbt');
-
-const {addPeer} = require('./../../');
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChannels} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getPublicKey} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {prepareForChannelProposal} = require('./../../');
-const {proposeChannel} = require('./../../');
-const {signPsbt} = require('./../../');
-const {signTransaction} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import {
+  createPsbt,
+  combinePsbts,
+  decodePsbt,
+  extractTransaction,
+  finalizePsbt,
+  updatePsbt
+} from 'psbt';
+import { networks, payments, Transaction } from 'bitcoinjs-lib';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  addPeer,
+  broadcastChainTransaction,
+  createChainAddress,
+  fundPsbt,
+  getChainBalance,
+  getChannels,
+  getPendingChannels,
+  getPublicKey,
+  getWalletInfo,
+  prepareForChannelProposal,
+  proposeChannel,
+  signPsbt,
+  signTransaction
+} from 'lightning';
 
 const capacity = 1e6;
 const {ceil} = Math;
@@ -38,8 +37,6 @@ const feeRate = 1;
 const {fromHex} = Transaction;
 const fundingFee = 190; // Vsize of 2 input, 1 output tx
 const interval = 100;
-const keyIndex = 0;
-const network = 'regtest';
 const {p2ms} = payments;
 const {p2pkh} = payments;
 const {regtest} = networks;
@@ -414,8 +411,6 @@ test(`Propose a channel with a coop delay`, async () => {
       if (!channels.find(n => n.is_active)) {
         throw new Error('ExpectedActiveChannel');
       }
-
-      return;
     });
 
     const controlChannels = await getChannels({lnd});
@@ -474,6 +469,4 @@ test(`Propose a channel with a coop delay`, async () => {
   }
 
   await kill({});
-
-  return;
 });

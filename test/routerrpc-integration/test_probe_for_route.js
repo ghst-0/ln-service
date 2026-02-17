@@ -1,29 +1,23 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal, deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  deleteForwardingReputations,
+  getFailedPayments,
+  getWalletInfo,
+  getWalletVersion,
+  payViaRoutes,
+  probeForRoute
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {createInvoice} = require('./../../');
-const {deleteForwardingReputations} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getFailedPayments} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {getWalletVersion} = require('./../../');
-const {payViaRoutes} = require('./../../');
-const {probeForRoute} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
-const chain = '0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206';
 const channelCapacityTokens = 1e6;
-const confirmationCount = 20;
 const count = 100;
-const defaultFee = 1e3;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const interval = 50;
 const size = 3;
@@ -143,6 +137,4 @@ test('Probe for route', async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

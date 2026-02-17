@@ -1,16 +1,15 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {exit} = require('node:process');
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
+import { exit } from 'node:process';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {closeChannel} = require('./../../');
-const {getChannel} = require('./../../');
-const {subscribeToGraph} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  closeChannel,
+  getChannel,
+  subscribeToGraph
+} from 'lightning';
 
 const capacity = 1e6;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -70,8 +69,6 @@ test('Subscribe to channels', async t => {
         if (nodeUpdated.length !== [control, target].length) {
           throw new Error('ExpectedNodesUpdated');
         }
-
-        return;
       });
 
       await closeChannel({id, lnd})
@@ -82,8 +79,6 @@ test('Subscribe to channels', async t => {
         if (!channelClosed.length) {
           throw new Error('ExpectedChannelClosed');
         }
-
-        return;
       });
 
       const [channelClose] = channelClosed;
@@ -130,8 +125,6 @@ test('Subscribe to channels', async t => {
         delete gotUpdate.updated_at;
 
         deepEqual(gotUpdate, update, 'Got expected channel announcement');
-
-        return;
       });
 
       const gotControl = nodeUpdated.find(n => n.public_key === control.id);

@@ -1,27 +1,23 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {address} = require('bitcoinjs-lib');
-const {controlBlock} = require('p2tr');
-const {createPsbt} = require('psbt');
-const {hashForTree} = require('p2tr');
-const {leafHash} = require('p2tr');
-const {networks} = require('bitcoinjs-lib');
-const {scriptElementsAsScript} = require('@alexbosworth/blockchain');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const {Transaction} = require('bitcoinjs-lib');
-const {v1OutputScript} = require('p2tr');
-
-const {beginGroupSigningSession} = require('./../../');
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {endGroupSigningSession} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getPublicKey} = require('./../../');
-const {getUtxos} = require('./../../');
-const {signPsbt} = require('./../../');
-const {updateGroupSigningSession} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { address, networks, Transaction } from 'bitcoinjs-lib';
+import { controlBlock, hashForTree, leafHash, v1OutputScript } from 'p2tr';
+import { createPsbt } from 'psbt';
+import { scriptElementsAsScript } from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  beginGroupSigningSession,
+  broadcastChainTransaction,
+  createChainAddress,
+  endGroupSigningSession,
+  fundPsbt,
+  getPublicKey,
+  getUtxos,
+  signPsbt,
+  updateGroupSigningSession
+} from 'lightning';
 
 const compile = elements => scriptElementsAsScript({elements}).script;
 const count = 100;
@@ -438,6 +434,4 @@ test(`Begin group signing session`, async () => {
   }
 
   await kill({});
-
-  return;
 });

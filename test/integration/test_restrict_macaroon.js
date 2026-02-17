@@ -1,12 +1,13 @@
-const {rejects} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { rejects, strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  grantAccess
+} from 'lightning';
 
-const {createChainAddress} = require('./../../');
-const {grantAccess} = require('./../../');
-const {restrictMacaroon} = require('./../../');
+import { restrictMacaroon } from './../../macaroons/index.js';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const format = 'p2wpkh';
@@ -91,6 +92,4 @@ test(`Restricted macaroons restrict access`, async () => {
   }
 
   await kill({});
-
-  return;
 });

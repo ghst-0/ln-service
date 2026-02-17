@@ -1,21 +1,19 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, rejects } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {cancelHodlInvoice} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {getLockedUtxos} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {payViaPaymentRequest} = require('./../../');
-const {subscribeToForwards} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  cancelHodlInvoice,
+  createInvoice,
+  getChannels,
+  getHeight,
+  getLockedUtxos,
+  getWalletInfo,
+  payViaPaymentRequest,
+  subscribeToForwards
+} from 'lightning';
 
 const anchorsFeatureBit = 23;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -23,8 +21,6 @@ const interval = 10;
 const size = 3;
 const times = 1000;
 const tokens = 100;
-
-const asyncTimesSeries = require('async/timesSeries');
 
 // Subscribing to forwards should show forwarding events
 test('Subscribe to forwards', async () => {
@@ -547,6 +543,4 @@ test('Subscribe to forwards', async () => {
   }
 
   await kill({});
-
-  return;
 });

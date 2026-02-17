@@ -1,17 +1,12 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainAddresses} = require('./../../');
-
-const count = 100;
-const expiry = () => new Date(Date.now() + (1000 * 60 * 5)).toISOString();
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createChainAddress, getChainAddresses } from 'lightning';
 
 // Getting chain addresses should return a list of addresses
 test(`Get chain addresses`, async () => {
-  const [{generate, kill, lnd}] = (await spawnLightningCluster({})).nodes;
+  const [{kill, lnd}] = (await spawnLightningCluster({})).nodes;
 
   try {
     await getChainAddresses({lnd});
@@ -55,6 +50,4 @@ test(`Get chain addresses`, async () => {
   }
 
   await kill({});
-
-  return;
 });

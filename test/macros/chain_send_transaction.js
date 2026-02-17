@@ -1,13 +1,12 @@
-const {encode} = require('varuint-bitcoin');
+import { encode } from 'varuint-bitcoin';
 
-const {address} = require('bitcoinjs-lib');
-const {crypto} = require('bitcoinjs-lib');
-const {networks} = require('bitcoinjs-lib');
-const {payments} = require('bitcoinjs-lib');
-const {script} = require('bitcoinjs-lib');
-const {Transaction} = require('bitcoinjs-lib');
-
-const scriptBufAsScript = require('./script_buffers_as_script');
+import {
+  address,
+  networks,
+  payments,
+  script,
+  Transaction
+} from 'bitcoinjs-lib';
 
 const defaultNetwork = 'testnet';
 const encodeSignature = script.signature.encode;
@@ -33,7 +32,7 @@ const {toOutputScript} = address;
     transaction: <Transaction Hex Serialized String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.destination) {
     throw new Error('ExpectedDestinationAddressToSendTokensTo');
   }

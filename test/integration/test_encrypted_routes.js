@@ -1,16 +1,13 @@
-const asyncRetry = require('async/retry');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
+import asyncRetry from 'async/retry.js';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {parsePaymentRequest} = require('./../../');
-const {pay} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  pay
+} from 'lightning';
 
 const count = 100;
 const expiry = () => new Date(Date.now() + (4 * 60 * 60 * 1000)).toISOString();
@@ -61,6 +58,4 @@ test(`Create an invoice`, async () => {
 
     strictEqual(err, null, 'Expected no error in create invoice');
   }
-
-  return;
 });

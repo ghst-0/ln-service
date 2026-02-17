@@ -1,15 +1,15 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {sendToChainAddresses} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getChainBalance,
+  sendToChainAddresses
+} from 'lightning';
 
 const interval = 1000;
-const regtestBech32AddressHrp = 'bcrt';
 const size = 2;
 const times = 10;
 const tokens = 1e6;
@@ -21,7 +21,7 @@ test(`Send to chain address`, async () => {
 
   const [control, target] = nodes;
 
-  const {generate, lnd} = target;
+  const {lnd} = target;
 
   const address1 = (await createChainAddress({lnd})).address;
   const address2 = (await createChainAddress({lnd})).address;
@@ -66,6 +66,4 @@ test(`Send to chain address`, async () => {
   })
 
   await kill({});
-
-  return;
 });

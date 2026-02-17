@@ -1,41 +1,34 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { routeFromChannels } from 'bolt07';
+import {
+  addPeer,
+  createInvoice,
+  decodePaymentRequest,
+  getChannel,
+  getChannels,
+  getHeight,
+  getInvoice,
+  getRouteToDestination,
+  payViaRoutes,
+  subscribeToForwardRequests
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getChannel} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {openChannel} = require('./../../');
-const {payViaRoutes} = require('./../../');
-const {routeFromChannels} = require('./../../');
-const {subscribeToForwardRequests} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
-const channelCapacityTokens = 1e6;
 const confirmationCount = 6;
-const defaultFee = 1e3;
-const defaultVout = 0;
 const interval = 10;
 const intermediateRecord = {type: '65536', value: '5678'};
-const mtokPadding = '000';
 const regtestChain = '0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206';
-const reserveRatio = 0.99;
 const size = 3;
 const start = new Date().toISOString();
 const times = 3000;
 const tlvType = '67676';
 const tlvValue = '010203';
 const tokens = 100;
-const txIdHexLength = 32 * 2;
 
 // Paying via routes should successfully pay via routes
 test(`Pay via routes`, async () => {
@@ -46,7 +39,6 @@ test(`Pay via routes`, async () => {
   await generate({count: 400});
 
   const remoteLnd = remote.lnd;
-  const targetPubKey = target.id;
 
   await addPeer({lnd, public_key: target.id, socket: target.socket});
 
@@ -112,8 +104,6 @@ test(`Pay via routes`, async () => {
     tokens: invoice.tokens,
     total_mtokens: !!invoice.payment ? invoice.mtokens : undefined,
   });
-
-  const {destination} = decodedRequest;
 
   // Pay invoice, but with an invalid id
   try {
@@ -219,6 +209,4 @@ test(`Pay via routes`, async () => {
   equal(paidInvoice.is_confirmed, true, 'Private invoice is paid');
 
   await kill({});
-
-  return;
 });

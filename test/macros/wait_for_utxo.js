@@ -1,6 +1,6 @@
-const asyncRetry = require('async/retry');
+import asyncRetry from 'async/retry.js';
 
-const {getUtxos} = require('./../../');
+import { getUtxos } from 'lightning';
 
 const interval = retryCount => 50 * Math.pow(2, retryCount);
 const times = 10;
@@ -24,7 +24,7 @@ const times = 10;
     transaction_vout: <Transaction Output Index Number>
   }
 */
-module.exports = ({confirmations, id, lnd}, cbk) => {
+export default ({confirmations, id, lnd}, cbk) => {
   if (!lnd || !lnd.default) {
     return cbk([400, 'ExpectedAuthenticatedLndToWaitForUtxo']);
   }

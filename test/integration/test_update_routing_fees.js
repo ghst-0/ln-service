@@ -1,20 +1,12 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChannel} = require('./../../');
-const {updateRoutingFees} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getChannel, updateRoutingFees } from 'lightning';
 
 const baseFeeTokens = 9;
-const channelCapacityTokens = 1e6;
 const cltvDelta = 18;
-const confirmationCount = 6;
-const defaultFee = 1e3;
 const feeRate = 0;
-const giftTokens = 1e5;
 const mtokPerTok = 1e3;
 const n = 2;
 const size = 2;
@@ -103,6 +95,4 @@ test(`Update routing fees`, async () => {
   }
 
   await kill({});
-
-  return;
 });

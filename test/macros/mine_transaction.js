@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const generateBlocks = require('./generate_blocks');
-const rpc = require('./rpc');
+import generateBlocks from './generate_blocks.js';
+import rpc from './rpc.js';
 
 const count = 6;
 
@@ -20,7 +20,7 @@ const count = 6;
 
   @returns via cbk or Promise
 */
-module.exports = ({cert, chain, host, pass, port, transaction, user}, cbk) => {
+export default ({cert, chain, host, pass, port, transaction, user}, cbk) => {
   return new Promise((resolve, reject) => {
     return asyncAuto({
       // Check arguments

@@ -1,13 +1,14 @@
-const {equal} = require('node:assert').strict;
-const {once} = require('node:events');
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
+import { once } from 'node:events';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {removePeer} = require('./../../');
-const {subscribeToPeers} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  removePeer,
+  subscribeToPeers
+} from 'lightning';
 
 const all = promise => Promise.all(promise);
 const interval = 10;
@@ -56,6 +57,4 @@ test(`Subscribe to peers`, async () => {
   }
 
   await kill({});
-
-  return;
 });

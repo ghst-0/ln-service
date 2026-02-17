@@ -1,24 +1,24 @@
-const {join} = require('path');
-const {readFile} = require('fs');
-const {readFileSync} = require('fs');
-const {spawn} = require('child_process');
+import { join } from 'node:path';
+import { readFile, readFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
 
-const asyncAuto = require('async/auto');
-const asyncMapSeries = require('async/mapSeries');
-const asyncRetry = require('async/retry');
-const {networks} = require('bitcoinjs-lib');
-const openPortFinder = require('portfinder');
-const tinysecp = require('tiny-secp256k1');
+import asyncAuto from 'async/auto.js';
+import asyncMapSeries from 'async/mapSeries.js';
+import asyncRetry from 'async/retry.js';
+import { networks } from 'bitcoinjs-lib';
+import openPortFinder from 'portfinder';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  changePassword,
+  createSeed,
+  createWallet,
+  authenticatedLndGrpc,
+  stopDaemon,
+  unauthenticatedLndGrpc
+} from 'lightning';
 
-const {changePassword} = require('./../../');
-const {createSeed} = require('./../../');
-const {createWallet} = require('./../../');
-const generateBlocks = require('./generate_blocks');
-const {authenticatedLndGrpc} = require('./../../');
-const spawnChainDaemon = require('./spawn_chain_daemon');
-const {stopDaemon} = require('./../../');
-const {unauthenticatedLndGrpc} = require('./../../');
-const {unlockWallet} = require('./../../');
+import generateBlocks from './generate_blocks.js';
+import spawnChainDaemon from './spawn_chain_daemon.js';
 
 const adminMacaroonFileName = 'admin.macaroon';
 const chainPass = '0k39BVOdg4uuS7qNCG2jbIXNpwU7d3Ft87PpHPPoCfk=';
@@ -32,13 +32,11 @@ const lightningSeedPassphrase = 'passphrase';
 const lightningTlsCertFileName = 'tls.cert';
 const lightningTlsKeyFileName = 'tls.key';
 const lightningWalletPassword = 'password';
-const lndWalletUnlockerService = 'WalletUnlocker';
 const localhost = '127.0.0.1';
 const maxSpawnChainDaemonAttempts = 3;
 const readMacaroonFileName = 'readonly.macaroon';
 const retryCreateSeedCount = 500;
 const startPortRange = 7593;
-const startWalletTimeoutMs = 4500;
 const times = 200;
 
 /** Run a change password test
@@ -51,7 +49,7 @@ const times = 200;
     lnd: <Authenticated LND gRPC API Object>
   }
 */
-module.exports = ({network}, cbk) => {
+export default ({network}, cbk) => {
   return asyncAuto({
     // Import ECPair library
     ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),

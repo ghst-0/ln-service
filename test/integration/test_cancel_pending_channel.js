@@ -1,12 +1,8 @@
-const test = require('node:test');
+import test from 'node:test';
 
-const asyncEach = require('async/each');
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {cancelPendingChannel} = require('./../../');
-const {openChannels} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { addPeer, cancelPendingChannel, openChannels } from 'lightning';
 
 const capacity = 1e6;
 const count = 100;
@@ -41,6 +37,4 @@ test(`Cancel pending channel`, async () => {
   });
 
   await kill({});
-
-  return;
 });

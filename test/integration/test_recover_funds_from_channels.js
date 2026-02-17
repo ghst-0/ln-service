@@ -1,19 +1,19 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {getPortPromise: getPort} = require('portfinder');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningDocker} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {authenticatedLndGrpc} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {getBackups} = require('./../../');
-const {getIdentity} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getUtxos} = require('./../../');
-const {recoverFundsFromChannels} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { getPortPromise as getPort } from 'portfinder';
+import { setupChannel, spawnLightningDocker } from 'ln-docker-daemons';
+import {
+  addPeer,
+  authenticatedLndGrpc,
+  createChainAddress,
+  getBackups,
+  getIdentity,
+  getPendingChannels,
+  getUtxos,
+  recoverFundsFromChannels
+} from 'lightning';
 
 const confirmationCount = 20;
 const generateAddress = '2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF';
@@ -198,6 +198,4 @@ test(`Recover funds from channels`, async () => {
   await clone.kill({});
 
   await target.kill({});
-
-  return;
 });

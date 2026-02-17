@@ -1,15 +1,16 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getChannels} = require('./../../');
-const {getUtxos} = require('./../../');
-const {openChannel} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { componentsOfTransaction } from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  getChainTransactions,
+  getChannels,
+  getUtxos,
+  openChannel
+} from 'lightning';
 
 const count = 101;
 const description = 'description';
@@ -21,7 +22,7 @@ const times = 1000;
 test(`Open channel max`, async () => {
   const {kill, nodes} = await spawnLightningCluster({size});
 
-  const [{generate, id, lnd}, target] = nodes;
+  const [{generate, lnd}, target] = nodes;
 
   await generate({count});
 
@@ -82,11 +83,7 @@ test(`Open channel max`, async () => {
 
     // Make sure the channel spent the correct transaction output
     equal(input.id, utxo.transaction_id, 'Channel open spent down right UTXO');
-
-    return;
   });
 
   await kill({});
-
-  return;
 });

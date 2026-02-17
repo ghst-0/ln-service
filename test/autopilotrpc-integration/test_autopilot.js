@@ -1,12 +1,12 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getAutopilot} = require('./../../');
-const {setAutopilot} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  getAutopilot,
+  setAutopilot
+} from 'lightning';
 
 const avg = array => array.reduce((a, b) => a + b) / array.length;
 const confirmationCount = 6;
@@ -82,6 +82,4 @@ test(`Autopilot`, async () => {
   strictEqual(node.weighted_score, avg([maxScore, score]), 'Norm Weight avg');
 
   await kill({});
-
-  return;
 });

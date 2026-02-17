@@ -1,22 +1,21 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {once} = require('node:events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal, rejects } from 'node:assert/strict';
+import { once } from 'node:events';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  deleteForwardingReputations,
+  getHeight,
+  getInvoice,
+  getPayment,
+  payViaPaymentRequest,
+  subscribeToForwardRequests,
+  subscribeToPayViaRequest
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {deleteForwardingReputations} = require('./../../');
-const {getHeight} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getPayment} = require('./../../');
-const {payViaPaymentRequest} = require('./../../');
-const {subscribeToForwardRequests} = require('./../../');
-const {subscribeToPayViaRequest} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
 const size = 3;
 const tokens = 100;
@@ -42,7 +41,6 @@ test(`Subscribe to requests`, async () => {
   const {routes} = await waitForRoute({lnd, tokens, destination: remote.id});
 
   let height;
-  const [route] = routes;
 
   {
     const invoice = await createInvoice({tokens, lnd: remote.lnd});
@@ -224,6 +222,4 @@ test(`Subscribe to requests`, async () => {
   }
 
   await kill({});
-
-  return;
 });

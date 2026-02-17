@@ -1,17 +1,18 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {scriptElementsAsScript} = require('@alexbosworth/blockchain');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChainTransactions} = require('./../../');
-const {sendToChainOutputScripts} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import {
+  componentsOfTransaction,
+  scriptElementsAsScript
+} from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  getChainTransactions,
+  sendToChainOutputScripts
+} from 'lightning';
 
 const asBuf = hex => Buffer.from(hex, 'hex');
-const asHex = buffer => buffer.toString('hex');
 const confirmationCount = 6;
 const count = 100;
 const interval = 10;
@@ -64,6 +65,4 @@ test(`Send to chain output scripts`, async () => {
   equal(tx.is_confirmed, true, 'Transaction is confirmed');
 
   await kill({});
-
-  return;
 });

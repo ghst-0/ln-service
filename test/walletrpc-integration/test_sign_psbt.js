@@ -1,31 +1,26 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {decodePsbt} = require('psbt');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const tinysecp = require('tiny-secp256k1');
+import asyncRetry from 'async/retry.js';
+import { componentsOfTransaction } from '@alexbosworth/blockchain';
+import { decodePsbt } from 'psbt';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  fundPsbt,
+  getChainBalance,
+  getUtxos,
+  signPsbt
+} from 'lightning';
 
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getUtxos} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const {signPsbt} = require('./../../');
-
-const chainAddressRowType = 'chain_address';
-const confirmationCount = 6;
 const count = 100;
-const description = 'description';
 const format = 'p2wpkh';
 const interval = 10;
-const regtestBech32AddressHrp = 'bcrt';
 const size = 2;
 const times = 2000;
 const tokens = 1e6;
-const txIdHexByteLength = 64;
 
 // Signing a PSBT should result in a finalized PSBT
 test(`Sign PSBT`, async () => {
@@ -98,11 +93,7 @@ test(`Sign PSBT`, async () => {
     }
 
     equal(chainBalance, startBalance + tokens, 'Funds received');
-
-    return;
   });
 
   await kill({});
-
-  return;
 });

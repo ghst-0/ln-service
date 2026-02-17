@@ -1,16 +1,16 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  getRoutingFeeEstimate,
+  getWalletInfo
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getRoutingFeeEstimate} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {probeForRoute} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
 const channelCapacityTokens = 1e6;
 const interval = 50;
@@ -71,6 +71,4 @@ test('Get route confidence', async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

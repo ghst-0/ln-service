@@ -1,11 +1,9 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getBackups} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getBackups } from 'lightning';
 
 const size = 2;
 
@@ -30,9 +28,5 @@ test(`Get channel backup`, async () => {
     strictEqual(chanBackup.transaction_vout, channel.transaction_vout, 'Vout');
 
     await kill({});
-
-    return;
   });
-
-  return;
 });

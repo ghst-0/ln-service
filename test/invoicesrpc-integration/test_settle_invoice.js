@@ -1,20 +1,18 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal, rejects } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createHodlInvoice} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getChannelBalance} = require('./../../');
-const {getChannels} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getInvoices} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {pay} = require('./../../');
-const {settleHodlInvoice} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createHodlInvoice,
+  createInvoice,
+  getChannelBalance,
+  getChannels,
+  getInvoice,
+  getInvoices,
+  getWalletInfo,
+  pay,
+  settleHodlInvoice
+} from 'lightning';
 
 const anchorFeatureBit = 23;
 const cltvDelta = 144;
@@ -121,8 +119,6 @@ test(`Pay a hodl invoice`, async () => {
 
     return setTimeout(async () => {
       await kill({});
-
-      return;
     },
     1000);
   },
@@ -131,6 +127,4 @@ test(`Pay a hodl invoice`, async () => {
   const paid = await pay({lnd: control.lnd, request: invoice.request});
 
   equal(paid.secret, secret, 'Paying reveals the HTLC secret');
-
-  return;
 });

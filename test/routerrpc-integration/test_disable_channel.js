@@ -1,11 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {disableChannel} = require('./../../');
-const {getChannel} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { disableChannel, getChannel } from 'lightning';
 
 const size = 2;
 
@@ -36,6 +33,4 @@ test(`Disable channel`, async () => {
   }
 
   await kill({});
-
-  return;
 });

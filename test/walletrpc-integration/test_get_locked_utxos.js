@@ -1,12 +1,12 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getLockedUtxos} = require('./../../');
-const {getUtxos} = require('./../../');
-const {lockUtxo} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  getLockedUtxos,
+  getUtxos,
+  lockUtxo
+} from 'lightning';
 
 const count = 100;
 const expiry = () => new Date(Date.now() + (1000 * 60 * 5)).toISOString();
@@ -62,6 +62,4 @@ test(`Get locked UTXOs`, async () => {
   }
 
   await kill({});
-
-  return;
 });

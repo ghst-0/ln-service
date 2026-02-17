@@ -1,9 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {signTransaction} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { signTransaction } from 'lightning';
 
 const transactionSighashAll = 1;
 
@@ -30,6 +29,4 @@ test(`Sign transaction`, async () => {
   equal(signatures.length, 1, 'Signature is returned');
 
   await kill({});
-
-  return;
 });

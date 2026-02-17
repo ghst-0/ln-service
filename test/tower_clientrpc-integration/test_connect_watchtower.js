@@ -1,13 +1,14 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {connectWatchtower} = require('./../../');
-const {getConnectedWatchtowers} = require('./../../');
-const {getTowerServerInfo} = require('./../../');
-const {getWalletInfo} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  connectWatchtower,
+  getConnectedWatchtowers,
+  getTowerServerInfo,
+  getWalletInfo
+} from 'lightning';
 
 const conf = ['--watchtower.active', '--wtclient.active'];
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -55,6 +56,4 @@ test(`Connect watchtower`, async () => {
   }
 
   await kill({});
-
-  return;
 });

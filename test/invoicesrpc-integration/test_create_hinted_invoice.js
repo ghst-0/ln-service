@@ -1,14 +1,14 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {cancelHodlInvoice} = require('./../../');
-const {createHodlInvoice} = require('./../../');
-const {createInvoice} = require('./../../');
-const {parsePaymentRequest} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  cancelHodlInvoice,
+  createHodlInvoice,
+  createInvoice
+} from 'lightning';
+import { parsePaymentRequest } from 'invoices';
 
 const interval = 10;
 const size = 3;
@@ -90,6 +90,4 @@ test(`Create an invoice with hop hints`, async t => {
 
   deepEqual(invoice.normal_routes, specialRoutes, 'Got expected routes');
   deepEqual(invoice.hodl_routes, specialRoutes, 'Got expected hodl routes');
-
-  return;
 });

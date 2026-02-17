@@ -1,27 +1,25 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  closeChannel,
+  getChannels,
+  getHeight,
+  getPendingChannels,
+  getWalletInfo,
+  openChannel
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {closeChannel} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-
-const anchorFeatureBit = 23;
 const channelCapacityTokens = 1e6;
 const confirmationCount = 20;
 const count = 100;
 const defaultFee = 1e3;
-const defaultVout = 0;
 const giftTokens = 1e4;
 const interval = 10;
 const size = 2;
-const spendableRatio = 0.99;
 const times = 2000;
 
 // Getting pending channels should show pending channels
@@ -32,7 +30,6 @@ test(`Get pending channels`, async () => {
 
   const {features} = await getWalletInfo({lnd});
 
-  const isAnchors = !!features.find(n => n.bit === anchorFeatureBit);
   const startHeight = (await getHeight({lnd})).current_block_height;
 
   await generate({count});
@@ -134,8 +131,6 @@ test(`Get pending channels`, async () => {
     if (!forceClose.timelock_expiration) {
       throw new Error('ExpectedTimelockExpiration');
     }
-
-    return;
   });
 
   const [forceClose] = (await getPendingChannels({lnd})).pending_channels;
@@ -167,6 +162,4 @@ test(`Get pending channels`, async () => {
   strictEqual(forceClose.transaction_vout, channelOpen.transaction_vout, 'V');
 
   await kill({});
-
-  return;
 });

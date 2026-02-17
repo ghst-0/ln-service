@@ -1,17 +1,15 @@
-const {createHash} = require('node:crypto');
-const {equal} = require('node:assert').strict;
-const {randomBytes} = require('node:crypto');
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
+import { createHash, randomBytes } from 'node:crypto';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createHodlInvoice} = require('./../../');
-const {getInvoice} = require('./../../');
-const {payViaPaymentRequest} = require('./../../');
-const {settleHodlInvoice} = require('./../../');
-const {subscribeToInvoice} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createHodlInvoice,
+  payViaPaymentRequest,
+  settleHodlInvoice,
+  subscribeToInvoice
+} from 'lightning';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const interval = 10;
@@ -58,8 +56,6 @@ test(`Subscribe to settled invoice`, async () => {
       if (!currentInvoice.is_held) {
         throw new Error('ExpectedInvoiceHeld');
       }
-
-      return;
     });
 
     equal(!!currentInvoice.is_held, true, 'Invoice is not held yet');
@@ -76,8 +72,6 @@ test(`Subscribe to settled invoice`, async () => {
       if (!currentInvoice.is_confirmed) {
         throw new Error('ExpectedInvoiceConfirmed');
       }
-
-      return;
     });
 
     const {payments} = currentInvoice;
@@ -118,6 +112,4 @@ test(`Subscribe to settled invoice`, async () => {
       throw new Error('WaitingForSettlement');
     }
   });
-
-  return;
 });

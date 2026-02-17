@@ -1,4 +1,4 @@
-const rpc = require('./rpc');
+import rpc from './rpc.js';
 
 const addFlag = 'add';
 const cmd = 'addnode';
@@ -14,7 +14,7 @@ const cmd = 'addnode';
     user: <RPC Username String>
   }
 */
-module.exports = ({cert, connect, host, pass, port, user}, cbk) => {
+export default ({cert, connect, host, pass, port, user}, cbk) => {
   const params = [connect, addFlag];
 
   return rpc({cert, cmd, host, params, pass, port, user}, err => {

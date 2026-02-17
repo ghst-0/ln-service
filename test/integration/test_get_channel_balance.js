@@ -1,9 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChannelBalance} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getChannelBalance } from 'lightning';
 
 const emptyBalance = 0;
 
@@ -18,6 +17,4 @@ test(`Get the channel balance`, async () => {
   strictEqual(result.channel_balance, emptyBalance, 'Valid channel balance');
 
   await kill({});
-
-  return;
 });

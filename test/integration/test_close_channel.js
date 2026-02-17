@@ -1,10 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {closeChannel} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { closeChannel } from 'lightning';
 
 const size = 2;
 
@@ -55,6 +53,4 @@ test(`Close channel`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,17 +1,18 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {broadcastChainTransaction} = require('./../../');
-const {fundPendingChannels} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChannels} = require('./../../');
-const {openChannel} = require('./../../');
-const {openChannels} = require('./../../');
-const {signPsbt} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  broadcastChainTransaction,
+  fundPendingChannels,
+  fundPsbt,
+  getChannels,
+  openChannel,
+  openChannels,
+  signPsbt
+} from 'lightning';
 
 const channelCapacityTokens = 1e6;
 const count = 100;
@@ -27,7 +28,7 @@ test(`Open simplified taproot channel`, async () => {
   {
     const {kill, nodes} = await spawnLightningCluster({size});
 
-    const [{generate, id, lnd}, target] = nodes;
+    const [{generate, lnd}, target] = nodes;
 
     await generate({count});
 
@@ -119,7 +120,7 @@ test(`Open simplified taproot channel`, async () => {
       lnd_configuration: ['--protocol.simple-taproot-chans'],
     });
 
-    const [{generate, id, lnd}, target] = nodes;
+    const [{generate, lnd}, target] = nodes;
 
     await generate({count});
 
@@ -169,6 +170,4 @@ test(`Open simplified taproot channel`, async () => {
 
     await kill({});
   }
-
-  return;
 });

@@ -1,24 +1,24 @@
-const {join} = require('path');
-const {readFile} = require('fs');
-const {readFileSync} = require('fs');
-const {spawn} = require('child_process');
+import { join } from 'node:path';
+import { readFile, readFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
 
-const asyncAuto = require('async/auto');
-const asyncMap = require('async/map');
-const asyncMapSeries = require('async/mapSeries');
-const asyncRetry = require('async/retry');
-const {networks} = require('bitcoinjs-lib');
-const openPortFinder = require('portfinder');
-const tinysecp = require('tiny-secp256k1');
+import asyncAuto from 'async/auto';
+import asyncMapSeries from 'async/mapSeries';
+import asyncRetry from 'async/retry';
+import { networks } from 'bitcoinjs-lib';
+import openPortFinder from 'portfinder';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  authenticatedLndGrpc,
+  createSeed,
+  createWallet,
+  getWalletInfo,
+  subscribeToWalletStatus,
+  unauthenticatedLndGrpc
+} from 'lightning';
 
-const {authenticatedLndGrpc} = require('./../../');
-const {createSeed} = require('./../../');
-const {createWallet} = require('./../../');
-const generateBlocks = require('./generate_blocks');
-const {getWalletInfo} = require('./../../');
-const spawnChainDaemon = require('./spawn_chain_daemon');
-const {subscribeToWalletStatus} = require('./../../');
-const {unauthenticatedLndGrpc} = require('./../../');
+import generateBlocks from './generate_blocks.js';
+import spawnChainDaemon from './spawn_chain_daemon.js';
 
 const adminMacaroonFileName = 'admin.macaroon';
 const chainPass = '0k39BVOdg4uuS7qNCG2jbIXNpwU7d3Ft87PpHPPoCfk=';
@@ -33,15 +33,12 @@ const lightningSeedPassphrase = 'passphrase';
 const lightningTlsCertFileName = 'tls.cert';
 const lightningTlsKeyFileName = 'tls.key';
 const lightningWalletPassword = 'password';
-const lndWalletUnlockerService = 'Unlocker';
 const localhost = '127.0.0.1';
 const maxSpawnChainDaemonAttempts = 10;
 const {random} = Math;
 const readMacaroonFileName = 'readonly.macaroon';
-const retryCreateSeedCount = 5;
 const {round} = Math;
 const startPortRange = 7593;
-const startWalletTimeoutMs = 5500;
 const times = 30;
 
 /** Spawn an LND instance
@@ -187,7 +184,7 @@ module.exports = (args, cbk) => {
       return asyncRetry({interval, times}, cbk => {
         const {dir} = spawnChainDaemon;
 
-        const arguments = [
+        const args = [
           '--adminmacaroonpath', join(dir, adminMacaroonFileName),
           '--autopilot.heuristic', 'externalscore:0.5',
           '--autopilot.heuristic', 'preferential:0.5',
@@ -232,19 +229,19 @@ module.exports = (args, cbk) => {
         ]
 
         if (!!args.circular) {
-          arguments.push('--allow-circular-route');
+          args.push('--allow-circular-route');
         }
 
         if (!!args.intercept) {
-          arguments.push('--rpcmiddleware.enable')
+          args.push('--rpcmiddleware.enable')
         }
 
         if (!!args.keysend) {
-          arguments.push('--accept-keysend');
+          args.push('--accept-keysend');
         }
 
         if (!!args.noauth) {
-          arguments.push('--no-macaroons');
+          args.push('--no-macaroons');
         }
 
         if (!!args.tower) {
@@ -252,10 +249,10 @@ module.exports = (args, cbk) => {
         }
 
         if (!!args.watchers) {
-          arguments.push('--wtclient.active');
+          args.push('--wtclient.active');
         }
 
-        const daemon = spawn(lightningDaemonExecFileName, arguments);
+        const daemon = spawn(lightningDaemonExecFileName, args);
 
         let isFinished = false;
         let isReady = false;

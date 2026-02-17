@@ -1,11 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {grantAccess} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createChainAddress, grantAccess } from 'lightning';
 
 const format = 'np2wpkh';
 
@@ -64,6 +61,4 @@ test(`Get access credentials`, async () => {
   deepStrictEqual(!!created, true, 'Can make address with URI credential');
 
   await kill({});
-
-  return;
 });

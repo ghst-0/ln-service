@@ -1,10 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {signChainAddressMessage} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createChainAddress, signChainAddressMessage } from 'lightning';
 
 const message = 'message';
 
@@ -20,13 +18,9 @@ test(`Sign chain address message`, async () => {
     const {signature} = await signChainAddressMessage({address, lnd, message});
 
     equal(!!signature, true, 'Got a signature for a chain address');
-  } catch (err) {
-    const [code, message] = err;
-
+  } catch {
     equal(message, 'BackingLndDoesNotSupportSigningChainMessages', 'missing');
   }
 
   await kill({});
-
-  return;
 });

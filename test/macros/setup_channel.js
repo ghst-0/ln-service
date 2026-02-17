@@ -1,12 +1,10 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { returnResult } from 'asyncjs-util';
+import { addPeer, openChannel } from 'lightning';
 
-const {addPeer} = require('./../../');
-const {openChannel} = require('./../../');
-const {getChainBalance} = require('./../../');
-const waitForChannel = require('./wait_for_channel');
-const waitForPendingChannel = require('./wait_for_pending_channel');
+import waitForChannel from './wait_for_channel.js';
+import waitForPendingChannel from './wait_for_pending_channel.js';
 
 const channelCapacityTokens = 1e6;
 const confCount = 6;
@@ -38,7 +36,7 @@ const times = 1500;
     transaction_vout: <Funding Transaction Output Index Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
     return asyncAuto({
       // Make sure the node is connected

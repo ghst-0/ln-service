@@ -1,17 +1,15 @@
-const {equal} = require('node:assert').strict;
-const {fail} = require('node:assert').strict;
-const {ok} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal, fail, ok } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {getChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-const {subscribeToOpenRequests} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createChainAddress,
+  getChannels, getWalletInfo,
+  openChannel,
+  subscribeToOpenRequests
+} from 'lightning';
 
 const channelCapacityTokens = 1e6;
 const confirmationCount = 6;
@@ -28,9 +26,9 @@ const times = 2000;
 test(`Subscribe to open requests`, async () => {
   const {kill, nodes} = await spawnLightningCluster({size});
 
-  const [control, target, remote] = nodes;
+  const [control, target] = nodes;
 
-  const {id, lnd} = control;
+  const {lnd} = control;
 
   await target.generate({count});
 
@@ -105,8 +103,6 @@ test(`Subscribe to open requests`, async () => {
       remote_max_pending_mtokens: '200000',
       remote_min_htlc_mtokens: '2000',
     });
-
-    return;
   });
 
   try {
@@ -138,8 +134,6 @@ test(`Subscribe to open requests`, async () => {
       partner_public_key: control.id,
       socket: control.socket,
     });
-
-    return;
   });
 
   const channel = await asyncRetry({interval, times}, async () => {
@@ -162,6 +156,4 @@ test(`Subscribe to open requests`, async () => {
   equal(channel.remote_min_htlc_mtokens, '2000', 'Got custom min htlcsize');
 
   await kill({});
-
-  return;
 });

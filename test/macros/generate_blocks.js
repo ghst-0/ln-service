@@ -1,13 +1,11 @@
-const asyncAuto = require('async/auto');
-const asyncMap = require('async/map');
-const asyncTimesSeries = require('async/timesSeries');
-const asyncRetry = require('async/retry');
-const {networks} = require('bitcoinjs-lib');
-const {payments} = require('bitcoinjs-lib');
-const {returnResult} = require('asyncjs-util');
-const tinysecp = require('tiny-secp256k1');
+import asyncAuto from 'async/auto.js';
+import asyncMap from 'async/map.js';
+import asyncRetry from 'async/retry.js';
+import { networks, payments } from 'bitcoinjs-lib';
+import { returnResult } from 'asyncjs-util';
+import * as tinysecp from 'tiny-secp256k1';
 
-const rpc = require('./rpc');
+import rpc from './rpc.js';
 
 const interval = retryCount => 2000 * Math.random();
 const {p2pkh} = payments;
@@ -31,7 +29,7 @@ const retryTimes = 50;
     blocks: [<Block Hash Hex String>]
   }
 */
-module.exports = ({cert, chain, count, host, key, pass, port, user}, cbk) => {
+export default ({cert, chain, count, host, key, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
     return asyncAuto({
       // Import ECPair library

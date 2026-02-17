@@ -1,10 +1,8 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual,equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {diffieHellmanComputeSecret} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { diffieHellmanComputeSecret } from 'lightning';
 
 const all = promise => Promise.all(promise);
 const size = 2;
@@ -13,7 +11,7 @@ const size = 2;
 test('Diffie Hellman compute secret', async () => {
   const {kill, nodes} = await spawnLightningCluster({size});
 
-  const [{generate, id, lnd}, target, remote] = nodes;
+  const [{id, lnd}, target] = nodes;
 
   try {
     const [control, {secret}] = await all([
@@ -32,6 +30,4 @@ test('Diffie Hellman compute secret', async () => {
   }
 
   await kill({});
-
-  return;
 });

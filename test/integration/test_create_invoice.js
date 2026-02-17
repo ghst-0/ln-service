@@ -1,10 +1,9 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {parsePaymentRequest} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createInvoice } from 'lightning';
+import { parsePaymentRequest } from 'invoices';
 
 const count = 100;
 
@@ -44,6 +43,4 @@ test(`Create an invoice`, async () => {
   }
 
   await kill({});
-
-  return;
 });

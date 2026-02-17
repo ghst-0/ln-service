@@ -1,20 +1,18 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getChainBalance,
+  getChainTransactions,
+  sendToChainAddress
+} from 'lightning';
 
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-
-const chainAddressRowType = 'chain_address';
-const confirmationCount = 6;
 const description = 'description';
 const format = 'p2wpkh';
 const interval = 50;
-const regtestBech32AddressHrp = 'bcrt';
 const size = 2;
 const times = 2000;
 const tokens = 1e6;
@@ -27,7 +25,7 @@ test(`Send to chain address`, async () => {
   try {
     const [control, target] = nodes;
 
-    const {generate, lnd} = target;
+    const {lnd} = target;
 
     const {address} = await createChainAddress({format, lnd});
 
@@ -60,8 +58,6 @@ test(`Send to chain address`, async () => {
       if (adjustment !== tokens) {
         throw new Error('BalanceNotYetShifted');
       }
-
-      return;
     });
 
     const endBalance = await getChainBalance({lnd});
@@ -81,8 +77,6 @@ test(`Send to chain address`, async () => {
         if (!!(await getChainBalance({lnd: control.lnd})).chain_balance) {
           throw new Error('ExpectedChainBalanceOnControlEmptiedOut');
         }
-
-        return;
       });
 
       const controlFunds = await getChainBalance({lnd: control.lnd});
@@ -104,6 +98,4 @@ test(`Send to chain address`, async () => {
   }
 
   await kill({});
-
-  return;
 });

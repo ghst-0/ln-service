@@ -1,9 +1,8 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
 
-const {getChannel} = require('./../../');
-const {getChannels} = require('./../../');
+import { returnResult } from 'asyncjs-util';
+import { getChannel, getChannels } from 'lightning';
 
 const interval = 20;
 const times = 10000;
@@ -44,7 +43,7 @@ const times = 10000;
     unsettled_balance: <Unsettled Balance Tokens Number>
   }
 */
-module.exports = ({hidden, id, lnd, vout}, cbk) => {
+export default ({hidden, id, lnd, vout}, cbk) => {
   if (!id) {
     return cbk([400, 'ExpectedTransactionIdToWaitForChannelOpen']);
   }

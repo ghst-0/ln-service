@@ -1,14 +1,15 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {signPsbt} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  fundPsbt,
+  getChainTransactions,
+  signPsbt
+} from 'lightning';
 
 const count = 100;
 const description = 'description';
@@ -57,6 +58,4 @@ test(`Broadcast chain transaction`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,11 +1,12 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChainTransactions} = require('./../../');
-const {updateChainTransaction} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  getChainTransactions,
+  updateChainTransaction
+} from 'lightning';
 
 const count = 100;
 const description = 'description';
@@ -33,11 +34,7 @@ test(`Send chain transaction`, async () => {
     }
 
     equal(tx.description, description, 'Got expected transaction');
-
-    return;
   });
 
   await kill({});
-
-  return;
 });

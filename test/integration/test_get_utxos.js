@@ -1,16 +1,12 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getUtxos} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getChainBalance, getUtxos } from 'lightning';
 
 const format = 'p2wpkh';
 const times = 300;
-const tokens = 1e8;
 
 // Getting utxos should list out the utxos
 test(`Get utxos`, async () => {
@@ -44,6 +40,4 @@ test(`Get utxos`, async () => {
   strictEqual(utxo.transaction_vout !== undefined, true, 'UTXO vout returned');
 
   await kill({});
-
-  return;
 });

@@ -1,10 +1,9 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getHeight} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getHeight } from 'lightning';
 
 const confirmationCount = 6;
 const interval = 100;
@@ -14,7 +13,7 @@ const times = 100;
 test(`Get height`, async () => {
   const {nodes} = await spawnLightningCluster({});
 
-  const [{chain, generate, kill, lnd}] = nodes;
+  const [{generate, kill, lnd}] = nodes;
 
   const startHeight = (await getHeight({lnd})).current_block_height;
 
@@ -32,11 +31,7 @@ test(`Get height`, async () => {
       true,
       'Got height'
     );
-
-    return;
   });
 
   await kill({});
-
-  return;
 });

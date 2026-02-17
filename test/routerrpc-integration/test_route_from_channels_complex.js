@@ -1,23 +1,24 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { routeFromChannels } from 'bolt07';
+import {
+  addPeer,
+  createInvoice,
+  decodePaymentRequest,
+  getHeight,
+  getChannel,
+  getNode,
+  getRouteThroughHops,
+  getRouteToDestination,
+  getWalletInfo,
+  payViaRoutes,
+  updateRoutingFees
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getHeight} = require('./../../');
-const {getChannel} = require('./../../');
-const {getNode} = require('./../../');
-const {getRouteThroughHops} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {payViaRoutes} = require('./../../');
-const {routeFromChannels} = require('./../../');
-const {updateRoutingFees} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
 const baseFee = '1000';
 const confirmationCount = 6;
@@ -322,6 +323,4 @@ test(`Get route through complex hops`, async () => {
 
     equal(err, null, 'Expected no error');
   }
-
-  return;
 });

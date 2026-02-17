@@ -1,10 +1,8 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addExternalSocket} = require('./../../');
-const {getWalletInfo} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { addExternalSocket, getWalletInfo } from 'lightning';
 
 const socket = '192.168.0.1:12345';
 
@@ -31,6 +29,4 @@ test(`Add external socket`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,14 +1,15 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-const {subscribeToOpenRequests} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  getChannels,
+  getWalletInfo,
+  openChannel,
+  subscribeToOpenRequests
+} from 'lightning';
 
 const channelCapacityTokens = 1e6;
 const confirmationCount = 6;
@@ -24,7 +25,7 @@ test(`Open channel but allow a minimal channel reserve`, async () => {
 
   const [control, target] = nodes;
 
-  const {id, lnd} = control;
+  const {lnd} = control;
 
   await target.generate({count});
 
@@ -49,8 +50,6 @@ test(`Open channel but allow a minimal channel reserve`, async () => {
       remote_max_pending_mtokens: '200000',
       remote_min_htlc_mtokens: '2000',
     });
-
-    return;
   });
 
   try {
@@ -87,6 +86,4 @@ test(`Open channel but allow a minimal channel reserve`, async () => {
   equal(channel.remote_reserve, dustLimit, 'Got minimal reserve value');
 
   await kill({});
-
-  return;
 });

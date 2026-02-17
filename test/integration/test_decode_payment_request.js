@@ -1,13 +1,14 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getIdentity} = require('./../../');
-const {getWalletInfo} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createInvoice,
+  decodePaymentRequest,
+  getIdentity,
+  getWalletInfo
+} from 'lightning';
 
 const interval = 50;
 const times = 4000;
@@ -69,7 +70,5 @@ tests.forEach(({description, expected}) => {
     }
 
     await kill({});
-
-    return;
   });
 });

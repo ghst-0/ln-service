@@ -1,16 +1,16 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {closeChannel} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-const {removePeer} = require('./../../');
-const {subscribeToChannels} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  closeChannel,
+  getChainBalance,
+  getWalletInfo,
+  openChannel,
+  subscribeToChannels
+} from 'lightning';
 
 const channelCapacityTokens = 1e6;
 const defaultFee = 1e3;
@@ -75,8 +75,6 @@ test('Subscribe to channels', async () => {
     if (!channelOpened.length) {
       throw new Error('ExpectedChannelOpened');
     }
-
-    return;
   });
 
   const pendingEvent = channelAdding.pop();
@@ -134,7 +132,9 @@ test('Subscribe to channels', async () => {
         transaction_id: channelOpen.transaction_id,
         transaction_vout: channelOpen.transaction_vout,
       });
-    } catch (err) {}
+    } catch {
+      /**/
+    }
 
     // Generate to confirm the close
     await generate({});
@@ -142,8 +142,6 @@ test('Subscribe to channels', async () => {
     if (!channelClosed.length) {
       throw new Error('ExpectedChannelClosed');
     }
-
-    return;
   });
 
   const closeEvent = channelClosed.pop();
@@ -181,6 +179,4 @@ test('Subscribe to channels', async () => {
   sub.removeAllListeners();
 
   await kill({});
-
-  return;
 });

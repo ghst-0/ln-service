@@ -1,12 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getBackup} = require('./../../');
-const {verifyBackup} = require('./../../');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getBackup, verifyBackup } from 'lightning';
 
 const size = 2;
 
@@ -16,7 +12,7 @@ test(`Test verify backup`, async () => {
 
   const [control, target] = nodes;
 
-  const {generate, lnd} = control;
+  const {lnd} = control;
 
   const channelOpen = await setupChannel({
     lnd: target.lnd,
@@ -48,6 +44,4 @@ test(`Test verify backup`, async () => {
   equal(goodBackup.is_valid, true, 'Channel backup is validated');
 
   await kill({});
-
-  return;
 });

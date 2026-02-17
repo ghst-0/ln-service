@@ -1,13 +1,9 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncTimesSeries = require('async/timesSeries');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {getPayments} = require('./../../');
-const {pay} = require('./../../');
+import asyncTimesSeries from 'async/timesSeries.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { createInvoice, getPayments, pay } from 'lightning';
 
 const start = new Date().toISOString();
 const size = 2;

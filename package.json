@@ -12,9 +12,9 @@
     "lightning": "11.0.1",
     "macaroon": "3.0.4"
   },
+  "type": "module",
   "description": "Interaction helper for your Lightning Network daemon",
   "devDependencies": {
-    "oxlint": "^1.48.0",
     "@alexbosworth/blockchain": "3.2.0",
     "@alexbosworth/node-fetch": "2.6.2",
     "async": "3.2.6",
@@ -26,6 +26,7 @@
     "bs58check": "4.0.0",
     "ecpair": "3.0.1",
     "ln-docker-daemons": "6.0.28",
+    "oxlint": "^1.48.0",
     "p2tr": "2.0.0",
     "portfinder": "1.0.38",
     "psbt": "4.0.0",

@@ -1,29 +1,25 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {exit} = require('node:process');
-const {match} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal, match } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {broadcastChainTransaction} = require('./../../');
-const {closeChannel} = require('./../../');
-const {createInvoice} = require('./../../');
-const {fundPendingChannels} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChannels} = require('./../../');
-const {getChannel} = require('./../../');
-const {getClosedChannels} = require('./../../');
-const {getEphemeralChannelIds} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannels} = require('./../../');
-const {pay} = require('./../../');
-const {signPsbt} = require('./../../');
-const {subscribeToChannels} = require('./../../');
-const {subscribeToOpenRequests} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  broadcastChainTransaction,
+  closeChannel,
+  createInvoice,
+  fundPendingChannels,
+  fundPsbt,
+  getChannels,
+  getClosedChannels,
+  getEphemeralChannelIds,
+  getWalletInfo,
+  openChannels,
+  pay,
+  signPsbt,
+  subscribeToChannels,
+  subscribeToOpenRequests
+} from 'lightning';
 
 const capacity = 1e6;
 const interval = 10;
@@ -277,6 +273,4 @@ test(`Open unconfirmed channels`, async () => {
 
     throw err;
   }
-
-  return;
 });

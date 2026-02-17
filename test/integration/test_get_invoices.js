@@ -1,15 +1,10 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 
-const asyncEach = require('async/each');
-const asyncRetry = require('async/retry');
-const {getWalletInfo} = require('./../../');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {cancelHodlInvoice} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getInvoices} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import asyncEach from 'async/each.js';
+import asyncRetry from 'async/retry.js';
+import { getWalletInfo, cancelHodlInvoice, createInvoice, getInvoices } from 'lightning';
 
 const interval = 1000;
 const limit = 1;

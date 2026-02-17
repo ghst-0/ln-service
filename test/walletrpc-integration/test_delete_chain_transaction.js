@@ -1,21 +1,19 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {deleteChainTransaction} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {signPsbt} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  deleteChainTransaction,
+  fundPsbt,
+  getChainTransactions,
+  getWalletInfo,
+  signPsbt
+} from 'lightning';
 
 const count = 100;
-const defaultFee = 1e3;
-const format = 'np2wpkh';
 const interval = 100;
 const times = 300;
 const tokens = 1e6;
@@ -77,6 +75,4 @@ test(`Delete chain transaction`, async () => {
 
     deepEqual(err, [501, 'RemoveChainTransactionMethodNotSupported'], 'None');
   }
-
-  return;
 });

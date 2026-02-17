@@ -1,20 +1,19 @@
-const {createHash} = require('node:crypto');
-const {equal} = require('node:assert').strict;
-const {randomBytes} = require('node:crypto');
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
+import { createHash, randomBytes } from 'node:crypto';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {cancelHodlInvoice} = require('./../../');
-const {createHodlInvoice} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getInvoices} = require('./../../');
-const {getPayment} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {pay} = require('./../../');
-const {subscribeToInvoice} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  cancelHodlInvoice,
+  createHodlInvoice,
+  getInvoice,
+  getInvoices,
+  getPayment,
+  getWalletInfo,
+  pay,
+  subscribeToInvoice
+} from 'lightning';
 
 const interval = 10;
 const size = 2;
@@ -86,6 +85,4 @@ test(`Cancel back a hodl invoice`, async () => {
 
     equal(err, null, 'Expected no error');
   }
-
-  return;
 });

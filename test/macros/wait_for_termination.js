@@ -1,6 +1,6 @@
-const asyncRetry = require('async/retry');
+import asyncRetry from 'async/retry.js';
 
-const {getWalletInfo} = require('./../../');
+import { getWalletInfo } from 'lightning';
 
 const interval = 100;
 const times = 100;
@@ -11,7 +11,7 @@ const times = 100;
     lnd: <Authenticated LND gRPC API Object>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   if (!lnd || !lnd.default) {
     return cbk([400, 'ExpectedAuthenticatedLndToWaitForTermination']);
   }

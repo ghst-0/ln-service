@@ -1,17 +1,15 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChainTransaction} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getWalletInfo} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  getChainTransaction,
+  getChainTransactions,
+  getWalletInfo
+} from 'lightning';
 
 const count = 100;
-const defaultFee = 1e3;
-const format = 'np2wpkh';
 const times = 300;
 
 // Getting a chain transaction should return the chain transactions
@@ -46,8 +44,6 @@ test(`Get chain transaction`, async () => {
     if (!tx.is_confirmed) {
       throw new Error('ExpectedTransactionConfirmed');
     }
-
-    return;
   });
 
   const {transactions} = await getChainTransactions({lnd});
@@ -65,6 +61,4 @@ test(`Get chain transaction`, async () => {
 
     deepEqual(err, [501, 'GetChainTransactionMethodNotSupported'], 'Invalid');
   }
-
-  return;
 });

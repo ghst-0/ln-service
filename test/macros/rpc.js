@@ -1,12 +1,10 @@
-const fetch = require('@alexbosworth/node-fetch');
-const http = require('http');
-const https = require('https');
+import fetch from '@alexbosworth/node-fetch';
+import http from 'node:http';
+import https from 'node:https';
 
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const defaultTimeout = 1000 * 30;
-const agents = {};
 let requests = 0;
 
 /** Call JSON RPC
@@ -25,7 +23,7 @@ let requests = 0;
   @returns via cbk or Promise
   <Result Object>
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
     return asyncAuto({
       // Check arguments

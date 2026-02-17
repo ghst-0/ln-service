@@ -1,10 +1,10 @@
-const {join} = require('path');
-const {tmpdir} = require('os');
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 
-const removeDir = require('rimraf');
-const {v4} = require('uuid');
+import { rimraf } from 'rimraf';
+import { v4 } from 'uuid';
 
-const btcsuiteTypeDaemon = require('./btcsuite_type_daemon');
+import btcsuiteTypeDaemon from './btcsuite_type_daemon.js';
 
 /** Spawn a chain daemon for testing on regtest
 
@@ -26,7 +26,7 @@ const btcsuiteTypeDaemon = require('./btcsuite_type_daemon');
     rpc_port: <RPC Port Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   if (!args.daemon) {
     return cbk([400, 'ExpectedDaemonTypeToSpawn']);
   }
@@ -60,7 +60,7 @@ module.exports = (args, cbk) => {
         return;
       });
 
-      res.daemon.on('close', async code => await removeDir(dir));
+      res.daemon.on('close', async code => await rimraf(dir));
 
       process.setMaxListeners(20);
 

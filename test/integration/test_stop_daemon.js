@@ -1,12 +1,9 @@
-const {exit} = require('node:process');
-const {fail} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual, fail } from 'node:assert/strict';
+import { exit } from 'node:process';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getWalletInfo} = require('./../../');
-const {stopDaemon} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getWalletInfo, stopDaemon } from 'lightning';
 
 // Stopping the daemon should gracefully shut down the daemon
 test(`Stop daemon`, async t => {
@@ -28,6 +25,4 @@ test(`Stop daemon`, async t => {
   }
 
   await kill({});
-
-  return;
 });

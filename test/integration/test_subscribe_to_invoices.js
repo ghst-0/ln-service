@@ -1,27 +1,13 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {hopsFromChannels} = require('bolt07');
-const {routeFromHops} = require('bolt07');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
 
-const {createInvoice} = require('./../../');
-const {getChannel} = require('./../../');
-const {pay} = require('./../../');
-const {subscribeToInvoices} = require('./../../');
+import { createInvoice, pay, subscribeToInvoices } from 'lightning';
 
-const channelCapacityTokens = 1e6;
-const description = 'x';
 const interval = 10;
-const invoiceId = '7426ba0604c3f8682c7016b44673f85c5bd9da2fa6c1080810cf53ae320c9863';
-const mtok = '000';
-const overPay = 1;
-const secret = '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f';
 const size = 2;
-const tlvType = '68730';
-const tlvValue = '030201';
 const times = 3000;
 const tokens = 1e4;
 
@@ -32,8 +18,6 @@ test('Subscribe to invoices', async () => {
   const [control, target] = nodes;
 
   const {generate, lnd} = control;
-
-  const destination = control.id;
 
   try {
     await generate({count: 100});
@@ -142,6 +126,4 @@ test('Subscribe to invoices', async () => {
   }
 
   await kill({});
-
-  return;
 });

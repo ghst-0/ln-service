@@ -1,16 +1,15 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {fail} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getUtxos} = require('./../../');
-const {requestChainFeeIncrease} = require('./../../');
-const {signPsbt} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  fundPsbt,
+  getUtxos,
+  requestChainFeeIncrease,
+  signPsbt
+} from 'lightning';
 
 const count = 100;
 const tokens = 1e8;
@@ -58,6 +57,4 @@ test(`Request chain fee increase`, async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

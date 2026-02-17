@@ -1,23 +1,20 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  deleteForwardingReputations,
+  getChannels,
+  getForwardingReputations,
+  getNetworkGraph,
+  probeForRoute
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {deleteForwardingReputations} = require('./../../');
-const {getChannels} = require('./../../');
-const {getForwardingReputations} = require('./../../');
-const {getNetworkGraph} = require('./../../');
-const {probeForRoute} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
-const chain = '0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206';
 const channelCapacityTokens = 1e6;
-const confirmationCount = 20;
-const defaultFee = 1e3;
-const defaultOdds = 950000;
 const flatten = arr => [].concat(...arr);
 const interval = 10;
 const maturity = 100;
@@ -30,7 +27,7 @@ const tokens = 1e6 / 2;
 test('Get forwarding reputations', async () => {
   const cluster = await spawnLightningCluster({size});
 
-  const [{generate, id, lnd}, target, remote] = cluster.nodes;
+  const [{generate, lnd}, target, remote] = cluster.nodes;
 
   try {
     await generate({count: maturity});
@@ -123,6 +120,4 @@ test('Get forwarding reputations', async () => {
   }
 
   await cluster.kill({});
-
-  return;
 });

@@ -1,13 +1,13 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {sendMessageToPeer} = require('./../../');
-const {subscribeToPeerMessages} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  sendMessageToPeer,
+  subscribeToPeerMessages
+} from 'lightning';
 
 const interval = 10;
 const size = 3;
@@ -125,6 +125,4 @@ test(`Subscribe to peer messages`, async () => {
   } finally {
     await kill({});
   }
-
-  return;
 });

@@ -1,17 +1,16 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  getChannels,
+  getForwardingConfidence,
+  getForwardingReputations,
+  probeForRoute
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getChannels} = require('./../../');
-const {getForwardingConfidence} = require('./../../');
-const {getForwardingReputations} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {probeForRoute} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
 const channelCapacityTokens = 1e6;
 const size = 3;
@@ -56,7 +55,9 @@ test('Get forwarding confidence', async () => {
       tokens,
       is_ignoring_past_failures: true,
     });
-  } catch (err) {}
+  } catch {
+    /**/
+  }
 
   const {nodes} = await getForwardingReputations({lnd});
 
@@ -64,7 +65,7 @@ test('Get forwarding confidence', async () => {
 
   const [{hops}] = routes;
 
-  const [from, to] = hops;
+  const [from] = hops;
 
   const successHop = await getForwardingConfidence({
     lnd,
@@ -85,6 +86,4 @@ test('Get forwarding confidence', async () => {
   equal(failedHop.confidence < 1e3, true, 'Low confidence in B -> C');
 
   await cluster.kill({});
-
-  return;
 });

@@ -1,22 +1,20 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {cancelHodlInvoice} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {parsePaymentRequest} = require('./../../');
-const {payViaRoutes} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  cancelHodlInvoice,
+  createInvoice,
+  decodePaymentRequest,
+  getInvoice,
+  getRouteToDestination,
+  payViaRoutes
+} from 'lightning';
+import { parsePaymentRequest } from 'invoices';
 
 const all = promise => Promise.all(promise);
 const interval = 10;
-const {isArray} = Array;
 const message = {type: '85805', value: '01'};
 const size = 3;
 const times = 3000;
@@ -148,6 +146,4 @@ test(`Get a route to a destination`, async () => {
 
     await kill({});
   });
-
-  return;
 });

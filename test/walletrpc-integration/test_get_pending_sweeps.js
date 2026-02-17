@@ -1,32 +1,20 @@
-const {equal} = require('node:assert').strict;
-const {exit} = require('node:process');
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {closeChannel} = require('./../../');
-const {createHodlInvoice} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getClosedChannels} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getPendingSweeps} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-const {pay} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  closeChannel,
+  getClosedChannels,
+  getPendingSweeps,
+  getWalletInfo
+} from 'lightning';
 
 const blockDelay = 50;
-const channelCapacityTokens = 1e6;
-const confirmationCount = 6;
-const defaultFee = 1e3;
 const give = 1e5;
 const interval = 50;
 const size = 2;
 const times = 10000;
-const tokens = 100;
 
 // Force close a channel and get the resulting pending sweeps
 test(`Get pending sweeps`, async t => {
@@ -78,6 +66,4 @@ test(`Get pending sweeps`, async t => {
   equal(sweep.transaction_id, closing.transaction_id, 'Got closing sweep');
 
   await kill({});
-
-  return;
 });

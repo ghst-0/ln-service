@@ -1,10 +1,8 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getPathfindingSettings} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getPathfindingSettings } from 'lightning';
 
 // Getting pathfinding settings should return pathfinding configuration
 test(`Get pathfinding settings`, async () => {
@@ -35,6 +33,4 @@ test(`Get pathfinding settings`, async () => {
   deepEqual(config, expected, 'Got expected pathfinding config');
 
   await kill({});
-
-  return;
 });

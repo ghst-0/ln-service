@@ -1,11 +1,11 @@
-const {join} = require('path');
-const {spawn} = require('child_process');
+import { join } from 'node:path';
+import { spawn } from 'node:child_process';
 
-const asyncAuto = require('async/auto');
-const openPortFinder = require('portfinder');
-const {networks} = require('bitcoinjs-lib');
-const {payments} = require('bitcoinjs-lib');
-const tinysecp = require('tiny-secp256k1');
+import asyncAuto from 'async/auto.js';
+import openPortFinder from 'portfinder';
+import { networks, payments } from 'bitcoinjs-lib';
+import * as tinysecp from 'tiny-secp256k1';
+import ECPairFactory from 'ecpair'
 
 const knownDaemons = ['btcd'];
 const localhost = '127.0.0.1';
@@ -34,10 +34,10 @@ const unableToStartServer = /Unable.to.start.server/;
     rpc_port: <RPC Port Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return asyncAuto({
-    // Import ECPair library
-    ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),
+    // ECPair library
+    ecp: () => ECPairFactory(tinysecp),
 
     // Check arguments
     validate: cbk => {

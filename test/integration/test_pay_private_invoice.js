@@ -1,21 +1,18 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {cancelHodlInvoice} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getChannel} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannel} = require('./../../');
-const {parsePaymentRequest} = require('./../../');
-const {pay} = require('./../../');
-const {removePeer} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  cancelHodlInvoice,
+  createInvoice ,
+  decodePaymentRequest,
+  getInvoice,
+  getRouteToDestination,
+  getWalletInfo,
+  pay
+} from 'lightning';
+import { parsePaymentRequest } from 'invoices';
 
 const interval = 10;
 const size = 3;
@@ -115,6 +112,4 @@ test(`Pay private invoice`, async () => {
   }
 
   await kill({});
-
-  return;
 });

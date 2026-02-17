@@ -1,9 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getMinimumRelayFee} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getMinimumRelayFee } from 'lightning';
 
 // Getting the min chain fee rate should return the min fee rate
 test(`Get minimum chain fee rate`, async () => {
@@ -21,6 +20,4 @@ test(`Get minimum chain fee rate`, async () => {
   } catch (err) {
     equal(null, err, 'Expected no error getting relay fee');
   }
-
-  return;
 });

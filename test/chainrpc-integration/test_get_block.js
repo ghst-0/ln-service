@@ -1,17 +1,18 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {idForBlock} = require('@alexbosworth/blockchain');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getBlock} = require('./../../');
-const {getHeight} = require('./../../');
+import { idForBlock } from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  getBlock,
+  getHeight
+} from 'lightning';
 
 // Get height should return height
 test(`Get height`, async () => {
   const {nodes} = await spawnLightningCluster({});
 
-  const [{chain, generate, kill, lnd}] = nodes;
+  const [{kill, lnd}] = nodes;
 
   const blockchain = await getHeight({lnd});
 
@@ -53,6 +54,4 @@ test(`Get height`, async () => {
   }
 
   await kill({});
-
-  return;
 });

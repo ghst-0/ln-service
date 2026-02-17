@@ -1,11 +1,8 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addAdvertisedFeature} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {removeAdvertisedFeature} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { addAdvertisedFeature, getWalletInfo, removeAdvertisedFeature } from 'lightning';
 
 const feature = 12345;
 
@@ -13,7 +10,7 @@ const feature = 12345;
 test(`Add external socket`, async () => {
   const {kill, nodes} = await spawnLightningCluster({});
 
-  const [{id, lnd}] = nodes;
+  const [{lnd}] = nodes;
 
   try {
     await addAdvertisedFeature({feature, lnd});
@@ -32,6 +29,4 @@ test(`Add external socket`, async () => {
 
     deepEqual(err, [400, 'ExpectedPeersRpcLndBuildTagToAddFeature']);
   }
-
-  return;
 });

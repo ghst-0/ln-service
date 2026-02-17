@@ -1,16 +1,16 @@
-const EventEmitter = require('node:events');
-const {once} = require('node:events');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
+import { once } from 'node:events';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {getHeight} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {subscribeToBlocks} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  getHeight,
+  getChainBalance,
+  getWalletInfo,
+  subscribeToBlocks
+} from 'lightning';
 
 const confirmationCount = 6;
 const interval = 50;
@@ -85,13 +85,10 @@ test(`Subscribe to blocks`, async () => {
     blocks.forEach(({height, id}) => {
       strictEqual(!!height, true, 'Got expected block height');
       strictEqual(id.length, 64, 'Got expected block hash length');
-      return;
     });
   } catch (err) {
     strictEqual(err, null, 'Expected no error');
   } finally {
     await kill({});
-
-    return;
   }
 });

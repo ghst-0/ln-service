@@ -1,18 +1,21 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {decodeBech32Address} = require('@alexbosworth/blockchain');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {createFundedPsbt} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getUtxos} = require('./../../');
-const {lockUtxo} = require('./../../');
-const {signPsbt} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import {
+  componentsOfTransaction,
+  decodeBech32Address
+} from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  createFundedPsbt,
+  getChainTransactions,
+  getUtxos,
+  lockUtxo,
+  signPsbt
+} from 'lightning';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const {concat} = Buffer;
@@ -136,6 +139,4 @@ test(`Create funded PSBT`, async () => {
   }
 
   await kill({});
-
-  return;
 });

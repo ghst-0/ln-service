@@ -1,20 +1,19 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal, rejects } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  getChannels,
+  getHeight,
+  getPayment,
+  getWalletInfo,
+  payViaPaymentRequest
+} from 'lightning';
 
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {getPayment} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {payViaPaymentRequest} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import waitForRoute from './../macros/wait_for_route.js';
 
 const interval = 50;
 const size = 3;
@@ -96,8 +95,6 @@ test(`Get payment`, async () => {
       equal(n.timeout === height + 40 || n.timeout === height + 43, true);
 
       delete n.timeout;
-
-      return;
     });
 
     const expectedHops = [
@@ -127,6 +124,4 @@ test(`Get payment`, async () => {
   }
 
   await kill({});
-
-  return;
 });

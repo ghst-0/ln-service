@@ -1,20 +1,17 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {getChannelBalance} = require('./../../');
-const {getChannels} = require('./../../');
-const {getInvoice} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {parsePaymentRequest} = require('./../../');
-const {payViaPaymentRequest} = require('./../../');
-const {payViaRoutes} = require('./../../');
-const waitForRoute = require('./../macros/wait_for_route');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { parsePaymentRequest } from 'invoices';
+import {
+  createInvoice,
+  getChannelBalance,
+  getChannels,
+  getRouteToDestination,
+  payViaPaymentRequest,
+  payViaRoutes
+} from 'lightning';
 
 const all = promise => Promise.all(promise);
 const capacity = 1e6;
@@ -173,6 +170,4 @@ test(`Pay with multiple paths`, async () => {
   }
 
   await kill({});
-
-  return;
 });

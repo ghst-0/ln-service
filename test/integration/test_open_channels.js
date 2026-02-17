@@ -1,36 +1,30 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncMap = require('async/map');
-const asyncRetry = require('async/retry');
-const {extractTransaction} = require('psbt');
-const {finalizePsbt} = require('psbt');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const tinysecp = require('tiny-secp256k1');
-const {transactionAsPsbt} = require('psbt');
-
-const {addPeer} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPendingChannels} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getChannel} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {getPeers} = require('./../../');
-const {openChannels} = require('./../../');
-const {sendToChainAddresses} = require('./../../');
+import asyncMap from 'async/map.js';
+import asyncRetry from 'async/retry.js';
+import { finalizePsbt, transactionAsPsbt, extractTransaction } from 'psbt';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  addPeer,
+  createChainAddress,
+  fundPendingChannels,
+  getChainTransactions,
+  getChannel, getChannels,
+  getHeight,
+  getPeers,
+  openChannels,
+  sendToChainAddresses
+} from 'lightning';
 
 const baseFeeMtokens = '1234';
 const capacity = 1e6;
-const count = 10;
 const defaultBaseFee = '1000';
 const interval = 20;
 const feeRate = 56;
 const maturity = 100;
-const race = promises => Promise.race(promises);
 const size = 3;
-const timeout = 250 * 10;
 const times = 2000;
 
 // Opening channels should open up channels
@@ -84,8 +78,6 @@ test(`Open channels`, async () => {
       if ((await getPeers({lnd})).peers.length !== channels.length) {
         throw new Error('ExpectedConnectedPeersToOpenChannels');
       }
-
-      return;
     });
 
     await asyncRetry({interval, times}, async () => {
@@ -101,8 +93,6 @@ test(`Open channels`, async () => {
       if (!transactions.find(n => n.id === id)) {
         throw new Error('ExpectedChainTransaction');
       }
-
-      return;
     });
 
     const fundTx = (await getChainTransactions({lnd})).transactions
@@ -149,8 +139,6 @@ test(`Open channels`, async () => {
 
       strictEqual(policy.base_fee_mtokens, baseFeeMtokens, 'Base fee is set');
       strictEqual(policy.fee_rate, feeRate, 'Fee rate is set');
-
-      return;
     });
 
     await kill({});
@@ -159,6 +147,4 @@ test(`Open channels`, async () => {
 
     strictEqual(err, null, 'No error is reported');
   }
-
-  return;
 });

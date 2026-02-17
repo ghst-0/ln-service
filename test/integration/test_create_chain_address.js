@@ -1,11 +1,9 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const {decodeBase58Address} = require('@alexbosworth/blockchain');
-const {decodeBech32Address} = require('@alexbosworth/blockchain');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
+import { decodeBase58Address, decodeBech32Address } from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { createChainAddress } from 'lightning';
 
 const formats = ['np2wpkh', 'p2wpkh'];
 const p2shAddressVersion = 196;
@@ -58,6 +56,4 @@ test(`Create address results in address creation`, async () => {
   }
 
   await kill({});
-
-  return;
 });

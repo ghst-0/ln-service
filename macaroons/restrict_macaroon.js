@@ -1,4 +1,4 @@
-const {importMacaroon} = require('macaroon');
+import { importMacaroon } from 'macaroon';
 
 const b64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
 
@@ -18,7 +18,7 @@ const b64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
     macaroon: <Restricted Base64 Encoded Macaroon String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.macaroon || !b64.test(args.macaroon)) {
     throw new Error('ExpectedMacaroonToAddRestrictions');
   }

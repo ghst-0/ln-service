@@ -1,16 +1,15 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {getEphemeralChannelIds} = require('./../../');
-const {openChannel} = require('./../../');
-const {openChannels} = require('./../../');
-const {subscribeToChannels} = require('./../../');
-const {subscribeToOpenRequests} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  getEphemeralChannelIds,
+  openChannel,
+  openChannels,
+  subscribeToOpenRequests
+} from 'lightning';
 
 const capacity = 1e6;
 const interval = 10;
@@ -89,6 +88,4 @@ test(`Open an unconfirmed channel`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,6 +1,6 @@
-const BN = require('bn.js');
+import BN from 'bn.js';
 
-const {encode} = require('varuint-bitcoin');
+import { encode } from 'varuint-bitcoin';
 
 const decBase = 10;
 const {isBuffer} = Buffer;
@@ -16,7 +16,7 @@ const {isBuffer} = Buffer;
   @returns
   <Script Hex>
 */
-module.exports = scriptElements => {
+export default scriptElements => {
    // Convert numbers to buffers and hex data to pushdata
   const fullScript = scriptElements
     .map(element => {

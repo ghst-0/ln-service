@@ -1,52 +1,35 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {address} = require('bitcoinjs-lib');
-const {controlBlock} = require('p2tr');
-const {createPsbt} = require('psbt');
-const {decodePsbt} = require('psbt');
-const {hashForTree} = require('p2tr');
-const {leafHash} = require('p2tr');
-const {networks} = require('bitcoinjs-lib');
-const {pointAdd} = require('tiny-secp256k1');
-const {privateAdd} = require('tiny-secp256k1');
-const {scriptElementsAsScript} = require('@alexbosworth/blockchain');
-const {signHash} = require('p2tr');
-const {signSchnorr} = require('tiny-secp256k1');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const tinysecp = require('tiny-secp256k1');
-const {Transaction} = require('bitcoinjs-lib');
-const {v1OutputScript} = require('p2tr');
+import asyncRetry from 'async/retry.js';
+import { address, networks, Transaction } from 'bitcoinjs-lib';
+import { controlBlock, hashForTree, leafHash, signHash, v1OutputScript } from 'p2tr';
+import { createPsbt, decodePsbt } from 'psbt';
+import { pointAdd, privateAdd, signSchnorr } from 'tiny-secp256k1';
+import { scriptElementsAsScript } from '@alexbosworth/blockchain';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  broadcastChainTransaction,
+  createChainAddress,
+  fundPsbt,
+  getUtxos,
+  signPsbt
+} from 'lightning';
 
-const {broadcastChainTransaction} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChainTransactions} = require('./../../');
-const {getUtxos} = require('./../../');
-const {sendToChainAddress} = require('./../../');
-const {signPsbt} = require('./../../');
-
-const chainAddressRowType = 'chain_address';
 const compile = elements => scriptElementsAsScript({elements}).script;
-const confirmationCount = 6;
 const count = 100;
 const defaultInternalKey = '0350929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0';
-const description = 'description';
 const {from} = Buffer;
 const {fromBech32} = address;
 const {fromHex} = Transaction;
-const {fromOutputScript} = address;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const interval = retryCount => 10 * Math.pow(2, retryCount);
 const OP_CHECKSIG = 172;
-const regtestBech32AddressHrp = 'bcrt';
 const smallTokens = 2e5;
 const times = 20;
 const {toOutputScript} = address;
 const tokens = 1e6;
-const txIdHexByteLength = 64;
 
 // Funding a transaction should result in a funded PSBT
 test(`Fund PSBT`, async () => {
@@ -415,6 +398,4 @@ test(`Fund PSBT`, async () => {
   }
 
   await kill({});
-
-  return;
 });

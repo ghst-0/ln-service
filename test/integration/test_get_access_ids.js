@@ -1,10 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getAccessIds} = require('./../../');
-const {grantAccess} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getAccessIds, grantAccess } from 'lightning';
 
 const defaultId = '0';
 const id = '1';
@@ -22,6 +20,4 @@ test(`Get access ids`, async () => {
   deepStrictEqual(ids, [defaultId, id], 'Got expected access ids');
 
   await kill({});
-
-  return;
 });

@@ -1,14 +1,9 @@
-const {ok} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { ok, strictEqual } from 'node:assert/strict';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import { getChannels, getWalletInfo } from 'lightning';
 
-const {getChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-
-const anchorFeatureBit = 23;
 const giveTokens = 1e5;
 const remoteCsv = 40;
 const size = 2;
@@ -79,6 +74,4 @@ test(`Get channels`, async () => {
   strictEqual(channel.unsettled_balance, 0, 'Channel unsettled balance');
 
   await kill({});
-
-  return;
 });

@@ -1,12 +1,12 @@
-const {rejects} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { rejects, strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createChainAddress} = require('./../../');
-const {grantAccess} = require('./../../');
-const {revokeAccess} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createChainAddress,
+  grantAccess,
+  revokeAccess
+} from 'lightning';
 
 const err = [503, 'UnexpectedErrorCreatingAddress'];
 const id = '1';
@@ -37,5 +37,4 @@ test(`Revoke access credentials`, async () => {
 
   await kill({});
 
-  return;
 });

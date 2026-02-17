@@ -1,20 +1,17 @@
-const {promisify} = require('util');
+import { promisify } from 'node:util';
 
-const asyncAuto = require('async/auto');
-const asyncEach = require('async/each');
-const asyncRetry = require('async/retry');
-const tinysecp = require('tiny-secp256k1');
+import asyncAuto from 'async/auto.js';
+import asyncEach from 'async/each.js';
+import asyncRetry from 'async/retry.js';
+import * as tinysecp from 'tiny-secp256k1';
+import { addPeer, createChainAddress, getWalletInfo } from 'lightning';
 
-const {addPeer} = require('./../../');
-const chainSendTransaction = require('./chain_send_transaction');
-const connectChainNode = require('./connect_chain_node');
-const {createChainAddress} = require('./../../');
-const generateBlocks = require('./generate_blocks');
-const {getWalletInfo} = require('./../../');
-const mineTransaction = require('./mine_transaction');
-const rpc = require('./rpc');
-const spawnLnd = require('./spawn_lnd');
-const waitForTermination = require('./wait_for_termination');
+import chainSendTransaction from './chain_send_transaction.js';
+import connectChainNode from './connect_chain_node.js';
+import generateBlocks from './generate_blocks.js';
+import mineTransaction from './mine_transaction.js';
+import * as spawnLnd from './spawn_lnd.js';
+import waitForTermination from './wait_for_termination.js';
 
 const defaultFee = 1e3;
 const defaultVout = 0;
@@ -61,7 +58,7 @@ const tokens = 50e8;
     target_node_public_key: <Target Node Public Key Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return asyncAuto({
     // Import ECPair library
     ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),

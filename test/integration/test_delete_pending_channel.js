@@ -1,37 +1,34 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const asyncEach = require('async/each');
-const asyncRetry = require('async/retry');
-const asyncTimeout = require('async/timeout');
-const {extractTransaction} = require('psbt');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-const tinysecp = require('tiny-secp256k1');
-
-const {addPeer} = require('./../../');
-const {broadcastChainTransaction} = require('./../../');
-const {cancelPendingChannel} = require('./../../');
-const {deletePendingChannel} = require('./../../');
-const {fundPendingChannels} = require('./../../');
-const {fundPsbt} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChannels} = require('./../../');
-const {getLockedUtxos} = require('./../../');
-const {getMasterPublicKeys} = require('./../../');
-const {getPendingChannels} = require('./../../');
-const {getWalletInfo} = require('./../../');
-const {openChannels} = require('./../../');
-const {signPsbt} = require('./../../');
-const {unlockUtxo} = require('./../../');
+import asyncEach from 'async/each.js';
+import asyncRetry from 'async/retry.js';
+import asyncTimeout from 'async/timeout.js';
+import { extractTransaction } from 'psbt';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import * as tinysecp from 'tiny-secp256k1';
+import {
+  addPeer,
+  broadcastChainTransaction,
+  cancelPendingChannel,
+  deletePendingChannel,
+  fundPendingChannels,
+  fundPsbt,
+  getChannels,
+  getLockedUtxos,
+  getPendingChannels,
+  getWalletInfo,
+  openChannels,
+  signPsbt,
+  unlockUtxo
+} from 'lightning';
 
 const capacity = 1e6;
 const count = 100;
 const delay = n => new Promise(resolve => setTimeout(resolve, n));
 const description = 'description';
 const interval = 100;
-const race = promises => Promise.race(promises);
 const size = 3;
-const timeout = 1000 * 20;
 const times = 2000;
 
 // Forfeiting a pending channel should remove the pending channel
@@ -197,6 +194,4 @@ test(`Forfeit pending channel`, async t => {
   }
 
   await kill({});
-
-  return;
 });

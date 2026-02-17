@@ -1,15 +1,15 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {getChainBalance} = require('./../../');
-const {getChannel} = require('./../../');
-const {getChannels} = require('./../../');
-const {openChannel} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createChainAddress,
+  getChannel,
+  getChannels,
+  openChannel
+} from 'lightning';
 
 const baseFee = '1337';
 const channelCapacityTokens = 1e6;
@@ -88,6 +88,4 @@ test(`Open channel`, async () => {
   });
 
   await kill({});
-
-  return;
 });

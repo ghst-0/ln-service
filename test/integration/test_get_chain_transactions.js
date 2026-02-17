@@ -1,15 +1,11 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getChainTransactions} = require('./../../');
-const {getWalletInfo} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getChainTransactions, getWalletInfo } from 'lightning';
 
 const count = 100;
-const defaultFee = 1e3;
-const format = 'np2wpkh';
 const times = 300;
 
 // Getting chain transactions should list out the chain transactions
@@ -78,6 +74,4 @@ test(`Get chain transactions`, async () => {
   equal(between.transactions.length, [tx].length, 'One transaction');
 
   await kill({});
-
-  return;
 });

@@ -1,10 +1,8 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getWalletInfo} = require('./../../');
-const {updateColor} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getWalletInfo, updateColor } from 'lightning';
 
 const color = '#666666'
 
@@ -28,6 +26,4 @@ test(`Update color`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,13 +1,8 @@
-const {deepEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {ok} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepEqual, equal, ok } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getConfiguration} = require('./../../');
-const {getWalletInfo} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getConfiguration, getWalletInfo } from 'lightning';
 
 // Getting the configuration info should return info about the config
 test(`Get configuration info`, async () => {
@@ -30,6 +25,4 @@ test(`Get configuration info`, async () => {
 
     deepEqual(err, [501, 'GetDebugConfigurationInfoNotSupported'], '404');
   }
-
-  return;
 });

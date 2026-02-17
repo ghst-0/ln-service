@@ -1,13 +1,13 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { deepStrictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {createInvoice} = require('./../../');
-const {getSettlementStatus} = require('./../../');
-const {pay} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  createInvoice,
+  getSettlementStatus,
+  pay
+} from 'lightning';
 
 const fakeChannelId = '1x1x1';
 const interval = 100;
@@ -73,6 +73,4 @@ test(`Get settlement status`, async () => {
   }
 
   await kill({});
-
-  return;
 });

@@ -1,19 +1,17 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {randomBytes} = require('node:crypto');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import { randomBytes } from 'node:crypto';
+import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {createInvoice} = require('./../../');
-const {decodePaymentRequest} = require('./../../');
-const {getHeight} = require('./../../');
-const {getRouteToDestination} = require('./../../');
-const {openChannel} = require('./../../');
-const {pay} = require('./../../');
+import test from 'node:test';
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createInvoice,
+  decodePaymentRequest,
+  getHeight,
+  getRouteToDestination,
+  pay
+} from 'lightning';
 
 const confirmationCount = 6;
 const interval = 10;
@@ -66,8 +64,6 @@ test(`Pay`, async ({end, equal, strictSame}) => {
     );
 
     delete n.timeout;
-
-    return;
   });
 
   const expectedHops = [
@@ -142,6 +138,4 @@ test(`Pay`, async ({end, equal, strictSame}) => {
   await pay({lnd, request: zeroInvoice.request, mtokens: '1000'});
 
   await kill({});
-
-  return;
 });

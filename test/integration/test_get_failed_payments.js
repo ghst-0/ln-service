@@ -1,20 +1,19 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual, deepStrictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {addPeer} = require('./../../');
-const {createChainAddress} = require('./../../');
-const {createInvoice} = require('./../../');
-const {deleteForwardingReputations} = require('./../../');
-const {getFailedPayments} = require('./../../');
-const {getPayment} = require('./../../');
-const {getPayments} = require('./../../');
-const {pay} = require('./../../');
-const {sendToChainAddress} = require('./../../');
+import asyncRetry from 'async/retry.js';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
+import {
+  addPeer,
+  createChainAddress,
+  createInvoice,
+  deleteForwardingReputations,
+  getFailedPayments,
+  getPayment,
+  getPayments,
+  pay,
+  sendToChainAddress
+} from 'lightning';
 
 const channelCapacityTokens = 1e6;
 const confirmationCount = 20;
@@ -68,7 +67,8 @@ test('Get failed payments', async () => {
 
     try {
       await pay({lnd, request: bigInvoice.request});
-    } catch (err) {
+    } catch {
+      /* ignore error */
     }
 
     // Create a new channel to increase total edge liquidity
@@ -159,6 +159,4 @@ test('Get failed payments', async () => {
 
     strictEqual(err, null, 'Expected no error');
   }
-
-  return;
 });

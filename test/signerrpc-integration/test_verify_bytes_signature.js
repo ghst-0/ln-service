@@ -1,13 +1,11 @@
-const {createHash} = require('node:crypto');
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 
-const {decode} = require('bip66');
-const {recover} = require('tiny-secp256k1');
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {signBytes} = require('./../../');
-const {verifyBytesSignature} = require('./../../');
+import { decode } from 'bip66';
+import { recover } from 'tiny-secp256k1';
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { signBytes, verifyBytesSignature } from 'lightning';
 
 const preimage = '00';
 const recoveryFlags = [0, 1, 2, 3];
@@ -98,6 +96,4 @@ test(`Verify bytes signature`, async () => {
   }
 
   await kill({});
-
-  return;
 });

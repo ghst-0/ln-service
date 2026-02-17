@@ -1,16 +1,15 @@
-const {createHash} = require('node:crypto');
-const {equal} = require('node:assert').strict;
-const {randomBytes} = require('node:crypto');
-const test = require('node:test');
+import test from 'node:test';
+import { equal } from 'node:assert/strict';
+import { createHash, randomBytes } from 'node:crypto';
 
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
 
-const {cancelHodlInvoice} = require('./../../');
-const {createHodlInvoice} = require('./../../');
-const {getInvoice} = require('./../../');
-const {pay} = require('./../../');
-const {subscribeToInvoice} = require('./../../');
+import {
+  cancelHodlInvoice,
+  createHodlInvoice,
+  pay,
+  subscribeToInvoice
+} from 'lightning';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const size = 2;
@@ -119,6 +118,4 @@ test(`Subscribe to canceled invoice`, async () => {
   equal(errMsg, 'PaymentRejectedByDestination', 'Expected rejected message');
 
   await delay(5000);
-
-  return;
 });

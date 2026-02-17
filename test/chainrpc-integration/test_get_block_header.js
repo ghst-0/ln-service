@@ -1,10 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getBlockHeader} = require('./../../');
-const {getHeight} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getBlockHeader, getHeight } from 'lightning';
 
 const headerHexLength = 80 * 2;
 
@@ -12,11 +10,10 @@ const headerHexLength = 80 * 2;
 test(`Get block header`, async () => {
   const {nodes} = await spawnLightningCluster({});
 
-  const [{chain, generate, kill, lnd}] = nodes;
+  const [{kill, lnd}] = nodes;
 
   const blockchain = await getHeight({lnd});
 
-  const hash = blockchain.current_block_hash;
   const height = blockchain.current_block_height;
 
   // Try getting a block header by the hash
@@ -57,6 +54,4 @@ test(`Get block header`, async () => {
   }
 
   await kill({});
-
-  return;
 });

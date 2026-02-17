@@ -1,17 +1,16 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const asyncRetry = require('async/retry');
-const {hopsFromChannels} = require('bolt07');
-const {routeFromHops} = require('bolt07');
-const {setupChannel} = require('ln-docker-daemons');
-const {spawnLightningCluster} = require('ln-docker-daemons');
+import asyncRetry from 'async/retry.js';
+import { hopsFromChannels, routeFromHops } from 'bolt07';
+import { setupChannel, spawnLightningCluster } from 'ln-docker-daemons';
 
-const {createInvoice} = require('./../../');
-const {getChannel} = require('./../../');
-const {getChannels} = require('./../../');
-const {getHeight} = require('./../../');
-const {pay} = require('./../../');
+import {
+  createInvoice,
+  getChannel, getChannels,
+  getHeight,
+  pay
+} from 'lightning';
 
 const interval = 10;
 const mtok = '000';
@@ -97,6 +96,4 @@ test('Payment errors', async () => {
       strictEqual(err, null, 'Expected array type error');
     }
   }
-
-  return;
 });

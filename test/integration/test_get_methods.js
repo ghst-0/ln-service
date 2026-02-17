@@ -1,9 +1,8 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
+import test from 'node:test';
+import { strictEqual } from 'node:assert/strict';
 
-const {spawnLightningCluster} = require('ln-docker-daemons');
-
-const {getMethods} = require('./../../');
+import { spawnLightningCluster } from 'ln-docker-daemons';
+import { getMethods } from 'lightning';
 
 const {isArray} = Array;
 
@@ -25,6 +24,4 @@ test(`Get LND methods`, async () => {
   strictEqual(typeof permission, 'string', 'Has permission');
 
   await kill({});
-
-  return;
 });
