@@ -31,7 +31,7 @@ const retryTimes = 50;
 */
 export default ({cert, chain, count, host, key, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Import ECPair library
       ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),
 

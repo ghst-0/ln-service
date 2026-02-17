@@ -38,7 +38,7 @@ const times = 1500;
 */
 export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Make sure the node is connected
       addPeer: cbk => {
         return addPeer({

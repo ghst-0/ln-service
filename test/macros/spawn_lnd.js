@@ -74,8 +74,8 @@ const times = 30;
     socket: <LND RPC Network Socket String>
   }
 */
-module.exports = (args, cbk) => {
-  return asyncAuto({
+export default (args, cbk) => {
+  asyncAuto({
     // Import ECPair library
     ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),
 

@@ -50,7 +50,7 @@ const times = 200;
   }
 */
 export default ({network}, cbk) => {
-  return asyncAuto({
+  asyncAuto({
     // Import ECPair library
     ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),
 

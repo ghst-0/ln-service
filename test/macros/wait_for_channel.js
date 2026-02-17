@@ -53,7 +53,7 @@ export default ({hidden, id, lnd, vout}, cbk) => {
   }
 
   return asyncRetry({interval, times}, cbk => {
-    return asyncAuto({
+    asyncAuto({
       // Get channels
       getChannels: cbk => getChannels({lnd}, cbk),
 

@@ -35,7 +35,7 @@ const unableToStartServer = /Unable.to.start.server/;
   }
 */
 export default (args, cbk) => {
-  return asyncAuto({
+  asyncAuto({
     // ECPair library
     ecp: () => ECPairFactory(tinysecp),
 

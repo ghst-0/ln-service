@@ -23,7 +23,7 @@ const cmd = 'getrawtransaction';
 */
 export default ({cert, host, id, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!cert) {

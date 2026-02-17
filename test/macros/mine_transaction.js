@@ -22,7 +22,7 @@ const count = 6;
 */
 export default ({cert, chain, host, pass, port, transaction, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!host) {

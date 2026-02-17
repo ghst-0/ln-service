@@ -59,7 +59,7 @@ const tokens = 50e8;
   }
 */
 export default (args, cbk) => {
-  return asyncAuto({
+  asyncAuto({
     // Import ECPair library
     ecp: async () => (await import('ecpair')).ECPairFactory(tinysecp),
 
