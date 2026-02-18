@@ -146,7 +146,6 @@ for `unlocker` methods.
 - [broadcastChainTransaction](#broadcastchaintransaction) - Push a chain tx
 - [cancelHodlInvoice](#cancelhodlinvoice) - Cancel a held or any open invoice
 - [cancelPendingChannel](#cancelpendingchannel) - Cancel a pending open channel
-- [changePassword](#changepassword) - Change the wallet unlock password
 - [closeChannel](#closechannel) - Terminate an open channel
 - [connectWatchtower](#connectwatchtower) - Connect a watchtower
 - [createChainAddress](#createchainaddress) - Get a chain address to receive at
@@ -155,7 +154,6 @@ for `unlocker` methods.
 - [createHodlInvoice](#createhodlinvoice) - Make a HODL HTLC invoice
 - [createInvoice](#createinvoice) - Make a regular invoice
 - [createSeed](#createseed) - Generate a wallet seed for a new wallet
-- [createSignedRequest](#createsignedrequest) - create a signed payment request
 - [createUnsignedRequest](#createunsignedrequest) - create an unsigned invoice
 - [createWallet](#createwallet) - Make a new wallet
 - [decodePaymentRequest](#decodepaymentrequest) - Decode a Lightning invoice
@@ -579,27 +577,6 @@ const [id] = pending;
 await cancelPendingChannel({id, lnd});
 ```
 
-### changePassword
-
-Change wallet password
-
-Requires locked LND and unauthenticated LND connection
-
-    {
-      current_password: <Current Password String>
-      lnd: <Unauthenticated LND API Object>
-      new_password: <New Password String>
-    }
-
-    @returns via cbk or Promise
-
-Example:
-
-```node
-const {changePassword} = require('ln-service');
-await changePassword({lnd, current_password: pass, new_password: newPass});
-```
-
 ### closeChannel
 
 Close a channel.
@@ -901,90 +878,6 @@ const {seed} = await createSeed({lnd});
 
 // Use the seed to create a wallet
 await createWallet({lnd, seed, password: '123456'});
-```
-
-### createSignedRequest
-
-Assemble a signed payment request
-
-    {
-      destination: <Destination Public Key Hex String>
-      hrp: <Request Human Readable Part String>
-      signature: <Request Hash Signature Hex String>
-      tags: [<Request Tag Word Number>]
-    }
-
-    @throws
-    <Error>
-
-    @returns
-    {
-      request: <BOLT 11 Encoded Payment Request String>
-    }
-
-Example:
-
-```node
-const {createSignedRequest} = require('ln-service');
-
-// Get hrp and signature from createUnsignedRequest
-// Get signature via standard private key signing, or LND signBytes
-const {request} = createSignedRequest({
-  destination: nodePublicKey,
-  hrp: amountAndNetworkHrp,
-  signature: signedPreimageHash,
-  tags: paymentRequestTags,
-});
-```
-
-### createUnsignedRequest
-
-Create an unsigned payment request
-
-    {
-      [chain_addresses]: [<Chain Address String>]
-      [cltv_delta]: <CLTV Delta Number>
-      [created_at]: <Invoice Creation Date ISO 8601 String>
-      [description]: <Description String>
-      [description_hash]: <Description Hash Hex String>
-      destination: <Public Key String>
-      [expires_at]: <ISO 8601 Date String>
-      features: [{
-        bit: <BOLT 09 Feature Bit Number>
-      }]
-      id: <Preimage SHA256 Hash Hex String>
-      [mtokens]: <Requested Milli-Tokens Value String> (can exceed Number limit)
-      network: <Network Name String>
-      [payment]: <Payment Identifier Hex String>
-      [routes]: [[{
-        [base_fee_mtokens]: <Base Fee Millitokens String>
-        [channel]: <Standard Format Channel Id String>
-        [cltv_delta]: <Final CLTV Expiration Blocks Delta Number>
-        [fee_rate]: <Fees Charged in Millitokens Per Million Number>
-        public_key: <Forward Edge Public Key Hex String>
-      }]]
-      [tokens]: <Requested Chain Tokens Number> (note: can differ from mtokens)
-    }
-
-    @returns
-    {
-      hash: <Payment Request Signature Hash Hex String>
-      hrp: <Human Readable Part of Payment Request String>
-      preimage: <Signature Hash Preimage Hex String>
-      tags: [<Data Tag Number>]
-    }
-
-Example:
-
-```node
-const {createUnsignedRequest} = require('ln-service');
-
-const unsignedComponents = createUnsignedRequest({
-  destination: nodePublicKey,
-  id: rHashHexString,
-  network: 'bitcoin',
-});
-// Use createSignedRequest and a signature to create a complete request
 ```
 
 ### createWallet

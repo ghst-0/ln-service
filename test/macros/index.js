@@ -4,7 +4,6 @@ import chainSendTransaction from './chain_send_transaction.js';
 import getRawTransaction from './get_raw_transaction.js';
 import setupChannel from './setup_channel.js';
 
-const changePassword = promisify(require('./change_password'));
 const connectChainNode = promisify(require('./connect_chain_node'));
 const createCluster = promisify(require('./create_cluster'));
 const delay = promisify(setTimeout);
@@ -19,7 +18,6 @@ const waitForUtxo = promisify(require('./wait_for_utxo'));
 
 export {
   chainSendTransaction,
-  changePassword,
   connectChainNode,
   createCluster,
   delay,
