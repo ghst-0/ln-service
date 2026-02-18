@@ -1,4 +1,4 @@
-import { createSignedRequest, createUnsignedRequest, parsePaymentRequest } from 'invoices';
+import { parsePaymentRequest } from 'invoices';
 import { restrictMacaroon } from './macaroons/index.js';
 import { routeFromChannels } from 'bolt07';
 import {
@@ -181,8 +181,6 @@ export {
   createHodlInvoice,
   createInvoice,
   createSeed,
-  createSignedRequest,
-  createUnsignedRequest,
   createWallet,
   decodePaymentRequest,
   deleteChainTransaction,
