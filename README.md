@@ -276,7 +276,7 @@ for `unlocker` methods.
 - [subscribeToBackups](#subscribetobackups) - Subscribe to channel backups
 - [subscribeToBlocks](#subscribetoblocks) - Subscribe to on-chain blocks
 - [subscribeToChainAddress](#subscribetochainaddress) - Subscribe to receives
-- [subscribeToChainSpend](#subscribetochainspend) - Subscribe to chain spends
+
 - [subscribeToChannels](#subscribetochannels) - Subscribe to channel statuses
 - [subscribeToForwardRequests](#subscribetoforwardrequests) - Interactively
     route
@@ -5492,39 +5492,6 @@ let currentBackup;
 sub.on('backup', ({backup}) => currentBackup = backup);
 ```
 
-### subscribeToBlocks
-
-Subscribe to blocks
-
-Requires LND built with `chainrpc` build tag
-
-Requires `onchain:read` permission
-
-    {
-      lnd: <Authenticated LND Object>
-    }
-
-    @throws
-    <Error>
-
-    @returns
-    <EventEmitter Object>
-
-    @event 'block'
-    {
-      height: <Block Height Number>
-      id: <Block Hash String>
-    }
-
-Example:
-
-```node
-const {subscribeToBlocks} = require('ln-service');
-let chainTipBlockHash;
-const sub = subscribeToBlocks({lnd});
-sub.on('block', ({id}) => chainTipBlockHash = id);
-```
-
 ### subscribeToChainAddress
 
 Subscribe to confirmation details about transactions sent to an address
@@ -5569,57 +5536,6 @@ const address = 'bech32Address';
 let confirmationBlockHash;
 const sub = subscribeToChainAddress({lnd, bech32_address: address});
 sub.on('confirmation', ({block}) => confirmationBlockHash = block);
-```
-
-### subscribeToChainSpend
-
-Subscribe to confirmations of a spend
-
-A chain address or raw output script is required
-
-When specifying a P2TR output script, `transaction_id` and `transaction_vout`
-are required.
-
-Requires LND built with `chainrpc` build tag
-
-Requires `onchain:read` permission
-
-Subscribing to P2TR outputs is not supported in LND 0.14.5 and below
-
-    {
-      [bech32_address]: <Bech32 P2WPKH or P2WSH Address String>
-      lnd: <Authenticated LND API Object>
-      min_height: <Minimum Transaction Inclusion Blockchain Height Number>
-      [output_script]: <Output Script AKA ScriptPub Hex String>
-      [p2pkh_address]: <Pay to Public Key Hash Address String>
-      [p2sh_address]: <Pay to Script Hash Address String>
-      [transaction_id]: <Blockchain Transaction Id Hex String>
-      [transaction_vout]: <Blockchain Transaction Output Index Number>
-    }
-
-    @throws
-    <Error>
-
-    @returns
-    <EventEmitter Object>
-
-    @event 'confirmation'
-    {
-      height: <Confirmation Block Height Number>
-      transaction: <Raw Transaction Hex String>
-      vin: <Spend Outpoint Index Number>
-    }
-
-    @event 'reorg'
-
-Example:
-
-```node
-const {subscribeToChainSpend} = require('ln-service');
-const address = 'bech32Address';
-let confirmationHeight;
-const sub = subscribeToChainSpend({lnd, bech32_address: address});
-sub.on('confirmation', ({height}) => confirmationHeight = height);
 ```
 
 ### subscribeToChannels
