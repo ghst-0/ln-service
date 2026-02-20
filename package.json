@@ -9,7 +9,7 @@
   "dependencies": {
     "bolt07": "1.9.4",
     "invoices": "5.0.0",
-    "lightning": "11.0.1",
+    "lightning": "workspace:*",
     "macaroon": "3.0.4"
   },
   "type": "module",
@@ -21,11 +21,11 @@
     "asyncjs-util": "1.2.12",
     "bip32": "5.0.0",
     "bitcoinjs-lib": "6.1.7",
-    "bn.js": "5.2.2",
+    "bn.js": "5.2.3",
     "bs58check": "4.0.0",
     "ecpair": "3.0.1",
     "ln-docker-daemons": "6.0.28",
-    "oxlint": "^1.48.0",
+    "oxlint": "^1.49.0",
     "p2tr": "2.0.0",
     "portfinder": "1.0.38",
     "psbt": "4.0.0",
