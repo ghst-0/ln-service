@@ -24,7 +24,7 @@ const adminMacaroonFileName = 'admin.macaroon';
 const chainPass = '0k39BVOdg4uuS7qNCG2jbIXNpwU7d3Ft87PpHPPoCfk=';
 const chainRpcCertName = 'rpc.cert';
 const chainUser = 'bitcoinrpc';
-const interval = retryCount => 50 * Math.pow(2, retryCount);
+const interval = retryCount => 50 * 2 ** retryCount;
 const invoiceMacaroonFileName = 'invoice.macaroon';
 const {isArray} = Array;
 const lightningDaemonExecFileName = 'lnd';
