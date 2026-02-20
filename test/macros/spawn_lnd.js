@@ -96,7 +96,7 @@ export default (args, cbk) => {
           round(random() * 100));
         },
         (err, ports) => {
-          if (!!err || !isArray(ports) || ports.length === 0) {
+          if (err || !isArray(ports) || ports.length === 0) {
             return setTimeout(() => {
               return cbk([500, 'FailedToFindOpenPortsWhenSpawningLnd', {err}]);
             },

@@ -127,7 +127,7 @@ test('Subscribe to forwards', async () => {
 
     const [err] = controlErrors;
 
-    if (!!err && err.details === 'unknown service routerrpc.Router') {
+    if (err && err.details === 'unknown service routerrpc.Router') {
       await kill({});
 
       return;

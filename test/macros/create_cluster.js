@@ -365,15 +365,15 @@ export default (args, cbk) => {
     }],
   },
   (err, res) => {
-    if (!!err && !!res.control) {
+    if (err && !!res.control) {
       res.control.kill();
     }
 
-    if (!!err && !!res.remote && !!res.remote.kill) {
+    if (err && !!res.remote && !!res.remote.kill) {
       res.remote.kill();
     }
 
-    if (!!err && !!res.target) {
+    if (err && !!res.target) {
       res.target.kill();
     }
 
