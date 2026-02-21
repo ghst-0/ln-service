@@ -15,7 +15,7 @@ import {
   payViaRoutes
 } from 'lightning';
 
-import waitForRoute from './../macros/wait_for_route.js';
+import waitForRoute from '../macros/wait_for_route.js';
 
 const confirmationCount = 6;
 const flatten = arr => [].concat(...arr);

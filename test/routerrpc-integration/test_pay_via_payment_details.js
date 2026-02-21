@@ -12,7 +12,7 @@ import {
   payViaPaymentDetails
 } from 'lightning';
 
-import waitForRoute from './../macros/wait_for_route.js';
+import waitForRoute from '../macros/wait_for_route.js';
 
 const size = 3;
 const start = new Date().toISOString();

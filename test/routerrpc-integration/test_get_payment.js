@@ -13,7 +13,7 @@ import {
   payViaPaymentRequest
 } from 'lightning';
 
-import waitForRoute from './../macros/wait_for_route.js';
+import waitForRoute from '../macros/wait_for_route.js';
 
 const interval = 50;
 const size = 3;

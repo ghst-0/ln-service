@@ -10,7 +10,7 @@ import {
   probeForRoute
 } from 'lightning';
 
-import waitForRoute from './../macros/wait_for_route.js';
+import waitForRoute from '../macros/wait_for_route.js';
 
 const channelCapacityTokens = 1e6;
 const size = 3;
