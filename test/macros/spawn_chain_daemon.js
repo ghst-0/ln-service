@@ -1,8 +1,8 @@
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { randomUUID } from 'node:crypto';
 
 import { rimraf } from 'rimraf';
-import { v4 } from 'uuid';
 
 import btcsuiteTypeDaemon from './btcsuite_type_daemon.js';
 
@@ -33,7 +33,7 @@ export default (args, cbk) => {
 
   let daemon;
 
-  const dir = join(tmpdir(), v4());
+  const dir = join(tmpdir(), randomUUID());
 
   switch (args.daemon) {
   case 'btcd':
