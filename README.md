@@ -58,13 +58,13 @@ make && make install tags="autopilotrpc chainrpc invoicesrpc peersrpc routerrpc 
 
 You can install ln-service service via npm
 
-    npm install ln-service
+    pnpm install ln-service
 
 To use authenticated methods you will need to provide LND credentials.
 
 To export the credentials via a command, you can install
 [balanceofsatoshis](https://github.com/alexbosworth/balanceofsatoshis):
-`npm install -g balanceofsatoshis` and export via `bos credentials --cleartext`
+`pnpm install -g balanceofsatoshis` and export via `bos credentials --cleartext`
 
 Or you can export them manually:
 
@@ -7843,5 +7843,5 @@ BTCD and LND are required to execute the integration tests.
 
 LND must be compiled with the relevant sub-rpc tags to complete all tests.
 
-    $ npm t
+    $ pnpm t
 
