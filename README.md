@@ -177,8 +177,6 @@ for `unlocker` methods.
     spending outputs
 - [getAccessIds](#getaccessids) - Get granted macaroon root access ids
 - [getAutopilot](#getautopilot) - Get autopilot status or node scores
-- [getBackup](#getbackup) - Get a backup of a channel
-- [getBackups](#getbackups) - Get a backup for all channels
 - [getBlock](#getblock) - Get the raw block data given a block id in the chain
 - [getBlockHeader](#getblockheader) - Get the raw block header for a block
 - [getChainAddresses](#getchainaddresses) - Get created chain addresses
@@ -248,8 +246,6 @@ for `unlocker` methods.
     proposal
 - [probeForRoute](#probeforroute) - Actively probe to find a payable route
 - [proposeChannel](#proposechannel) - Offer a channel proposal to a peer
-- [recoverFundsFromChannel](#recoverfundsfromchannel) - Restore a channel
-- [recoverFundsFromChannels](#recoverfundsfromchannels) - Restore all channels
 - [removeAdvertisedFeature](#removeadvertisedfeature) - Remove feature from ad
 - [removeExternalSocket](#removeexternalsocket) - Remove a p2p host:ip announce
 - [removePeer](#removepeer) - Disconnect from a connected peer
@@ -273,7 +269,6 @@ for `unlocker` methods.
 - [signPsbt](#signpsbt) - Sign and finalize an unsigned PSBT using internal keys
 - [signTransaction](#signtransaction) - Sign an on-chain transaction
 - [stopDaemon](#stopdaemon) - Stop lnd
-- [subscribeToBackups](#subscribetobackups) - Subscribe to channel backups
 - [subscribeToBlocks](#subscribetoblocks) - Subscribe to on-chain blocks
 - [subscribeToChainAddress](#subscribetochainaddress) - Subscribe to receives
 
@@ -314,8 +309,6 @@ for `unlocker` methods.
     configuration
 - [updateRoutingFees](#updateroutingfees) - Change routing fees
 - [verifyAccess](#verifyaccess) - Verify a macaroon has access
-- [verifyBackup](#verifybackup) - Verify a channel backup
-- [verifyBackups](#verifybackups) - Verify a set of channel backups
 - [verifyBytesSignature](#verifybytessignature) - Verify a signature over bytes
 - [verifyChainAddressMessage](#verifychainaddressmessage) - Check chain message
 - [verifyMessage](#verifymessage) - Verify a message signed by a node identity
@@ -1427,61 +1420,6 @@ const {getAutopilot} = require('ln-service');
 const isAutopilotEnabled = (await getAutopilot({lnd})).is_enabled;
 ```
 
-### getBackup
-
-Get the static channel backup for a channel
-
-Requires `offchain:read` permission
-
-    {
-      lnd: <Authenticated LND API Object>
-      transaction_id: <Funding Transaction Id Hex String>
-      transaction_vout: <Funding Transaction Output Index Number>
-    }
-
-    @returns via cbk or Promise
-    {
-      backup: <Channel Backup Hex String>
-    }
-
-Example:
-
-```node
-const {getBackup, getChannels} = require('ln-service');
-const [channel] = (await getChannels({lnd})).channels;
-const {backup} = await getBackup({
-  lnd,
-  transaction_id: channel.transaction_id,
-  transaction_vout: channel.transaction_vout,
-});
-```
-
-### getBackups
-
-Get all channel backups
-
-Requires `offchain:read` permission
-
-    {
-      lnd: <Authenticated LND API Object>
-    }
-
-    @returns via cbk or Promise
-    {
-      backup: <All Channels Backup Hex String>
-      channels: [{
-        backup: <Individualized Channel Backup Hex String>
-        transaction_id: <Channel Funding Transaction Id Hex String>
-        transaction_vout: <Channel Funding Transaction Output Index Number>
-      }]
-    }
-
-Example:
-
-```node
-const {getBackups} = require('ln-service');
-const {backup} = await getBackups({lnd});
-```
 
 ### getBlock
 
@@ -4741,48 +4679,6 @@ await proposeChannel({
 });
 ```
 
-### recoverFundsFromChannel
-
-Verify and restore a channel from a single channel backup
-
-Requires `offchain:write` permission
-
-    {
-      backup: <Backup Hex String>
-      lnd: <Authenticated LND API Object>
-    }
-
-    @returns via cbk or Promise
-
-Example:
-
-```node
-const {getBackup, recoverFundsFromChannel} = require('ln-service');
-const {backup} = await getBackup({lnd, transaction_id: id, transaction_vout: i});
-await recoverFundsFromChannel({backup, lnd});
-```
-
-### recoverFundsFromChannels
-
-Verify and restore channels from a multi-channel backup
-
-Requires `offchain:write` permission
-
-    {
-      backup: <Backup Hex String>
-      lnd: <Authenticated LND API Object>
-    }
-
-    @returns via cbk or Promise
-
-Example:
-
-```node
-const {getBackups, recoverFundsFromChannels} = require('ln-service');
-const {backup} = await getBackups({lnd});
-await recoverFundsFromChannels({backup, lnd});
-```
-
 ### removeAdvertisedFeature
 
 Remove an advertised feature from the graph node announcement
@@ -5455,41 +5351,6 @@ Example:
 ```node
 const {stopDaemon} = require('ln-service');
 await stopDaemon({lnd});
-```
-
-### subscribeToBackups
-
-Subscribe to backup snapshot updates
-
-Requires `offchain:read` permission
-
-    {
-      lnd: <Authenticated LND API Object>
-    }
-
-    @throws
-    <Error>
-
-    @returns
-    <EventEmitter Object>
-
-    @event 'backup'
-    {
-      backup: <Backup Hex String>
-      channels: [{
-        backup: <Backup Hex String>
-        transaction_id: <Funding Transaction Id Hex String>
-        transaction_vout: <Funding Transaction Output Index Number>
-      }]
-    }
-
-Example:
-
-```node
-const {subscribeToBackups} = require('ln-service');
-const sub = subscribeToBackups({lnd});
-let currentBackup;
-sub.on('backup', ({backup}) => currentBackup = backup);
 ```
 
 ### subscribeToChainAddress
@@ -7675,56 +7536,6 @@ const permissions = ['info:read'];
 
 // Determine if the macaroon has info:read permissions
 const hasAccess = (await verifyAccess({lnd, macaroon, permissions})).is_valid;
-```
-
-### verifyBackup
-
-Verify a channel backup
-
-    {
-      backup: <Individual Channel Backup Hex String>
-      lnd: <Authenticated LND gRPC API Object>
-    }
-
-    @returns via cbk or Promise
-    {
-      [err]: <LND Error Object>
-      is_valid: <Backup is Valid Bool>
-    }
-
-Example:
-
-```node
-const {getBackups, verifyBackup} = require('ln-service');
-const [channelBackup] = (await getBackups({lnd})).channels;
-
-const isValid = (await verifyBackup({lnd, backup: channelBackup.backup})).is_valid;
-```
-
-### verifyBackups
-
-Verify a set of aggregated channel backups
-
-    {
-      backup: <Multi-Backup Hex String>
-      channels: [{
-        transaction_id: <Funding Transaction Id Hex String>
-        transaction_vout: <Funding Transaction Output Index Number>
-      }]
-      lnd: <Authenticated LND gRPC API Object>
-    }
-
-    @returns via cbk or Promise
-    {
-      is_valid: <Backup is Valid Bool>
-    }
-
-Example:
-
-```node
-const {getBackups, verifyBackups} = require('ln-service');
-const {backup, channels} = await getBackups({lnd});
-const isValid = (await verifyBackups({backup, channels, lnd})).is_valid;
 ```
 
 ### verifyBytesSignature
