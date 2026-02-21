@@ -1,4 +1,3 @@
-import fetch from '@alexbosworth/node-fetch';
 import http from 'node:http';
 import https from 'node:https';
 
