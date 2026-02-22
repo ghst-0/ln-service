@@ -17,7 +17,7 @@
   "devDependencies": {
     "@alexbosworth/blockchain": "3.2.0",
     "async": "3.2.6",
-    "asyncjs-util": "1.2.12",
+    "asyncjs-util": "workspace*",
     "bip32": "5.0.1",
     "bitcoinjs-lib": "6.1.7",
     "bn.js": "5.2.3",
