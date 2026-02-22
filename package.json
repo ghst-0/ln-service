@@ -7,8 +7,8 @@
     "url": "https://github.com/alexbosworth/ln-service/issues"
   },
   "dependencies": {
-    "bolt07": "1.9.4",
-    "invoices": "5.0.0",
+    "bolt07": "workspace:*",
+    "invoices": "workspace:*",
     "lightning": "workspace:*",
     "macaroon": "3.0.4"
   },
@@ -23,9 +23,9 @@
     "bn.js": "5.2.3",
     "bs58check": "4.0.0",
     "ecpair": "3.0.1",
-    "ln-docker-daemons": "6.0.28",
+    "ln-docker-daemons": "workspace:*",
     "oxlint": "^1.49.0",
-    "psbt": "4.0.0",
+    "psbt": "5.0.0",
     "tiny-secp256k1": "2.2.4"
   },
   "engines": {
