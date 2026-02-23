@@ -7,9 +7,9 @@
     "url": "https://github.com/alexbosworth/ln-service/issues"
   },
   "dependencies": {
-    "bolt07": "workspace:*",
-    "invoices": "workspace:*",
-    "lightning": "workspace:*",
+    "bolt07": "workspace:bolt07",
+    "invoices": "workspace:invoices",
+    "lightning": "workspace:lightning",
     "macaroon": "3.0.4"
   },
   "type": "module",
@@ -17,13 +17,13 @@
   "devDependencies": {
     "@alexbosworth/blockchain": "3.2.0",
     "async": "3.2.6",
-    "asyncjs-util": "workspace*",
+    "asyncjs-util": "workspaceasyncjs-util",
     "bip32": "5.0.1",
     "bitcoinjs-lib": "6.1.7",
     "bn.js": "5.2.3",
     "bs58check": "4.0.0",
     "ecpair": "3.0.1",
-    "ln-docker-daemons": "workspace:*",
+    "ln-docker-daemons": "workspace:ln-docker-daemons",
     "oxlint": "^1.50.0",
     "psbt": "5.0.0",
     "tiny-secp256k1": "2.2.4"
