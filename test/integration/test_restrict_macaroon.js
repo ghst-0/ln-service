@@ -7,7 +7,7 @@ import {
   grantAccess
 } from 'lightning';
 
-import { restrictMacaroon } from '../../macaroons/index.js';
+import { restrictMacaroon } from '../../macaroons/restrict_macaroon.js';
 
 const delay = ms => new Promise(resolve => {setTimeout(resolve, ms)});
 const format = 'p2wpkh';

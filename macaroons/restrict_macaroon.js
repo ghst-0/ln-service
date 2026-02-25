@@ -18,7 +18,7 @@ const b64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
     macaroon: <Restricted Base64 Encoded Macaroon String>
   }
 */
-export default args => {
+const restrictMacaroon = args => {
   if (!args.macaroon || !b64.test(args.macaroon)) {
     throw new Error('ExpectedMacaroonToAddRestrictions');
   }
@@ -35,3 +35,5 @@ export default args => {
 
   return {macaroon: Buffer.from(macaroon.exportBinary()).toString('base64')};
 };
+
+export { restrictMacaroon }

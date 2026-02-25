@@ -1,5 +1,5 @@
 import { parsePaymentRequest } from 'invoices';
-import { restrictMacaroon } from './macaroons/index.js';
+import { restrictMacaroon } from './macaroons/restrict_macaroon.js';
 import { routeFromChannels } from 'bolt07';
 import {
   addAdvertisedFeature,

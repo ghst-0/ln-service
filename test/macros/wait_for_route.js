@@ -42,7 +42,7 @@ const times = 1500;
     }]
   }
 */
-export default ({destination, lnd, routes, tokens}, cbk) => {
+const waitForRoute = ({destination, lnd, routes, tokens}, cbk) => {
   if (!destination) {
     return cbk([400, 'ExpectedDestinationToWaitForRoute']);
   }
@@ -76,3 +76,5 @@ export default ({destination, lnd, routes, tokens}, cbk) => {
   },
   cbk);
 };
+
+export { waitForRoute }
