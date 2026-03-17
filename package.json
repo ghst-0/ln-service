@@ -24,7 +24,7 @@
     "bs58check": "4.0.0",
     "ecpair": "3.0.1",
     "ln-docker-daemons": "workspace:ln-docker-daemons",
-    "oxlint": "^1.50.0",
+    "oxlint": "^1.56.0",
     "psbt": "5.0.0",
     "tiny-secp256k1": "2.2.4"
   },
